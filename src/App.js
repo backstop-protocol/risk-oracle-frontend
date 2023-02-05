@@ -10,7 +10,7 @@ function App() {
     <div className="App">
         <Header/>
         <First/>
-        <main id="assets" style={{marginTop: '102px'}} className="container-fluid">
+        <main id="assets" style={{paddingTop: '102px'}} className="container-fluid">
           <SideNav/>
           <div className='main-content'>
           </div>
