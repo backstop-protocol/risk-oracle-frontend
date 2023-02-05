@@ -4,16 +4,16 @@ import Header from './sections/Header'
 import SideNav from './sections/SideNav'
 import Footer from './sections/Footer'
 import First from './sections/First'
+import MainPanel from './sections/MainPanel'
 
 function App() {
   return (
     <div className="App">
         <Header/>
         <First/>
-        <main id="assets" style={{paddingTop: '102px'}} className="container-fluid">
+        <main id="assets" style={{paddingTop: '102px'}} >
           <SideNav/>
-          <div className='main-content'>
-          </div>
+          <MainPanel/>
         </main>
         <Footer/>
     </div>
