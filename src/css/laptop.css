@@ -1,0 +1,159 @@
+/* @media (max-width: 1600px) {
+  html {
+    font-size:9.5px;
+  }
+} */
+
+@media (max-width: 1600px) {
+
+  .title {
+    font-size: 42px;
+    line-height: 56px;
+  }
+  
+  .subtitle {
+    font-size: 20px;
+    line-height: 32px;
+  }
+  
+  .txt {
+    font-size: 16px;
+    line-height: 28px;
+  }
+
+  .main-infographic {
+    width: 580px;
+    height: 580px;
+  }
+
+  .rectangle {
+    max-width: 230px;
+  }
+
+  .green-circle {
+    width: 60px;
+    height: 60px;
+  }
+
+  .card-logo{
+    width: 50%;
+    height: 50%;
+    object-fit: contain;
+  }
+
+  .card-name{
+    font-size: 18px;
+    line-height: 22px;
+  }
+  
+  .card-txt {
+    font-size: 14px;
+    line-height: 19px;
+  }
+
+  .card-3{
+    right: calc(50% - 120px);
+  }
+
+  .dashed-circle {
+    width: 333px;
+    height: 333px;
+  }
+
+  .dashed-circle img{
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
+
+  /* Sections */
+
+
+.withOverflowingBackground-1::before {
+  content: " ";
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 900px;  
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(35,164,85,1) 28%, var(--main-bg) 28%);
+}
+
+
+  .section-container, 
+  .withOverflowingBackground::before, 
+  .withOverflowingBackground-4::before, 
+  .withOverflowingBackground-1::before {
+    height: 800px;
+  }
+
+  .section-main {
+    margin-right: calc((100vw / 20));
+  }
+  .section-main-reverse {
+    margin-left: calc((100vw / 20));
+  }
+
+  .section-icon-wrapper {
+    width: 68px;
+    height: 68px;
+  }
+
+  
+  .section-divider {
+    border-right: 3px solid #23A455;
+  }
+  
+  .section-titles-container {
+    width: calc(100% - 88px);
+  }
+  
+  .section-pre-title {
+    font-size: 20px;
+    line-height: 27px;
+  }
+  
+  .section-title {
+    font-size: 32px;
+    line-height: 43px;
+  }
+  
+  .section-subtitle {
+    font-size: 20px;
+    line-height: 27px;
+  }
+  
+  .section-txt {
+    font-size: 16px;
+    line-height: 28px;
+  }
+
+  .img-container {
+    margin-right: calc((100vw / 20) * -1);
+    margin-left: 0;
+  }
+
+  .img-container.reverse {
+    margin-right: 0;
+    margin-left: calc((100vw / 20) * -1);
+  }
+
+  .section-img {
+    width: 100%;
+    max-width: 670px;
+    max-height: 400px;
+  }
+
+  .backed-by-img-container{
+    width: 170px;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 25px;
+  }
+
+  .backed-by-img{
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+  }
+}
