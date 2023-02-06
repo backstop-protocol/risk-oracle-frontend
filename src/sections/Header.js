@@ -10,7 +10,7 @@ const Header = observer(props => {
       </ul>
       <ul  style={{width: '100%'}}>
         <li>
-          <form onSubmit={(e)=> {e.preventDefault(); search(searchFieldValue)}} style={{margin: 0}}>   
+          <form onSubmit={(e)=>{e.preventDefault(); search(searchFieldValue)}} style={{margin: 0}}>   
             <input value={searchFieldValue} onChange={(e) => setSearchFieldValue(e.target.value)}type="search" id="search" name="search" placeholder="Search Assets"/>
           </form> 
         </li>

@@ -8,7 +8,7 @@ const SideNav = observer(props => {
     <aside className="side-nav">
       <nav>
         <ul>
-          {assets.map(asset => <SideNavItem asset={asset}/>)}
+          {assets.map((asset, index) => <SideNavItem asset={asset} key={index}/>)}
         </ul>
       </nav>
     </aside>
