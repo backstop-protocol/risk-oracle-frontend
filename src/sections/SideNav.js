@@ -3,7 +3,7 @@ import mainStore from "../stores/main.store"
 import SideNavItem from "../components/SideNavItem"
 
 const SideNav = observer(props => {
-  const {assets, search} = mainStore
+  const {assets} = mainStore
   return (
     <aside className="side-nav">
       <nav>
