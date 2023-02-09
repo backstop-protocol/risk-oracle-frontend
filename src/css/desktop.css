@@ -27,7 +27,7 @@ main {
   box-shadow: var(--card-box-shadow);
   background-color: var(--background-color);
   clip-path: inset(0px -5px 0px 0px);
-  height: 100vh;
+  height: calc(100vh - 102px);
 }
 
 .side-nav-item a {
