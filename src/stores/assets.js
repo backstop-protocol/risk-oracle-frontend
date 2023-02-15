@@ -1,12 +1,16 @@
 const assets = {
-  ETH: {},
+  ETH: {
+    decimals: 18
+  },
   DAI: {},
   MANA: {},
   MKR: {},
   SNX: {},
   SUSD: {},
   UNI: {},
-  USDC: {},
+  USDC: {
+    decimals: 6
+  },
   USDT: {},
 }
 

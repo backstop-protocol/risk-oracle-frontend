@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx"
 import assets from "./assets"
 import dexs from "./dexs"
 import comparisonAssets from "./comparisonAssets"
+import getDataStore, { dataStores } from "./data.store"
 
 class MainStore {
 
@@ -23,6 +24,17 @@ class MainStore {
       return v
     })
     makeAutoObservable(this)
+  }
+
+  get dataStore () {
+    if(!this.selectedAsset || !this.selectedAsset.name){
+      return null
+    }
+    const asset = this.selectedAsset.name
+    if(dataStores[asset]){
+      return dataStores[asset]
+    }
+    return getDataStore(asset)
   }
 
   getSearchQs = () => {

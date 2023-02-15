@@ -2,15 +2,15 @@ import mainStore from "../stores/main.store"
 import { observer } from "mobx-react"
 
 const InfoLine = observer(props => {
-  const {asset} = props
+  const {dataStore} = mainStore
   return (
     <div className="info-line">
       <div className="info">
         <span>
-          <strong>{asset.name}</strong>
+          <strong>{dataStore.asset}</strong>
         </span>
         <span>
-          price: <strong>$1699</strong>
+          price: <strong>${dataStore.price}</strong>
         </span>
         <span>
           24H price change: <strong>4.7%</strong>
