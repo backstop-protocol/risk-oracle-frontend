@@ -7,8 +7,6 @@ import First from './sections/First'
 import MainPanel from './sections/MainPanel'
 import React, { useEffect } from 'react';
 import mainStore from './stores/main.store'
-/* global BigInt */
-
 
 function App() {
   useEffect(()=> {

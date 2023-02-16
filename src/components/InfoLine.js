@@ -13,7 +13,7 @@ const InfoLine = observer(props => {
           price: <strong>${dataStore.price}</strong>
         </span>
         <span>
-          24H price change: <strong>4.7%</strong>
+          24H price change: <strong>{dataStore._24PriceChange}%</strong>
         </span>
         <span>
           24H Liquidity change: <strong>2.7%</strong>
