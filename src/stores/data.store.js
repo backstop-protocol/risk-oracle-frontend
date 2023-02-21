@@ -5,10 +5,12 @@ import dexs from './dexs'
 import Papa from 'papaparse'
 import Web3 from "web3"
 import axios from "../utils/axios"
+import timeWindows from "./timeWindows"
 const {fromWei, toWei} = Web3.utils
 /* global BigInt */
 
 const _1E18 = Math.pow(10, 18)
+
 
 const csvParseConfig = {
   header: true, 
@@ -27,9 +29,10 @@ class DataStore {
   price = null
   _24PriceChange = null
   _24LiquidityChange = null
+  selectedTimeWindow = timeWindows[0]
 
   constructor (asset) {
-    
+  
     this.asset = asset
     this.dexs = dexs
     this.comparisonAssets = comparisonAssets
@@ -48,6 +51,11 @@ class DataStore {
     return currentBlock
   }
 
+  setTimeWindow = (tw) => {
+    debugger
+    this.selectedTimeWindow = tw
+  }
+
   getBlockFromXDaysAgo = async (days) => {
     const secondsPerBlock = 12.5
     const dayInSeconds = 60 * 60 * 24
@@ -58,17 +66,16 @@ class DataStore {
 
   get24hPriceChange = async () => {
     const fromBlock = await this.getBlockFromXDaysAgo(1)
-    const {data} = await axios.get(`${baseUrl}/data/${this.asset}-USDC_uniswapv2.csv?fromBlock=${fromBlock}`)
+    const {data} = await axios.get(`${baseUrl}/events/${this.asset}-USDC_uniswapv2.csv?fromBlock=${fromBlock}`)
     const json = Papa.parse(data, csvParseConfig)
-    debugger
     const prices = json.data.map((event) => {
       
       const usdc = event['USDC']
       const asset = event[this.asset]
-      const assetDecimalAdjusted = BigInt(asset) * BigInt(Math.pow(10, assets[this.asset].decimals)) * BigInt(_1E18)
-      const usdcDecimalAdjusted = BigInt(usdc) * BigInt(Math.pow(10, 6))
-      
-      return (assetDecimalAdjusted / usdcDecimalAdjusted)
+      const assetDecimalAdjusted = BigInt(asset) * BigInt(Math.pow(10, 6))
+      const usdcDecimalAdjusted = BigInt(usdc) * BigInt(Math.pow(10, assets[this.asset].decimals))
+
+      return (usdcDecimalAdjusted  * BigInt(_1E18)) / assetDecimalAdjusted
     })
     this.price = parseFloat(fromWei(prices[prices.length - 1].toString())).toFixed(2)
     prices.sort((a, b)=> {
@@ -79,7 +86,6 @@ class DataStore {
     const max = fromWei(prices[0].toString())
     const min = fromWei(prices[prices.length - 1].toString())
     const priceMove = (parseFloat(max) - parseFloat(min))
-    debugger
     runInAction(()=> {
       this._24PriceChange = ((priceMove / parseFloat(max)) * 100).toFixed(2)
 
@@ -89,7 +95,6 @@ class DataStore {
   fetchData = async() => {
     this.loading = true
     await this.get24hPriceChange()
-    debugger
     this.loading = false
   }
 }

@@ -1,19 +1,14 @@
-const timeFrames = [
-  "24H",
-  "7D",
-  "30D",
-  "90D",
-  "180D",
-  "1Y",
-  "MAX"
-]
+import mainStore from "../stores/main.store"
+import timeWindows from "../stores/timeWindows"
+import { observer } from "mobx-react"
 
-const TimeFrameButtons = props => {
+const TimeFrameButtons = observer(props => {
+  const {dataStore} = mainStore
   return (
     <div style={{display: 'flex', gap: '10px'}}>
-      {timeFrames.map(tf=> <button key={tf} className="secondary outline small-btn">{tf}</button>)}
+      {timeWindows.map(tw=> <button key={tw} onClick={()=> dataStore.setTimeWindow(tw)} className={`${dataStore.selectedTimeWindow != tw ? 'outline' : ''} secondary small-btn`}>{tw}</button>)}
     </div>
   )
-}
+})
 
 export default TimeFrameButtons
