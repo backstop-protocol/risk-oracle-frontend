@@ -6,7 +6,6 @@ class LocalStorageWrapper {
 
   constructor (){
     const itemsToRemove = localStorage.getItem('items-to-remove')
-    debugger
     if(!itemsToRemove){
       localStorage.setItem('items-to-remove', '{}')
     } else {
@@ -28,7 +27,6 @@ class LocalStorageWrapper {
       return
     }
     Object.entries(itemsToRemove).forEach(([key, {expiration}]) => {
-      debugger
       if(Date.now() > expiration) {
         localStorage.removeItem(key)
         delete itemsToRemove[key]
