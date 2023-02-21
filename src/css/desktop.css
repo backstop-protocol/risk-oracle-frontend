@@ -35,6 +35,10 @@ main {
   align-items: center;
 }
 
+.side-nav-item a.selected {
+  background-color: var(--primary-focus);
+}
+
 .side-nav-item a > img{
   margin: 0 20px;
   width: 32px;
