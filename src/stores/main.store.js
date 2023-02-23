@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx"
 import assets from "./assets"
-import dexs from "./dexs"
-import comparisonAssets from "./comparisonAssets"
+
 import getDataStore, { dataStores } from "./data.store"
 
 class MainStore {
@@ -12,14 +11,6 @@ class MainStore {
 
   constructor () {
     this.assets = Object.entries(assets).map(([k,v])=>{
-      v.name = k
-      return v
-    })
-    this.dexs = Object.entries(dexs).map(([k,v])=>{
-      v.name = k
-      return v
-    })
-    this.comparisonAssets = Object.entries(comparisonAssets).map(([k,v])=>{
       v.name = k
       return v
     })

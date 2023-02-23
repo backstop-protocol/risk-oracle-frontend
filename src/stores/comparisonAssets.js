@@ -1,7 +1,7 @@
 const comparisonAssets = {
   ETH: {},
   BTC: {},
-  USD: {},
+  USDC: {},
 }
 
 export default comparisonAssets

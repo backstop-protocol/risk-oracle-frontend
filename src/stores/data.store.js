@@ -32,7 +32,16 @@ class DataStore {
   selectedTimeWindow = timeWindows[0]
 
   constructor (asset) {
-  
+    this.dexs = Object.entries(dexs).map(([k,v])=>{
+      v.checked = true
+      v.name = k
+      return v
+    })
+    this.comparisonAssets = Object.entries(comparisonAssets).map(([k,v])=>{
+      v.checked = true
+      v.name = k
+      return v
+    })
     this.asset = asset
     this.dexs = dexs
     this.comparisonAssets = comparisonAssets
@@ -52,8 +61,39 @@ class DataStore {
   }
 
   setTimeWindow = (tw) => {
-    debugger
     this.selectedTimeWindow = tw
+  }
+
+  toggleComparisonAsset = (ca) =>  {
+    ca.checked = !ca.checked
+  }
+
+  get allComparisonAssetsChecked () {
+    const unChecked = Object.values(this.comparisonAssets).filter(({checked})=> checked === false)
+    return !unChecked.length
+  }
+
+  toggleAllComparisonAssets = () => {
+    const toggleTo = !this.allComparisonAssetsChecked
+    Object.values(this.comparisonAssets).forEach(ca => {
+      ca.checked = toggleTo
+    })
+  }
+
+  toggleDex = (dex) =>  {
+    dex.checked = !dex.checked
+  }
+
+  get allDexs () {
+    const unChecked = Object.values(this.dexs).filter(({checked})=> checked === false)
+    return !unChecked.length
+  }
+
+  toggleAllDexs = () => {
+    const toggleTo = !this.allDexs
+    Object.values(this.dexs).forEach(dex => {
+      dex.checked = toggleTo
+    })
   }
 
   getBlockFromXDaysAgo = async (days) => {

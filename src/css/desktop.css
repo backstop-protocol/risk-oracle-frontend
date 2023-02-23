@@ -37,6 +37,7 @@ main {
 
 .side-nav-item a.selected {
   background-color: var(--primary-focus);
+  color: var(--contrast);
 }
 
 .side-nav-item a > img{
