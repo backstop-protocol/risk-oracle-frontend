@@ -1,8 +1,7 @@
 import { observer } from "mobx-react"
-import mainStore from "../stores/main.store"
 
 const DexSelector = observer(props => {
-  const {dataStore} = mainStore
+  const {dataStore} = props
   const dexs = Object.values(dataStore.dexs)
   return (
     <div>

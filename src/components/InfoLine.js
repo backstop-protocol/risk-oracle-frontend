@@ -1,8 +1,7 @@
-import mainStore from "../stores/main.store"
 import { observer } from "mobx-react"
 
 const InfoLine = observer(props => {
-  const {dataStore} = mainStore
+  const {dataStore} = props
   return (
     <div className="info-line">
       <div className="info">

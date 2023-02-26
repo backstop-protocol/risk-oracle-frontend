@@ -1,10 +1,8 @@
 import { observer } from "mobx-react"
-import mainStore from "../stores/main.store"
-import {toJS} from "mobx"
 
 const ComparisonAssetsSelector = observer(props => {
-  const {dataStore} = mainStore
-
+  const {dataStore} = props
+  const selectedAsset = dataStore.asset
   const comparisonAssets = Object.values(dataStore.comparisonAssets)
   return (
     <div>

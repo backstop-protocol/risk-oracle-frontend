@@ -59,6 +59,7 @@ class MainStore {
     this.searchedAsset = assetName
     this.selectedAsset = assets[assetName]
     this.searchFieldValue = ""
+    this.dataStore.fetchData()
   }
 
   setSearchFieldValue = (value) => {

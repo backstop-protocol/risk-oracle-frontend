@@ -5,6 +5,7 @@ import dexs from './dexs'
 import Papa from 'papaparse'
 import Web3 from "web3"
 import axios from "../utils/axios"
+import sleep from "../utils/sleep"
 import timeWindows from "./timeWindows"
 const {fromWei, toWei} = Web3.utils
 /* global BigInt */
@@ -133,9 +134,17 @@ class DataStore {
   }
 
   fetchData = async() => {
-    this.loading = true
-    await this.get24hPriceChange()
-    this.loading = false
+    runInAction(()=> {
+      this.loading = true
+    })
+    const promises = [
+      sleep(1),
+      this.get24hPriceChange()
+    ]
+    await Promise.all(promises)
+    runInAction(()=> {
+      this.loading = false
+    })
   }
 }
 

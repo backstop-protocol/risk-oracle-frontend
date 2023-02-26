@@ -24,18 +24,18 @@ const MainPanel = observer(props => {
   }
   return (
     <div className="main-content">
-      <InfoLine/>
-      <DexSelector/>
+      <InfoLine dataStore={dataStore}/>
+      <DexSelector dataStore={dataStore}/>
       <div style={{display: 'flex', alignItems: 'center', gap: 'calc(var(--spacing) * 4)'}}>
-        <ComparisonAssetsSelector/>
-        <SlippageSelector/>
+        <ComparisonAssetsSelector dataStore={dataStore}/>
+        <SlippageSelector dataStore={dataStore}/>
       </div>
       <div>
       </div>
-      <LiquidityChart/>
+      <LiquidityChart dataStore={dataStore}/>
       main panel {selectedAsset.name}
       {/* <LiquidityOrVolatility/> */}
-      <VolatilityTable/>
+      <VolatilityTable dataStore={dataStore}/>
     </div>
   )
 })
