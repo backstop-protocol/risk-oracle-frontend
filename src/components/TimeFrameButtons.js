@@ -6,7 +6,7 @@ const TimeFrameButtons = observer(props => {
   const {dataStore} = mainStore
   return (
     <div style={{display: 'flex', gap: '10px'}}>
-      {timeWindows.map(tw=> <button key={tw} onClick={()=> dataStore.setTimeWindow(tw)} className={`${dataStore.selectedTimeWindow != tw ? 'outline' : ''} secondary small-btn`}>{tw}</button>)}
+      {Object.entries(timeWindows).map(([tw, v])=> <button key={tw} onClick={()=> dataStore.setTimeWindow(tw)} className={`${dataStore.selectedTimeWindow != v ? 'outline' : ''} secondary small-btn`}>{tw}</button>)}
     </div>
   )
 })

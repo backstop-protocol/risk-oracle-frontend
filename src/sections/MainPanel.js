@@ -9,14 +9,16 @@ import LiquidityChart from "../components/LiquidityChart"
 
 const MainPanel = observer(props => {
   
-  const {searchedAsset, selectedAsset, assets} = mainStore
+  const {searchedAsset, selectedAsset, searchCounter, dataStore} = mainStore
+  console.log({searchCounter})
+
   if (!selectedAsset && !searchedAsset) {
     return <div className="main-content">search or select an asset</div>
   }
   if (!selectedAsset && searchedAsset) {
     return <div className="main-content">the searched asset {searchedAsset} is not yet supported</div>
   }
-  const {dataStore} = mainStore
+  console.log({searchCounter})
   if(dataStore.loading){
     return (<div className="main-content">
       <div style={{paddingTop: '30vh'}} aria-busy="true"></div>

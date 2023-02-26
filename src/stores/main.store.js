@@ -8,6 +8,7 @@ class MainStore {
   searchedAsset = null
   selectedAsset = null
   searchFieldValue = ""
+  searchCounter = 0
 
   constructor () {
     this.assets = Object.entries(assets).map(([k,v])=>{
@@ -60,6 +61,9 @@ class MainStore {
     this.selectedAsset = assets[assetName]
     this.searchFieldValue = ""
     this.dataStore.fetchData()
+    runInAction(()=> {
+      this.searchCounter++
+    })
   }
 
   setSearchFieldValue = (value) => {

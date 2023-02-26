@@ -7,11 +7,10 @@ import Web3 from "web3"
 import axios from "../utils/axios"
 import sleep from "../utils/sleep"
 import timeWindows from "./timeWindows"
-const {fromWei, toWei} = Web3.utils
+const {fromWei, toWei, unitMap} = Web3.utils
 /* global BigInt */
 
 const _1E18 = Math.pow(10, 18)
-
 
 const csvParseConfig = {
   header: true, 
@@ -24,13 +23,15 @@ const csvParseConfig = {
   }
 }
 
-const baseUrl = "http://risk-oracle-server-dev.eba-mwdphipi.eu-central-1.elasticbeanstalk.com"
+const baseUrl = "https://risk-oracle-api.bprotocol.org"
 
 class DataStore {
   price = null
   _24PriceChange = null
   _24LiquidityChange = null
-  selectedTimeWindow = timeWindows[0]
+  selectedTimeWindow = timeWindows["24H"]
+  liquidityChartData = []
+  loadingLiquidityChartData = false
 
   constructor (asset) {
     this.dexs = Object.entries(dexs).map(([k,v])=>{
@@ -39,7 +40,9 @@ class DataStore {
       return v
     })
     this.comparisonAssets = Object.entries(comparisonAssets).map(([k,v])=>{
-      v.checked = true
+      if (k === "USDC") {
+        v.checked = true
+      } 
       v.name = k
       return v
     })
@@ -55,14 +58,14 @@ class DataStore {
   }
 
   getCurrentBlock = async () => {
-    const {data} = await axios.get('https://api.etherscan.io/api?module=proxy&action=eth_blockNumber')
-    const currentBlock = parseInt(data.result, 16)
-    console.log({currentBlock})
-    return currentBlock
+    const {data} = await axios.get(`${baseUrl}/current-block`)
+    return data.blockNumber
   }
 
   setTimeWindow = (tw) => {
-    this.selectedTimeWindow = tw
+    this.selectedTimeWindow = timeWindows[tw]
+    debugger
+    this.getLiquidityChartData()
   }
 
   toggleComparisonAsset = (ca) =>  {
@@ -102,7 +105,9 @@ class DataStore {
     const dayInSeconds = 60 * 60 * 24
     const blocksPerDay = (dayInSeconds / secondsPerBlock)
     const currentBlock = await this.getCurrentBlock()
-    return currentBlock - parseInt(blocksPerDay * days)
+    const result =  currentBlock - parseInt(blocksPerDay * days)
+
+    return result
   }
 
   get24hPriceChange = async () => {
@@ -133,13 +138,69 @@ class DataStore {
     })
   }
 
+  getLiquidityChartData = async () => {
+    runInAction(()=> {
+      this.loadingLiquidityChartData = true
+    })
+    const fromBlock = await this.getBlockFromXDaysAgo(this.selectedTimeWindow)
+    const toBlock = await this.getCurrentBlock()
+    const blockJump = parseInt((toBlock - fromBlock) / 100)
+    debugger
+    const promises = Object.values(this.comparisonAssets).filter(({checked})=> checked).map(ca => {
+      
+      return axios.get(`${baseUrl}/events/${this.asset}-${ca.name}_uniswapv2.csv?fromBlock=${fromBlock}`).then(({data})=> Papa.parse(data, csvParseConfig))
+    })
+
+    // const promises = [
+    //   axios.get(`${baseUrl}/events/${this.asset}-USDC_uniswapv2.csv?fromBlock=${fromBlock}`).then(({data})=> Papa.parse(data, csvParseConfig))
+    // ]
+
+    const dataSets = await Promise.all(promises)
+    const dataPoints = []
+    for (let i = fromBlock; i <= toBlock; i += blockJump) {
+      if(i > toBlock) {
+        i = toBlock
+      }
+      debugger
+      const dataPoint = {}
+      dataSets.forEach(dataSet=> {
+        const {data, meta} = dataSet
+        const {fields} = meta
+        const ca = fields[2]
+        debugger
+        dataPoint[ca] = 0
+        data.forEach((d, j)=> {
+          if(dataPoint[ca]) {
+            return
+          }
+          if(d.blockNumber = i) {
+            dataPoint[ca] = d[ca]
+            return
+          }
+          if(d.blockNumber > i ) {
+            dataPoint[ca] = data[Math.max(j - 1, 0)][ca]
+          }
+        })
+      })
+      dataPoint.name = i
+      dataPoints.push(dataPoint)
+    }
+
+    runInAction(()=> {
+      this.liquidityChartData = dataPoints
+      this.loadingLiquidityChartData = false
+    })
+
+  }
+
   fetchData = async() => {
     runInAction(()=> {
       this.loading = true
     })
     const promises = [
       sleep(1),
-      this.get24hPriceChange()
+      this.get24hPriceChange(),
+      this.getLiquidityChartData()
     ]
     await Promise.all(promises)
     runInAction(()=> {
