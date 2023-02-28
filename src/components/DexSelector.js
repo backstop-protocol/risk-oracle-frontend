@@ -1,8 +1,12 @@
 import { observer } from "mobx-react"
 
+const nameMap = {
+  uniswapv2: "Uniswap v2"
+}
+
 const DexSelector = observer(props => {
   const {dataStore} = props
-  const dexs = Object.values(dataStore.dexs)
+  const dexs = Object.values(dataStore.options)
   return (
     <div>
       <fieldset className="dex-selector">
@@ -12,9 +16,9 @@ const DexSelector = observer(props => {
             checked={dataStore.allDexs} />
           all dexs
         </label>
-        {dexs.map(dex=> dex.supported && <label key={dex.name} htmlFor={dex.name}>
-          <input type="checkbox" id={dex.name} name={dex.name} checked={dex.checked} onChange={()=> dataStore.toggleDex(dex)}/>
-          {dex.name}
+        {dexs.map(dex=> <label key={dex.name} htmlFor={dex.name}>
+          <input type="checkbox" id={dex.name} name={dex.name} checked={dex.checked} disabled={dex.disabled} onChange={()=> dataStore.toggleDex(dex)}/>
+          {nameMap[dex.name] || dex.name}
         </label>)}
       </fieldset>
     </div>

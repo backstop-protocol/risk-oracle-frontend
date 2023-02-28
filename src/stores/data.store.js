@@ -32,6 +32,7 @@ class DataStore {
   selectedTimeWindow = timeWindows["24H"]
   liquidityChartData = []
   loadingLiquidityChartData = false
+  options = null
 
   constructor (asset) {
     this.dexs = Object.entries(dexs).map(([k,v])=>{
@@ -40,15 +41,11 @@ class DataStore {
       return v
     })
     this.comparisonAssets = Object.entries(comparisonAssets).map(([k,v])=>{
-      if (k === "USDC") {
-        v.checked = true
-      } 
+      v.checked = true
       v.name = k
       return v
     })
     this.asset = asset
-    this.dexs = dexs
-    this.comparisonAssets = comparisonAssets
     this.loading = true
     if (this.comparisonAssets[asset]) {
       delete this.comparisonAssets[asset]
@@ -64,12 +61,12 @@ class DataStore {
 
   setTimeWindow = (tw) => {
     this.selectedTimeWindow = timeWindows[tw]
-    debugger
     this.getLiquidityChartData()
   }
 
   toggleComparisonAsset = (ca) =>  {
     ca.checked = !ca.checked
+    this.getLiquidityChartData()
   }
 
   get allComparisonAssetsChecked () {
@@ -82,6 +79,9 @@ class DataStore {
     Object.values(this.comparisonAssets).forEach(ca => {
       ca.checked = toggleTo
     })
+    if(this.allComparisonAssetsChecked){
+      this.getLiquidityChartData()
+    }
   }
 
   toggleDex = (dex) =>  {
@@ -89,13 +89,13 @@ class DataStore {
   }
 
   get allDexs () {
-    const unChecked = Object.values(this.dexs).filter(({checked})=> checked === false)
+    const unChecked = Object.values(this.options).filter(({checked})=> checked === false)
     return !unChecked.length
   }
 
   toggleAllDexs = () => {
     const toggleTo = !this.allDexs
-    Object.values(this.dexs).forEach(dex => {
+    Object.values(this.options).forEach(dex => {
       dex.checked = toggleTo
     })
   }
@@ -145,15 +145,22 @@ class DataStore {
     const fromBlock = await this.getBlockFromXDaysAgo(this.selectedTimeWindow)
     const toBlock = await this.getCurrentBlock()
     const blockJump = parseInt((toBlock - fromBlock) / 100)
-    debugger
-    const promises = Object.values(this.comparisonAssets).filter(({checked})=> checked).map(ca => {
-      
-      return axios.get(`${baseUrl}/events/${this.asset}-${ca.name}_uniswapv2.csv?fromBlock=${fromBlock}`).then(({data})=> Papa.parse(data, csvParseConfig))
+    const promises = []
+    this.comparisonAssets
+    .filter(ca=> {
+      try{
+        const caIaAvilableViaAPI = this.options['uniswapv2'].comparisonAssets[ca.name]
+        debugger
+        return ca.checked && caIaAvilableViaAPI
+      } catch(e){
+        return false
+      }
     })
-
-    // const promises = [
-    //   axios.get(`${baseUrl}/events/${this.asset}-USDC_uniswapv2.csv?fromBlock=${fromBlock}`).then(({data})=> Papa.parse(data, csvParseConfig))
-    // ]
+    .forEach(ca => {
+      const promise = axios.get(`${baseUrl}/events/${this.asset}-${ca.name}_uniswapv2.csv?fromBlock=${fromBlock}`)
+        .then(({data})=> Papa.parse(data, csvParseConfig))
+      promises.push(promise)
+    })
 
     const dataSets = await Promise.all(promises)
     const dataPoints = []
@@ -161,13 +168,11 @@ class DataStore {
       if(i > toBlock) {
         i = toBlock
       }
-      debugger
       const dataPoint = {}
       dataSets.forEach(dataSet=> {
         const {data, meta} = dataSet
         const {fields} = meta
         const ca = fields[2]
-        debugger
         dataPoint[ca] = 0
         data.forEach((d, j)=> {
           if(dataPoint[ca]) {
@@ -190,13 +195,25 @@ class DataStore {
       this.liquidityChartData = dataPoints
       this.loadingLiquidityChartData = false
     })
+  }
 
+  getAvailableOptions = async() => {
+    if (this.options) {
+      return
+    }
+    const {data} = await axios.get(`${baseUrl}/events/options/${this.asset}`)
+    Object.entries(data.dexs).forEach(([k, v])=> {
+      v.checked = true
+      v.name = k
+    })
+    this.options = data.dexs
   }
 
   fetchData = async() => {
     runInAction(()=> {
       this.loading = true
     })
+    await this.getAvailableOptions()
     const promises = [
       sleep(1),
       this.get24hPriceChange(),

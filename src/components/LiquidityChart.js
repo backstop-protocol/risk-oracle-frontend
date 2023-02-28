@@ -5,7 +5,6 @@ import TimeFrameButtons from './TimeFrameButtons'
 const LiquidityChart = observer(props => {
   const {dataStore} = props
   const {liquidityChartData, loadingLiquidityChartData} = dataStore
-  debugger
   return (
     <article style={{width: '100%', height: '30vh', minHeight: '440px' }}>
       <TimeFrameButtons/>
@@ -27,8 +26,8 @@ const LiquidityChart = observer(props => {
           <Tooltip />
           <Legend />
           <Line type="monotone" dataKey="USDC" stroke="#8884d8" activeDot={{ r: 8 }} />
-          {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-          <Line type="monotone" dataKey="amt" stroke="#82ca9d" /> */}
+          <Line type="monotone" dataKey="BTC" stroke="#82ca9d" activeDot={{ r: 8 }} />
+          <Line type="monotone" dataKey="ETH" stroke="#82ca9d" activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer>}
       {loadingLiquidityChartData && <div style={{marginTop: '100px'}} aria-busy="true"></div>}

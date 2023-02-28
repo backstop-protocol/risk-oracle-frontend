@@ -3,7 +3,7 @@ import { observer } from "mobx-react"
 const ComparisonAssetsSelector = observer(props => {
   const {dataStore} = props
   const selectedAsset = dataStore.asset
-  const comparisonAssets = Object.values(dataStore.comparisonAssets)
+  const {comparisonAssets} = dataStore
   return (
     <div>
       <fieldset className="dex-selector">
