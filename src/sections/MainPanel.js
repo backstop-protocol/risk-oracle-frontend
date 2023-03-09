@@ -7,6 +7,7 @@ import ComparisonAssetsSelector from "../components/ComparisonAssetsSelector"
 import VolatilityTable from "../components/VolatilityTable"
 import LiquidityChart from "../components/LiquidityChart"
 import ContractAddress from "../components/ContractAddress"
+import LastUpdate from "../components/LastUpdate"
 
 const MainPanel = observer(props => {
   
@@ -27,15 +28,23 @@ const MainPanel = observer(props => {
   }
   return (
     <div className="main-content">
-      <InfoLine dataStore={dataStore}/>
-      <ContractAddress address={"0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"}/>
-      <DexSelector dataStore={dataStore}/>
-      <div style={{display: 'flex', alignItems: 'center', gap: 'calc(var(--spacing) * 4)'}}>
-        <ComparisonAssetsSelector dataStore={dataStore}/>
-        <SlippageSelector dataStore={dataStore}/>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
+        <div>
+          <article className="box">
+            <InfoLine dataStore={dataStore}/>
+            <ContractAddress address={"0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"}/>
+          </article>
+          <article className="box">
+            <DexSelector dataStore={dataStore}/>
+            <div style={{display: 'flex', alignItems: 'center', gap: 'calc(var(--spacing) * 4)', fontSize: "0.875em"}}>
+              <ComparisonAssetsSelector dataStore={dataStore}/>
+              <SlippageSelector dataStore={dataStore}/>
+            </div>
+          </article>
+        </div>
+        <LastUpdate date={dataStore.lastUpdateTime}/>
       </div>
-      <div>
-      </div>
+
       <LiquidityChart dataStore={dataStore}/>
       main panel {selectedAsset.name}
       {/* <LiquidityOrVolatility/> */}

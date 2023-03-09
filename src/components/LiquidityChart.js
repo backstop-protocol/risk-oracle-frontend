@@ -6,7 +6,7 @@ const LiquidityChart = observer(props => {
   const {dataStore} = props
   const {liquidityChartData, loadingLiquidityChartData} = dataStore
   return (
-    <article style={{width: '100%', height: '30vh', minHeight: '440px' }}>
+    <article style={{width: '100%', height: '30vh', minHeight: '440px', marginTop: "0px" }}>
       <TimeFrameButtons/>
       {!loadingLiquidityChartData && <ResponsiveContainer width="100%" height="100%">
         <LineChart

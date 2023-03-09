@@ -12,6 +12,11 @@ const {fromWei, toWei, unitMap} = Web3.utils
 
 const _1E18 = Math.pow(10, 18)
 
+const dateOffset = (39*60*1000); 
+const myDate = new Date();
+myDate.setTime(myDate.getTime() - dateOffset);
+
+
 const csvParseConfig = {
   header: true, 
   skipEmptyLines: true,
@@ -33,6 +38,7 @@ class DataStore {
   liquidityChartData = []
   loadingLiquidityChartData = false
   options = null
+  lastUpdateTime = myDate
 
   constructor (asset) {
     this.dexs = Object.entries(dexs).map(([k,v])=>{
@@ -150,7 +156,6 @@ class DataStore {
     .filter(ca=> {
       try{
         const caIaAvilableViaAPI = this.options['uniswapv2'].comparisonAssets[ca.name]
-        debugger
         return ca.checked && caIaAvilableViaAPI
       } catch(e){
         return false
@@ -168,6 +173,7 @@ class DataStore {
       if(i > toBlock) {
         i = toBlock
       }
+      // TODO: web3.eth.getBlock(blockNumber).timestamp
       const dataPoint = {}
       dataSets.forEach(dataSet=> {
         const {data, meta} = dataSet
@@ -187,6 +193,7 @@ class DataStore {
           }
         })
       })
+
       dataPoint.name = i
       dataPoints.push(dataPoint)
     }

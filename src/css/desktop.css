@@ -68,12 +68,15 @@ main {
   margin-bottom: calc(var(--spacing));
 }
 
-.contract-address{
-  margin-bottom: calc(var(--spacing));
-}
-
 .icon {
   height: calc(var(--font-size) * 1.2);
+}
+
+#slippage-selector {
+  margin: 0;
+  padding-top: 5px !important;
+  padding-left: 10px !important;
+  padding-bottom: 5px !important;
 }
 
 .info-line .info {
@@ -82,7 +85,15 @@ main {
   gap: 20px;
 }
 
+article.box {
+  padding: var(--spacing);
+  margin: var(--spacing) 0;
+}
+
+
+
 .dex-selector {
+  margin: 0;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;

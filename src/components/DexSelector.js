@@ -8,7 +8,7 @@ const DexSelector = observer(props => {
   const {dataStore} = props
   const dexs = Object.values(dataStore.options)
   return (
-    <div>
+    <div style={{fontSize: "0.875em"}}>
       <fieldset className="dex-selector">
         <label htmlFor="switch">
           <input type="checkbox" id="switch" name="switch" role="switch" readOnly 

@@ -28,15 +28,21 @@ const iconStyle = {
 const ContractAddress = observer(props => {
   const {address} = props
   const {copiedToClipboard, copyToClipboard} = localStore
-  return (<div className="contract-address">
+  return (<div>
     <div>
-      <b>Contract Address</b> 
+      <small>
+        <b>Contract Address</b> 
+      </small>
+      <small>
       <span style={iconStyle} data-placement="right" data-tooltip={TOOLTIP_TEXT_1}>
         <img className="icon" src="icons/info.svg"/>
       </span>
+      </small>
     </div>
     <div>
-      <a href={`https://etherscan.io/address/${address}`} target>{address}</a> 
+      <small>
+        <a href={`https://etherscan.io/address/${address}`} target>{address}</a>
+      </small>
       <span onClick={()=> copyToClipboard(address)} style={iconStyle} data-tooltip={TOOLTIP_TEXT_2}>
         {!copiedToClipboard && <img className="icon" src="icons/content_copy.svg"/>}
         {copiedToClipboard && <img className="icon" src="icons/check_circle.svg"/>}

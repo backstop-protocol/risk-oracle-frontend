@@ -8,15 +8,21 @@ const InfoLine = observer(props => {
         <span>
           <strong>{dataStore.asset}</strong>
         </span>
-        <span>
-          price: <strong>${dataStore.price}</strong>
-        </span>
-        <span>
-          24H price change: <strong>{dataStore._24PriceChange}%</strong>
-        </span>
-        <span>
-          24H Liquidity change: <strong>2.7%</strong>
-        </span>
+        <small>
+          <span>
+            price: <strong>${dataStore.price}</strong>
+          </span>
+        </small>
+        <small>
+          <span>
+            24H price change: <strong>{dataStore._24PriceChange}%</strong>
+          </span>
+        </small>
+        <small>
+          <span>
+            24H Liquidity change: <strong>2.7%</strong>
+          </span>
+        </small>
       </div>
     </div>
   )
