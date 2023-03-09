@@ -24,7 +24,7 @@ function App() {
           <SideNav/>
           <MainPanel/>
         </main>
-        <Footer/>
+        {/* <Footer/> */}
     </div>
   );
 }

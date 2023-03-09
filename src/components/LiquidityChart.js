@@ -6,18 +6,16 @@ const LiquidityChart = observer(props => {
   const {dataStore} = props
   const {liquidityChartData, loadingLiquidityChartData} = dataStore
   return (
-    <article style={{width: '100%', height: '30vh', minHeight: '440px', marginTop: "0px" }}>
+    <article className='box' style={{width: '100%', height: '30vh', minHeight: '440px', marginTop: "0px",}}>
       <TimeFrameButtons/>
       {!loadingLiquidityChartData && <ResponsiveContainer width="100%" height="100%">
         <LineChart
-          width={500}
-          height={300}
           data={liquidityChartData}
           margin={{
             top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
+            right: 0,
+            left: 60,
+            bottom: 40,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />

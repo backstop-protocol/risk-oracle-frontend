@@ -33,11 +33,9 @@ const ContractAddress = observer(props => {
       <small>
         <b>Contract Address</b> 
       </small>
-      <small>
       <span style={iconStyle} data-placement="right" data-tooltip={TOOLTIP_TEXT_1}>
         <img className="icon" src="icons/info.svg"/>
       </span>
-      </small>
     </div>
     <div>
       <small>

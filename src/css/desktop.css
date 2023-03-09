@@ -88,6 +88,7 @@ main {
 article.box {
   padding: var(--spacing);
   margin: var(--spacing) 0;
+  min-width: 250px;
 }
 
 

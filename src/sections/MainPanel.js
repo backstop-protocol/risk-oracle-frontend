@@ -8,6 +8,7 @@ import VolatilityTable from "../components/VolatilityTable"
 import LiquidityChart from "../components/LiquidityChart"
 import ContractAddress from "../components/ContractAddress"
 import LastUpdate from "../components/LastUpdate"
+import AvgTable from "../components/AvgTable"
 
 const MainPanel = observer(props => {
   
@@ -28,8 +29,8 @@ const MainPanel = observer(props => {
   }
   return (
     <div className="main-content">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
-        <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--spacing)', width: '100%'}}>
+        <div style={{ flexGrow: 1}}>
           <article className="box">
             <InfoLine dataStore={dataStore}/>
             <ContractAddress address={"0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"}/>
@@ -44,8 +45,10 @@ const MainPanel = observer(props => {
         </div>
         <LastUpdate date={dataStore.lastUpdateTime}/>
       </div>
-
-      <LiquidityChart dataStore={dataStore}/>
+      <div style={{display: 'flex', gap: 'var(--spacing)'}}>
+        <LiquidityChart dataStore={dataStore}/>
+        <AvgTable dataStore={dataStore}/>
+      </div>
       main panel {selectedAsset.name}
       {/* <LiquidityOrVolatility/> */}
       <VolatilityTable dataStore={dataStore}/>
