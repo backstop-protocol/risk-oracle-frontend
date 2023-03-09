@@ -18,7 +18,6 @@ const InfoLine = observer(props => {
           24H Liquidity change: <strong>2.7%</strong>
         </span>
       </div>
-      <kbd>contract address: 0x9876543...</kbd>
     </div>
   )
 })

@@ -65,7 +65,15 @@ main {
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
-  margin-bottom: calc(var(--spacing) * 2);
+  margin-bottom: calc(var(--spacing));
+}
+
+.contract-address{
+  margin-bottom: calc(var(--spacing));
+}
+
+.icon {
+  height: calc(var(--font-size) * 1.2);
 }
 
 .info-line .info {

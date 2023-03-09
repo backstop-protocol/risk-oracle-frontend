@@ -6,6 +6,7 @@ import SlippageSelector from "../components/SlippageSelector"
 import ComparisonAssetsSelector from "../components/ComparisonAssetsSelector"
 import VolatilityTable from "../components/VolatilityTable"
 import LiquidityChart from "../components/LiquidityChart"
+import ContractAddress from "../components/ContractAddress"
 
 const MainPanel = observer(props => {
   
@@ -27,6 +28,7 @@ const MainPanel = observer(props => {
   return (
     <div className="main-content">
       <InfoLine dataStore={dataStore}/>
+      <ContractAddress address={"0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"}/>
       <DexSelector dataStore={dataStore}/>
       <div style={{display: 'flex', alignItems: 'center', gap: 'calc(var(--spacing) * 4)'}}>
         <ComparisonAssetsSelector dataStore={dataStore}/>
