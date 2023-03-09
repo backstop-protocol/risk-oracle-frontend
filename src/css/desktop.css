@@ -70,6 +70,7 @@ main {
 
 .icon {
   height: calc(var(--font-size) * 1.2);
+  filter: invert(var(--inverter));
 }
 
 #slippage-selector {
@@ -135,6 +136,7 @@ header {
   --background-color: #1F202F;
   --grey-bg: lightgrey;
   --side-nav-width: 300px;
+  --inverter: 1;
 }
 /* Pink Light scheme (Default) */
 /* Can be forced with data-theme="light" */
@@ -148,6 +150,7 @@ header {
   --main-bg: #fff;
   --main-bg-inverse: #1F202F;
   --grey-bg: darkgrey;
+  --inverter: 0;
 }
 
 /* Pink Dark scheme (Auto) */
