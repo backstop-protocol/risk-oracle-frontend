@@ -36,9 +36,9 @@ const MainPanel = observer(props => {
             <ContractAddress address={"0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"}/>
           </article>
           <article className="box">
-            <DexSelector dataStore={dataStore}/>
-            <div style={{display: 'flex', alignItems: 'center', gap: 'calc(var(--spacing) * 4)', fontSize: "0.875em"}}>
-              <ComparisonAssetsSelector dataStore={dataStore}/>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'calc(var(--spacing) * 4)', fontSize: "0.875em"}}>
+              {/* <ComparisonAssetsSelector dataStore={dataStore}/> */}
+              <DexSelector dataStore={dataStore}/>
               <SlippageSelector dataStore={dataStore}/>
             </div>
           </article>

@@ -12,7 +12,7 @@ const LastUpdate = observer(props => {
   const {date} = props
   
   return (
-    <article class="box">
+    <article style={{textAlign: "center"}} class="box">
       <div><small><b>Last update</b></small>       
         <span style={iconStyle} data-placement="left" data-tooltip={TOOLTIP_TEXT}>
           <img className="icon" src="icons/info.svg"/>

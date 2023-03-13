@@ -12,7 +12,7 @@ const AvgTable = observer(props => {
         </thead>
         <tbody>
           <tr>
-            <td>ETH</td>
+              <td>ETH</td>
             <td>1</td>
           </tr>
           <tr>

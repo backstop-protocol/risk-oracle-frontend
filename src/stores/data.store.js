@@ -95,13 +95,18 @@ class DataStore {
   }
 
   get allDexs () {
-    const unChecked = Object.values(this.options).filter(({checked})=> checked === false)
+    const unChecked = Object.values(this.options)
+      .filter(({disabled})=> disabled === false)
+      .filter(({checked})=> checked === false)
     return !unChecked.length
   }
 
   toggleAllDexs = () => {
     const toggleTo = !this.allDexs
     Object.values(this.options).forEach(dex => {
+      if(dex.disabled){
+        return
+      }
       dex.checked = toggleTo
     })
   }
@@ -212,8 +217,15 @@ class DataStore {
     Object.entries(data.dexs).forEach(([k, v])=> {
       v.checked = true
       v.name = k
+      v.disabled = false
+    })    
+    Object.entries(dexs).forEach(([k, v])=> {
+      v.checked = false
+      v.name = k
+      v.disabled = true
     })
-    this.options = data.dexs
+
+    this.options = Object.assign(data.dexs, dexs)
   }
 
   fetchData = async() => {
