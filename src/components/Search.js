@@ -4,17 +4,14 @@ import React from "react"
 
 
 const Search = observer(props => {
-  const [focused, setFocused] = React.useState(false)
-  const onFocus = () => setFocused(true)
-  const onBlur = () => setFocused(false)
   const {setSearchFieldValue, searchFieldValue, search, searchList} = mainStore
 
   return (
     <div>
       <form onSubmit={(e)=>{e.preventDefault(); search(searchFieldValue)}} style={{margin: 0}}>   
-        <input onFocus={onFocus} onBlur={onBlur} autocomplete="off" value={searchFieldValue} onChange={(e) => setSearchFieldValue(e.target.value)}type="search" id="search" name="search" placeholder="Search Assets"/>
+        <input autocomplete="off" value={searchFieldValue} onChange={(e) => setSearchFieldValue(e.target.value)}type="search" id="search" name="search" placeholder="Search Assets"/>
       </form> 
-      {searchList.length > 0 && focused && <article className="search-list">
+      {searchList.length > 0 && <article className="search-list">
         <aside>
           <nav>
             <ul>
