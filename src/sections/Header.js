@@ -1,8 +1,7 @@
 import { observer } from "mobx-react"
-import mainStore from "../stores/main.store"
+import Search from "../components/Search"
 
 const Header = observer(props => {
-  const {setSearchFieldValue, searchFieldValue, search} = mainStore
   return <header className="container-fluid">
     <nav>
       <ul style={{width: 'var(--side-nav-width)'}}>
@@ -10,9 +9,7 @@ const Header = observer(props => {
       </ul>
       <ul  style={{width: '100%'}}>
         <li>
-          <form onSubmit={(e)=>{e.preventDefault(); search(searchFieldValue)}} style={{margin: 0}}>   
-            <input value={searchFieldValue} onChange={(e) => setSearchFieldValue(e.target.value)}type="search" id="search" name="search" placeholder="Search Assets"/>
-          </form> 
+          <Search/>
         </li>
       </ul>
       <ul>

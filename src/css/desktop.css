@@ -92,7 +92,16 @@ article.box {
   min-width: max(350px, 30%);
 }
 
+.search-list {
+  margin-top: 20px;
+  padding: 10px;
+  position: absolute;
+  width: 305px;
+}
 
+.search-list-item:hover {
+  background-color: var(--primary-focus);
+}
 
 .dex-selector {
   margin: 0;

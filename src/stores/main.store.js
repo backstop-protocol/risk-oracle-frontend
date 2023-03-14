@@ -11,7 +11,7 @@ class MainStore {
   selectedAsset = assets[defaultAsset]
   searchFieldValue = ''
   searchCounter = 0
-
+  
   constructor () {
     this.assets = Object.entries(assets).map(([k,v])=>{
       v.name = k
@@ -20,6 +20,11 @@ class MainStore {
     const defaultDataStore = getDataStore(this.selectedAsset.name)
     defaultDataStore.fetchData()
     makeAutoObservable(this)
+  }
+
+  get searchList () {
+    const searchTerm = this.searchFieldValue.toUpperCase()
+    return this.assets.filter(a=> a.name.indexOf(searchTerm) > -1)
   }
 
   get dataStore () {
