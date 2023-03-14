@@ -3,11 +3,13 @@ import assets from "./assets"
 
 import getDataStore, { dataStores } from "./data.store"
 
+const defaultAsset ="ETH"
+
 class MainStore {
 
   searchedAsset = null
-  selectedAsset = null
-  searchFieldValue = ""
+  selectedAsset = assets[defaultAsset]
+  searchFieldValue = ''
   searchCounter = 0
 
   constructor () {
@@ -15,6 +17,8 @@ class MainStore {
       v.name = k
       return v
     })
+    const defaultDataStore = getDataStore(this.selectedAsset.name)
+    defaultDataStore.fetchData()
     makeAutoObservable(this)
   }
 

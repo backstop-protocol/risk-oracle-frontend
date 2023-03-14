@@ -4,7 +4,7 @@ import { observer } from "mobx-react"
 
 const VolatilityTable = observer(props => {
   return (
-    <article>
+    <article style={{ marginTop: 0}} className="box">
       <table>
         <thead>
           <tr>

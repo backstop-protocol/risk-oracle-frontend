@@ -31,9 +31,12 @@ const MainPanel = observer(props => {
     <div className="main-content">
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--spacing)', width: '100%'}}>
         <div style={{ flexGrow: 1}}>
-          <article className="box">
-            <InfoLine dataStore={dataStore}/>
-            <ContractAddress address={"0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"}/>
+          <article className="box" style={{display: 'flex', justifyContent: 'space-between', alignItems: "start"}}>
+            <div >
+              <InfoLine dataStore={dataStore}/>
+              <ContractAddress address={"0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"}/>
+            </div>
+            <LastUpdate date={dataStore.lastUpdateTime}/>
           </article>
           <article className="box">
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'calc(var(--spacing) * 4)', fontSize: "0.875em"}}>
@@ -43,14 +46,11 @@ const MainPanel = observer(props => {
             </div>
           </article>
         </div>
-        <LastUpdate date={dataStore.lastUpdateTime}/>
       </div>
       <div style={{display: 'flex', gap: 'var(--spacing)'}}>
         <LiquidityChart dataStore={dataStore}/>
         <AvgTable dataStore={dataStore}/>
       </div>
-      main panel {selectedAsset.name}
-      {/* <LiquidityOrVolatility/> */}
       <VolatilityTable dataStore={dataStore}/>
     </div>
   )

@@ -225,7 +225,7 @@ class DataStore {
       v.disabled = true
     })
 
-    this.options = Object.assign(data.dexs, dexs)
+    this.options = Object.assign(dexs, data.dexs)
   }
 
   fetchData = async() => {

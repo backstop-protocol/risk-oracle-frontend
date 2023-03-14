@@ -1,5 +1,5 @@
 const dexs = {
-  "Uniswap v2": {},
+  "uniswapv2": {},
   "Uniswap v3": {},
   "Curve": {},
   "Balancer": {},

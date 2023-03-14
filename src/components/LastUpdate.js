@@ -12,7 +12,7 @@ const LastUpdate = observer(props => {
   const {date} = props
   
   return (
-    <article style={{textAlign: "center"}} class="box">
+    <div >
       <div><small><b>Last update</b></small>       
         <span style={iconStyle} data-placement="left" data-tooltip={TOOLTIP_TEXT}>
           <img className="icon" src="icons/info.svg"/>
@@ -20,7 +20,7 @@ const LastUpdate = observer(props => {
       </div>
       <div style={{color: "var(--muted-color)"}}><small>{moment(date).format('LL')}</small></div>
       <div><small>{moment(date).fromNow()}</small></div>
-    </article>
+    </div>
   )
 })
 
