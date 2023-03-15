@@ -23,9 +23,6 @@ class MainStore {
   }
 
   get searchList () {
-    if(!this.searchFieldValue.length){
-      return []
-    }
     const searchTerm = this.searchFieldValue.toUpperCase()
     return this.assets.filter(a=> a.name.indexOf(searchTerm) > -1)
   }
