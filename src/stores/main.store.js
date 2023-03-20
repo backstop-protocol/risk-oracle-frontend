@@ -13,10 +13,12 @@ class MainStore {
   searchCounter = 0
   
   constructor () {
-    this.assets = Object.entries(assets).map(([k,v])=>{
-      v.name = k
-      return v
-    })
+    this.assets = Object.entries(assets)
+      .filter(([,asset]) => asset.display)
+      .map(([k,v])=>{
+        v.name = k
+        return v
+      })
     const defaultDataStore = getDataStore(this.selectedAsset.name)
     defaultDataStore.fetchData()
     makeAutoObservable(this)

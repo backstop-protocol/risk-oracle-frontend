@@ -203,8 +203,20 @@ class DataStore {
       dataPoints.push(dataPoint)
     }
 
+    const FormatDataPoints = dataPoints.map(dp=> {
+      const obj = {}
+      Object.entries(dp).forEach(([k, v])=> {
+        if(assets[k] && assets[k].decimals){
+          const multiplier = Math.pow(10, (18 - assets[k].decimals))
+          obj[k] = parseFloat(fromWei((BigInt(v) * BigInt(multiplier)).toString())).toFixed(2)
+        } else {
+          obj[k] = v
+        }
+      })
+      return obj
+    })
     runInAction(()=> {
-      this.liquidityChartData = dataPoints
+      this.liquidityChartData = FormatDataPoints
       this.loadingLiquidityChartData = false
     })
   }
