@@ -5,9 +5,10 @@ const options = [
 const defaultValue = 5
 
 const SlippageSelector = props => {
+  const currentValue = props.slippage;
   return (
     <div>
-      <select id="slippage-selector" defaultValue={defaultValue}>
+      <select id="slippage-selector" defaultValue={currentValue} onChange={(event) => props.handleChange(event.target.value)}>
         {options.map(option=> <option key={option} value={option}>{option}% slippage</option>)}
       </select>
     </div>
