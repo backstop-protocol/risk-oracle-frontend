@@ -57,7 +57,7 @@ const MainPanel = observer(props => {
               <InfoLine dataStore={dataStore}/>
               <ContractAddress address={"0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"}/>
             </div>
-            <LastUpdate date={assetsDataStore.lastUpdate}/>
+            <LastUpdate date={assetsDataStore.lastUpdate[span]}/>
           </article>
           <article className="box">
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'calc(var(--spacing) * 4)', fontSize: "0.875em"}}>

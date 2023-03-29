@@ -12,7 +12,7 @@ class assetsDataStore {
 
     constructor() {
         this.data = {};
-        this.lastUpdate = null;
+        this.lastUpdate = {};
         this.loading = true;
         const urls = [];
         for (let i = 0; i < this.platforms.length; i++) {
@@ -30,7 +30,7 @@ class assetsDataStore {
                         this.data[platform] = {}
                     };
                     this.data[platform][span] = data[i].data.concatData;
-                    this.lastUpdate = data[i].data.lastUpdate;
+                    this.lastUpdate[span] = data[i].data.lastUpdate;
                 }
                 this.loading = false;
             })
