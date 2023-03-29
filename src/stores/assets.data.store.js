@@ -1,7 +1,7 @@
 import axios from "axios";
 import { makeAutoObservable } from "mobx";
 
-const apiUrl = "http://localhost:3000/api";
+const apiUrl = "https://api.dex-history.la-tribu.xyz/api";
 
 
 class assetsDataStore {
@@ -12,6 +12,7 @@ class assetsDataStore {
 
     constructor() {
         this.data = {};
+        this.lastUpdate = null;
         this.loading = true;
         const urls = [];
         for (let i = 0; i < this.platforms.length; i++) {
@@ -28,7 +29,8 @@ class assetsDataStore {
                     if(!this.data[platform]){
                         this.data[platform] = {}
                     };
-                    this.data[platform][span] = data[i].data;
+                    this.data[platform][span] = data[i].data.concatData;
+                    this.lastUpdate = data[i].data.lastUpdate;
                 }
                 this.loading = false;
             })
