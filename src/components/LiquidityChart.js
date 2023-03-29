@@ -67,14 +67,14 @@ const LiquidityChart = observer(props => {
             top: 5,
             right: 0,
             left: 60,
-            bottom: 40,
+            bottom: 60,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="blockNumber" />
-          <YAxis />
+          <XAxis dataKey="blockNumber" label={{ value: 'block number', position:'bottom', offset:'7' }} />
+          <YAxis unit={` ${selectedBaseSymbol}`}/>
           <Tooltip />
-          <Legend />
+          <Legend verticalAlign='top' />
           {quotes.map(_=> <Line type="monotone" stroke={strokes[_]} dataKey={_} activeDot={{ r: 8 }} />)}
         </LineChart>
       </ResponsiveContainer>}
