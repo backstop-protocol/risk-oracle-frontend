@@ -55,7 +55,6 @@ const LiquidityChart = observer(props => {
       }
     }
   }
-  console.log('displayData', JSON.stringify(displayData, null, 2));
   const { liquidityChartData, loadingLiquidityChartData } = dataStore
   return (
     <article className='box' style={{ width: '100%', height: '30vh', minHeight: '440px', marginTop: "0px", }}>
