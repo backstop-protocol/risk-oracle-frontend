@@ -7,8 +7,8 @@ const apiUrl = "https://api.dex-history.la-tribu.xyz/api";
 class assetsDataStore {
     data = null;
     loading = true;
-    spans = [1, 7, 30, 180];
-    platforms = ['uniswapv2'];
+    spans = [1, 7, 30, 180, 365];
+    platforms = ['uniswapv2', 'curve'];
 
     constructor() {
         this.data = {};
