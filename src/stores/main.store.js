@@ -82,7 +82,7 @@ class MainStore {
 
   search = (assetName) => {
     const searchQueryStringParam = this.getSearchQs()
-    if(searchQueryStringParam != assetName) {
+    if(searchQueryStringParam !== assetName) {
       // update the url with the new query string param
       const url = new URL(window.location);
       url.searchParams.set('search', assetName);

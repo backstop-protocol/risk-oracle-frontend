@@ -34,7 +34,7 @@ const MainPanel = observer(props => {
   }
 
   
-  const {searchedAsset, selectedAsset, searchCounter, dataStore} = mainStore
+  const {searchedAsset, selectedAsset, dataStore} = mainStore
 
   if (!selectedAsset && !searchedAsset) {
     return <div className="main-content">search or select an asset</div>

@@ -2,8 +2,6 @@ const options = [
   1, 5, 10, 15, 20
 ]
 
-const defaultValue = 5
-
 const SlippageSelector = props => {
   const currentValue = props.slippage;
   return (
