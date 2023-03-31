@@ -20,7 +20,7 @@ const LiquidityChart = observer(props => {
   const data = assetsDataStore.data;
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseSymbol = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
-  const volumeData = [];
+  const volumeData = {};
   const displayData = [];
   const quotes = [];
 
@@ -31,55 +31,54 @@ const LiquidityChart = observer(props => {
       if (!quotes.includes(slippageData.quote)) {
         quotes.push(slippageData.quote);
       }
-      volumeData.push(slippageData);
-    }
-  }
-  
-  for (let i = 0; i < volumeData.length; i++) {
-    for (let j = 0; j < volumeData[i]['volumeForSlippage'].length; j++) {
-      const quote = volumeData[i]['quote'];
-      if (i === 0) {
-        const toPush = {};
-        toPush['blockNumber'] = volumeData[i]['volumeForSlippage'][j]['blockNumber'];
-        toPush[quote] = Number((volumeData[i]['volumeForSlippage'][j][slippage]).toFixed(2));
-        displayData.push(toPush);
-      }
-      else {
-        const index = displayData.findIndex(_ => _.blockNumber === volumeData[i]['volumeForSlippage'][j]['blockNumber']);
-        if (index === -1) {
-          continue
+      const quote = slippageData.quote;
+      for (const volumeForSlippage of slippageData.volumeForSlippage) {
+        const blockNumber = volumeForSlippage.blockNumber;
+        const slippageValue = volumeForSlippage[slippage];
+        if (!volumeData[blockNumber]) {
+          volumeData[blockNumber] = {};
         }
-        else {
-          displayData[index][quote] = Number((volumeData[i]['volumeForSlippage'][j][slippage]).toFixed(2));
+        if (!volumeData[blockNumber][quote]) {
+          volumeData[blockNumber][quote] = 0;
         }
+        volumeData[blockNumber][quote] += slippageValue;
       }
     }
   }
-  const { liquidityChartData, loadingLiquidityChartData } = dataStore
-  return (
-    <article className='box' style={{ width: '100%', height: '30vh', minHeight: '440px', marginTop: "0px", }}>
-      <TimeFrameButtons span={props.span} handleChange={props.handleChange} />
-      {!loadingLiquidityChartData && <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          data={displayData}
-          margin={{
-            top: 5,
-            right: 0,
-            left: 60,
-            bottom: 60,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="blockNumber" label={{ value: 'block number', position:'bottom', offset:'7' }} />
-          <YAxis unit={` ${selectedBaseSymbol}`}/>
-          <Tooltip />
-          <Legend verticalAlign='top' />
-          {quotes.map(_=> <Line type="monotone" stroke={strokes[_]} dataKey={_} activeDot={{ r: 8 }} />)}
-        </LineChart>
-      </ResponsiveContainer>}
-      {loadingLiquidityChartData && <div style={{ marginTop: '100px' }} aria-busy="true"></div>}
-    </article>
-  )
+  for(const [blockNumber, quotesData] of Object.entries(volumeData)){
+    const toPush = {};
+    toPush['blockNumber'] = blockNumber;
+    for(const [quote, slippageValue] of Object.entries(quotesData)){
+      toPush[quote] = slippageValue;
+    }
+    displayData.push(toPush);
+  }
+
+const { liquidityChartData, loadingLiquidityChartData } = dataStore
+return (
+  <article className='box' style={{ width: '100%', height: '30vh', minHeight: '440px', marginTop: "0px", }}>
+    <TimeFrameButtons span={props.span} handleChange={props.handleChange} />
+    {!loadingLiquidityChartData && <ResponsiveContainer width="100%" height="100%">
+      <LineChart
+        data={displayData}
+        margin={{
+          top: 5,
+          right: 0,
+          left: 60,
+          bottom: 60,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="blockNumber" label={{ value: 'block number', position: 'bottom', offset: '7' }} />
+        <YAxis unit={` ${selectedBaseSymbol}`} />
+        <Tooltip />
+        <Legend verticalAlign='top' />
+        {quotes.map(_ => <Line type="monotone" stroke={strokes[_]} dataKey={_} activeDot={{ r: 8 }} />)}
+      </LineChart>
+    </ResponsiveContainer>}
+    {loadingLiquidityChartData && <div style={{ marginTop: '100px' }} aria-busy="true"></div>}
+  </article>
+)
 })
 
 export default LiquidityChart
