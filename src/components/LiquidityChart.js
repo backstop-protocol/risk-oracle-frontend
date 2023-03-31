@@ -14,51 +14,50 @@ const strokes = {
 const LiquidityChart = observer(props => {
   const { dataStore, span, dexes, slippage } = props
   const loading = assetsDataStore.loading;
-  if (loading) {
-    return
-  }
-  const data = assetsDataStore.data;
-  const selectedBase = mainStore.selectedAsset;
-  const selectedBaseSymbol = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
-  const volumeData = {};
   const displayData = [];
   const quotes = [];
-
-  for (const dex of dexes) {
-    const dataForDex = data[dex][span];
-    const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === selectedBaseSymbol.toLowerCase());
-    for (const slippageData of dataForDexForBase) {
-      if (!quotes.includes(slippageData.quote)) {
-        quotes.push(slippageData.quote);
-      }
-      const quote = slippageData.quote;
-      for (const volumeForSlippage of slippageData.volumeForSlippage) {
-        const blockNumber = volumeForSlippage.blockNumber;
-        const slippageValue = volumeForSlippage[slippage];
-        if (!volumeData[blockNumber]) {
-          volumeData[blockNumber] = {};
+  const selectedBase = mainStore.selectedAsset;
+  const selectedBaseSymbol = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
+  if (!loading) {
+    const data = assetsDataStore.data;
+    const volumeData = {};
+    
+    for (const dex of dexes) {
+      const dataForDex = data[dex][span];
+      const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === selectedBaseSymbol.toLowerCase());
+      for (const slippageData of dataForDexForBase) {
+        if (!quotes.includes(slippageData.quote)) {
+          quotes.push(slippageData.quote);
         }
-        if (!volumeData[blockNumber][quote]) {
-          volumeData[blockNumber][quote] = 0;
+        const quote = slippageData.quote;
+        for (const volumeForSlippage of slippageData.volumeForSlippage) {
+          const blockNumber = volumeForSlippage.blockNumber;
+          const slippageValue = volumeForSlippage[slippage];
+          if (!volumeData[blockNumber]) {
+            volumeData[blockNumber] = {};
+          }
+          if (!volumeData[blockNumber][quote]) {
+            volumeData[blockNumber][quote] = 0;
+          }
+          volumeData[blockNumber][quote] += slippageValue;
         }
-        volumeData[blockNumber][quote] += slippageValue;
       }
     }
-  }
-  for(const [blockNumber, quotesData] of Object.entries(volumeData)){
-    const toPush = {};
-    toPush['blockNumber'] = blockNumber;
-    for(const [quote, slippageValue] of Object.entries(quotesData)){
-      toPush[quote] = slippageValue;
+    for(const [blockNumber, quotesData] of Object.entries(volumeData)){
+      const toPush = {};
+      toPush['blockNumber'] = blockNumber;
+      for(const [quote, slippageValue] of Object.entries(quotesData)){
+        toPush[quote] = slippageValue;
+      }
+      displayData.push(toPush);
     }
-    displayData.push(toPush);
   }
 
-const { liquidityChartData, loadingLiquidityChartData } = dataStore
+
 return (
   <article className='box' style={{ width: '100%', height: '30vh', minHeight: '440px', marginTop: "0px", }}>
     <TimeFrameButtons span={props.span} handleChange={props.handleChange} />
-    {!loadingLiquidityChartData && <ResponsiveContainer width="100%" height="100%">
+    {!loading && <ResponsiveContainer width="100%" height="100%">
       <LineChart
         data={displayData}
         margin={{
@@ -76,7 +75,7 @@ return (
         {quotes.map(_ => <Line type="monotone" stroke={strokes[_]} dataKey={_} activeDot={{ r: 8 }} />)}
       </LineChart>
     </ResponsiveContainer>}
-    {loadingLiquidityChartData && <div style={{ marginTop: '100px' }} aria-busy="true"></div>}
+    {loading && <div style={{ marginTop: '100px' }} aria-busy="true"></div>}
   </article>
 )
 })

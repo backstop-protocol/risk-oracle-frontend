@@ -21,12 +21,6 @@ const DexSelector = observer(props => {
   return (
     <div style={{fontSize: "0.875em"}}>
       <fieldset className="dex-selector">
-        {/* <label htmlFor="switch"> */}
-          {/* <input type="checkbox" id="switch" name="switch" role="switch" readOnly 
-            onClick={dataStore.toggleAllDexs}
-            checked={dataStore.allDexs} />
-          all dexs
-        </label> */}
         {availableDexes.map(dex=> <label key={dex} htmlFor={dex}>
           <input type="checkbox" id={dex} name={dex} checked={selectedDexes.includes(dex)} disabled={!isDexAvailableForBase(dex, selectedBaseName)} onChange={()=> props.handleChange(dex)}/>
           {nameMap[dex] || dex}
