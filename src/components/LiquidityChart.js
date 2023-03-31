@@ -1,7 +1,6 @@
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import TimeFrameButtons from './TimeFrameButtons';
-import assetsDataStore from '../stores/assets.data.store';
 import mainStore from '../stores/main.store';
 import { observer } from "mobx-react";
 import roundTo from '../utils/utils';
@@ -13,14 +12,14 @@ const strokes = {
 }
 
 const LiquidityChart = observer(props => {
-  const { dataStore, span, dexes, slippage } = props
-  const loading = assetsDataStore.loading;
+  const { span, dexes, slippage } = props
+  const loading = mainStore.loading;
   const displayData = [];
   const quotes = [];
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseSymbol = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
   if (!loading) {
-    const data = assetsDataStore.data;
+    const data = mainStore.data;
     const volumeData = {};
     
     for (const dex of dexes) {

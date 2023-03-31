@@ -7,15 +7,14 @@ import LiquidityChart from "../components/LiquidityChart"
 import SlippageSelector from "../components/SlippageSelector"
 import VolatilityTable from "../components/VolatilityTable"
 // import ComparisonAssetsSelector from "../components/ComparisonAssetsSelector"
-import assetsDataStore from "../stores/assets.data.store"
 import mainStore from "../stores/main.store"
 import { observer } from "mobx-react"
 import { useState } from "react"
 
 const MainPanel = observer(props => {
   const [slippage, setSlippage] = useState(5);
-  const [dexes, setDexes] = useState([assetsDataStore.platforms[0]]);
-  const [span, setSpan] = useState(assetsDataStore.spans[0]);
+  const [dexes, setDexes] = useState([mainStore.platforms[0]]);
+  const [span, setSpan] = useState(mainStore.spans[0]);
 
   function handleDexChanges(dex){
     if(dexes.includes(dex)){
@@ -43,7 +42,7 @@ const MainPanel = observer(props => {
   if (!selectedAsset && searchedAsset) {
     return <div className="main-content">the searched asset {searchedAsset} is not yet supported</div>
   }
-  if(assetsDataStore.loading){
+  if(mainStore.loading){
     return (<div className="main-content">
       <div style={{paddingTop: '30vh'}} aria-busy="true"></div>
     </div>)
@@ -57,7 +56,7 @@ const MainPanel = observer(props => {
               <InfoLine/>
               <ContractAddress address={"0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"}/>
             </div>
-            <LastUpdate date={assetsDataStore.lastUpdate[span]}/>
+            <LastUpdate date={mainStore.lastUpdate[span]}/>
           </article>
           <article className="box">
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'calc(var(--spacing) * 4)', fontSize: "0.875em"}}>

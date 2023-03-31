@@ -1,15 +1,20 @@
-import { makeAutoObservable, runInAction } from "mobx"
+import { makeAutoObservable, runInAction } from "mobx";
 
-import assets from "./assets"
+import assets from "./assets";
+import axios from "axios";
 
 const defaultAsset ="ETH"
-
+const apiUrl = "https://api.dex-history.la-tribu.xyz/api";
 class MainStore {
 
   searchedAsset = null
   selectedAsset = assets[defaultAsset]
   searchFieldValue = ''
   searchCounter = 0
+  data = null;
+  loading = true;
+  spans = [1, 7, 30, 180, 365];
+  platforms = ['uniswapv2', 'curve'];
   
   constructor () {
     this.assets = Object.entries(assets)
@@ -18,8 +23,39 @@ class MainStore {
         v.name = k
         return v
       })
+      this.data = {};
+        this.lastUpdate = {};
+        this.loading = true;
+        const urls = [];
+        for (let i = 0; i < this.platforms.length; i++) {
+            for (let j = 0; j < this.spans.length; j++) {
+                urls.push(`${apiUrl}/getprecomputeddata?platform=${this.platforms[i]}&span=${this.spans[j]}`);
+            }
+        }
+        this.sendParallelRequests(urls)
+            .then(data => {
+                for(let i = 0; i < data.length; i++){
+                    const url = new URL(data[i].request.responseURL);
+                    const span = url.searchParams.get('span');
+                    const platform = url.searchParams.get('platform');
+                    if(!this.data[platform]){
+                        this.data[platform] = {}
+                    };
+                    this.data[platform][span] = data[i].data.concatData;
+                    this.lastUpdate[span] = data[i].data.lastUpdate;
+                }
+                this.loading = false;
+            })
+            .catch(error => {
+                console.error('error', error);
+            });
     makeAutoObservable(this)
   }
+  async sendParallelRequests(urls) {
+    const requests = urls.map(url => axios.get(url)); // Create an array of requests
+    const data = await axios.all(requests); // Wait for all requests to complete
+    return data;
+}
 
   get searchList () {
     const searchTerm = this.searchFieldValue.toUpperCase()

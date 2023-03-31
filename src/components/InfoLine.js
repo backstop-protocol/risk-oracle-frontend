@@ -1,11 +1,10 @@
-import assetsDataStore from '../stores/assets.data.store';
 import mainStore from '../stores/main.store';
 import { observer } from "mobx-react";
 
 const InfoLine = observer(props => {
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseSymbol = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
-  const data = assetsDataStore.data;
+  const data = mainStore.data;
   const dataForPriceComputation = data['uniswapv2'][1];
   const priceInfo = {};
   if(dataForPriceComputation){

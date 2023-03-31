@@ -1,4 +1,3 @@
-import assetsDataStore from "../stores/assets.data.store";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 
@@ -8,13 +7,13 @@ const nameMap = {
 };
 
 function isDexAvailableForBase(dexName, selectedBaseName){
-  const availableBases = assetsDataStore.data[dexName]['1'].map(_ => _.base);
+  const availableBases = mainStore.data[dexName]['1'].map(_ => _.base);
   return availableBases.includes(selectedBaseName);
 }
 
 const DexSelector = observer(props => {
   const selectedDexes = props.dexes;
-  const availableDexes = assetsDataStore.platforms;
+  const availableDexes = mainStore.platforms;
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseName = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
 
