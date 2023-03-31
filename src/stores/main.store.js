@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx"
-import assets from "./assets"
 
-import getDataStore, { dataStores } from "./data.store"
+import assets from "./assets"
 
 const defaultAsset ="ETH"
 
@@ -19,25 +18,12 @@ class MainStore {
         v.name = k
         return v
       })
-    const defaultDataStore = getDataStore(this.selectedAsset.name)
-    defaultDataStore.fetchData()
     makeAutoObservable(this)
   }
 
   get searchList () {
     const searchTerm = this.searchFieldValue.toUpperCase()
     return this.assets.filter(a=> a.name.indexOf(searchTerm) > -1)
-  }
-
-  get dataStore () {
-    if(!this.selectedAsset || !this.selectedAsset.name){
-      return null
-    }
-    const asset = this.selectedAsset.name
-    if(dataStores[asset]){
-      return dataStores[asset]
-    }
-    return getDataStore(asset)
   }
 
   getSearchQs = () => {
@@ -71,7 +57,6 @@ class MainStore {
     this.searchedAsset = assetName
     this.selectedAsset = assets[assetName]
     this.searchFieldValue = ""
-    this.dataStore.fetchData()
     runInAction(()=> {
       this.searchCounter++
     })

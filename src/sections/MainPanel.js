@@ -54,7 +54,7 @@ const MainPanel = observer(props => {
         <div style={{ flexGrow: 1}}>
           <article className="box" style={{display: 'flex', justifyContent: 'space-between', alignItems: "start"}}>
             <div >
-              <InfoLine dataStore={dataStore}/>
+              <InfoLine/>
               <ContractAddress address={"0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"}/>
             </div>
             <LastUpdate date={assetsDataStore.lastUpdate[span]}/>

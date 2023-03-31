@@ -3,7 +3,6 @@ import mainStore from '../stores/main.store';
 import { observer } from "mobx-react";
 
 const InfoLine = observer(props => {
-  const {dataStore} = props
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseSymbol = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
   const data = assetsDataStore.data;
@@ -19,14 +18,13 @@ const InfoLine = observer(props => {
         priceInfo['endLiquidity'] = dataForBase[i].volumeForSlippage.slice(-1)[0][1].toFixed(2);
       }
     }
-    console.log(priceInfo);
   }
 
   return (
     <div className="info-line">
       <div className="info">
         <span>
-          <strong>{dataStore.asset}</strong>
+          <strong>{selectedBase.name}</strong>
         </span>
         <small>
           <span>
