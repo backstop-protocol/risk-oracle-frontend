@@ -4,6 +4,7 @@ import TimeFrameButtons from './TimeFrameButtons';
 import assetsDataStore from '../stores/assets.data.store';
 import mainStore from '../stores/main.store';
 import { observer } from "mobx-react";
+import roundTo from '../utils/utils';
 
 const strokes = {
   USDC: '#0088FE',
@@ -47,7 +48,7 @@ const LiquidityChart = observer(props => {
       const toPush = {};
       toPush['blockNumber'] = blockNumber;
       for(const [quote, slippageValue] of Object.entries(quotesData)){
-        toPush[quote] = slippageValue;
+        toPush[quote] = roundTo(slippageValue);
       }
       displayData.push(toPush);
     }
