@@ -26,7 +26,7 @@ const CustomTooltip = ({ active, payload, label }) => {
     return (
       <div className="tooltip-container">
           <div>Blocknumber: {blockNumber}</div>
-          {displayValues.map(_ => <div>{_[0]}: {largeNumberFormatter(_[1])} {selectedBase.name}</div>)}
+          {displayValues.map(_ => <div key={_[0]}>{_[0]}: {largeNumberFormatter(_[1])} {selectedBase.name}</div>)}
       </div>
     );
   }
