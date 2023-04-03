@@ -21,3 +21,11 @@ export function largeNumberFormatter(number){
     }
     return number
 }
+
+export const coingeckoMap = {
+    mkr: 'maker',
+    mana: 'decentraland',
+    snx: 'havven',
+    usdc: 'usd-coin',
+    susd: 'nusd'
+}
