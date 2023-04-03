@@ -9,12 +9,52 @@ import VolatilityTable from "../components/VolatilityTable"
 // import ComparisonAssetsSelector from "../components/ComparisonAssetsSelector"
 import mainStore from "../stores/main.store"
 import { observer } from "mobx-react"
+import { roundTo } from "../utils/utils"
 import { useState } from "react"
 
 const MainPanel = observer(props => {
   const [slippage, setSlippage] = useState(5);
   const [dexes, setDexes] = useState([mainStore.platforms[0]]);
   const [span, setSpan] = useState(mainStore.spans[0]);
+  const loading = mainStore.loading;
+  const displayData = [];
+  const quotes = [];
+  const selectedBase = mainStore.selectedAsset;
+  const selectedBaseSymbol = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
+  if (!loading) {
+    const data = mainStore.data;
+    const volumeData = {};
+
+    for (const dex of dexes) {
+      const dataForDex = data[dex][span];
+      const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === selectedBaseSymbol.toLowerCase());
+      for (const slippageData of dataForDexForBase) {
+        if (!quotes.includes(slippageData.quote)) {
+          quotes.push(slippageData.quote);
+        }
+        const quote = slippageData.quote;
+        for (const volumeForSlippage of slippageData.volumeForSlippage) {
+          const blockNumber = volumeForSlippage.blockNumber;
+          const slippageValue = volumeForSlippage[slippage];
+          if (!volumeData[blockNumber]) {
+            volumeData[blockNumber] = {};
+          }
+          if (!volumeData[blockNumber][quote]) {
+            volumeData[blockNumber][quote] = 0;
+          }
+          volumeData[blockNumber][quote] += slippageValue;
+        }
+      }
+    }
+    for (const [blockNumber, quotesData] of Object.entries(volumeData)) {
+      const toPush = {};
+      toPush['blockNumber'] = blockNumber;
+      for (const [quote, slippageValue] of Object.entries(quotesData)) {
+        toPush[quote] = roundTo(slippageValue);
+      }
+      displayData.push(toPush);
+    }
+  }
 
   function handleDexChanges(dex){
     if(dexes.includes(dex)){
@@ -30,7 +70,6 @@ const MainPanel = observer(props => {
   }
   function handleSpanChange(value){
     setSpan(value);
-    console.log(value);
   }
 
   
@@ -68,10 +107,10 @@ const MainPanel = observer(props => {
         </div>
       </div>
       <div style={{display: 'flex', gap: 'var(--spacing)'}}>
-        <LiquidityChart slippage={slippage} dexes={dexes}  span={span} handleChange={handleSpanChange} dataStore={dataStore} />
-        <AvgTable dataStore={dataStore}/>
+        {loading? '': <LiquidityChart selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading}  span={span} displayData={displayData}  handleChange={handleSpanChange} dataStore={dataStore} />}
+        <AvgTable slippage={slippage} dexes={dexes} span={span} dataStore={dataStore}/>
       </div>
-      <VolatilityTable dataStore={dataStore}/>
+      <VolatilityTable slippage={slippage} dexes={dexes} span={span} dataStore={dataStore}/>
     </div>
   )
 })
