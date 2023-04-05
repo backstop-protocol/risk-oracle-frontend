@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react"
+
 import AvgTable from "../components/AvgTable"
 import ContractAddress from "../components/ContractAddress"
 import DexSelector from "../components/DexSelector"
@@ -10,7 +12,6 @@ import VolatilityTable from "../components/VolatilityTable"
 import mainStore from "../stores/main.store"
 import { observer } from "mobx-react"
 import { roundTo } from "../utils/utils"
-import { useState } from "react"
 
 const MainPanel = observer(props => {
   const [slippage, setSlippage] = useState(5);
@@ -21,6 +22,9 @@ const MainPanel = observer(props => {
   const quotes = [];
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseSymbol = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
+  useEffect(() => {
+    setDexes([mainStore.platforms[0]]);
+  }, [selectedBase]);
   if (!loading) {
     const data = mainStore.data;
     const volumeData = {};
