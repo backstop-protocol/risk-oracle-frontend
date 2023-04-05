@@ -7,7 +7,7 @@ const nameMap = {
 };
 
 function isDexAvailableForBase(dexName, selectedBaseName){
-  const availableBases = mainStore.data[dexName]['1'].map(_ => _.base);
+  const availableBases = mainStore.graphData[dexName]['1'].map(_ => _.base);
   return availableBases.includes(selectedBaseName);
 }
 

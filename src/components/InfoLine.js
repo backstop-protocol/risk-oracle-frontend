@@ -16,8 +16,8 @@ async function getPrice(base, setPrice, setDayChange) {
 const InfoLine = observer(props => {
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseSymbol = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
-  const data = mainStore.data;
-  const dataForPriceComputation = data['uniswapv2'][1];
+  const graphData = mainStore.graphData;
+  const dataForPriceComputation = graphData['uniswapv2'][1];
   const priceInfo = {};
   const [price, setPrice] = useState(0);
   const [dayChange, setDayChange] = useState(0);

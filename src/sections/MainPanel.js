@@ -26,11 +26,13 @@ const MainPanel = observer(props => {
     setDexes([mainStore.platforms[0]]);
   }, [selectedBase]);
   if (!loading) {
-    const data = mainStore.data;
+    const graphData = mainStore.graphData;
+    const averageData = mainStore.averageData;
+    console.log(JSON.stringify(averageData, null,2))
     const volumeData = {};
 
     for (const dex of dexes) {
-      const dataForDex = data[dex][span];
+      const dataForDex = graphData[dex][span];
       const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === selectedBaseSymbol.toLowerCase());
       for (const slippageData of dataForDexForBase) {
         if (!quotes.includes(slippageData.quote)) {
