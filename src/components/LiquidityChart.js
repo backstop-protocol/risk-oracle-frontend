@@ -1,7 +1,7 @@
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { largeNumberFormatter, roundTo } from '../utils/utils';
 
 import TimeFrameButtons from './TimeFrameButtons';
-import { largeNumberFormatter } from '../utils/utils';
 import mainStore from '../stores/main.store';
 import { observer } from "mobx-react";
 
@@ -50,7 +50,7 @@ const LiquidityChart = observer(props => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="blockNumber" label={{ value: 'block number', position: 'bottom', offset: '7' }} />
-          <YAxis unit={` ${selectedBaseSymbol}`} />
+          <YAxis unit={` ${selectedBaseSymbol}`} tickFormatter={largeNumberFormatter} />
           <Tooltip content={CustomTooltip} />
           <Legend verticalAlign='top' />
           {quotes.map(_ => <Line type="monotone" stroke={strokes[_]} dataKey={_} activeDot={{ r: 8 }} />)}
