@@ -20,6 +20,7 @@ const MainPanel = observer(props => {
   const loading = mainStore.loading;
   const displayData = [];
   const quotes = [];
+  let averageData = null;
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseSymbol = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
   useEffect(() => {
@@ -27,7 +28,7 @@ const MainPanel = observer(props => {
   }, [selectedBase]);
   if (!loading) {
     const graphData = mainStore.graphData;
-    const averageData = mainStore.averageData;
+    averageData = mainStore.averageData;
     console.log(JSON.stringify(averageData, null,2))
     const volumeData = {};
 
@@ -114,9 +115,9 @@ const MainPanel = observer(props => {
       </div>
       <div style={{display: 'flex', gap: 'var(--spacing)'}}>
         {loading? '': <LiquidityChart selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading}  span={span} displayData={displayData}  handleChange={handleSpanChange} dataStore={dataStore} />}
-        <AvgTable slippage={slippage} dexes={dexes} span={span} dataStore={dataStore}/>
+        <AvgTable slippage={slippage} dexes={dexes} span={span} dataStore={averageData}/>
       </div>
-      <VolatilityTable slippage={slippage} dexes={dexes} span={span} dataStore={dataStore}/>
+      <VolatilityTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} dataStore={averageData}/>
     </div>
   )
 })
