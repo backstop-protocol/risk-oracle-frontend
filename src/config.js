@@ -43,3 +43,16 @@ const pairs = {
         'WBTC'
     ]
 };
+const symbols = {
+    SUSD: 'sUSD',
+    ETH: 'WETH',
+    DAI: 'DAI',
+    SNX: 'SNX',
+    MKR: 'MKR',
+    UNI: 'UNI',
+    BTC: 'BTC',
+    USDT: 'USDT',
+    USDC: 'USDC',
+    MANA: 'MANA'
+}
+export default symbols;

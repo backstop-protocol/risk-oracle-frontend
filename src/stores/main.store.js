@@ -16,7 +16,7 @@ class MainStore {
   loading = true;
   spans = [1, 7, 30, 180, 365];
   platforms = ['uniswapv2', 'curve', 'uniswapv3'];
-  
+  quotes = ['USDC', 'WBTC', 'WETH']
   constructor () {
     this.assets = Object.entries(assets)
       .filter(([,asset]) => asset.display)

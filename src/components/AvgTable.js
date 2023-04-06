@@ -14,13 +14,13 @@ function row(rowData) {
 }
 
 const AvgTable = observer(props => {
-  const { selectedBaseSymbol, quotes, slippage, dexes, span, dataStore } = props;
-  const loading = mainStore.loading;
+  const { selectedBaseSymbol, quotes, slippage, dexes, span, averageData } = props;
   const rowDataArray = [];
   const sortedData = {};
+  const loading = mainStore.loading;
   if(!loading){
   for (const dex of dexes) {
-    const dataForDexForSpanForBase = dataStore[dex][span][selectedBaseSymbol];
+    const dataForDexForSpanForBase = averageData[dex][span][selectedBaseSymbol];
     for (const quote of quotes) {
       if (!sortedData[quote]) {
         sortedData[quote] = {}
@@ -32,11 +32,9 @@ const AvgTable = observer(props => {
         sortedData[quote]['average'] += dataForDexForSpanForBase[quote]['avgLiquidity'][slippage];
       }
       if (!sortedData[quote]['volatility']) {
-        sortedData[quote]['volatility'] = dataForDexForSpanForBase[quote].volatility;
+        sortedData[quote]['volatility'] = 0
       }
-      if (sortedData[quote]['volatility']) {
-        sortedData[quote]['volatility'] += dataForDexForSpanForBase[quote].volatility;
-      }
+      sortedData[quote]['volatility'] += dataForDexForSpanForBase[quote].volatility;
     }
   }
   for (const quote of Object.keys(sortedData)) {

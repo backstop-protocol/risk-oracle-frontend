@@ -12,6 +12,7 @@ import VolatilityTable from "../components/VolatilityTable"
 import mainStore from "../stores/main.store"
 import { observer } from "mobx-react"
 import { roundTo } from "../utils/utils"
+import symbols from "../config"
 
 const MainPanel = observer(props => {
   const [slippage, setSlippage] = useState(5);
@@ -22,7 +23,7 @@ const MainPanel = observer(props => {
   const quotes = [];
   let averageData = null;
   const selectedBase = mainStore.selectedAsset;
-  const selectedBaseSymbol = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
+  const selectedBaseSymbol = symbols[selectedBase.name]
   useEffect(() => {
     setDexes([mainStore.platforms[0]]);
   }, [selectedBase]);
@@ -114,9 +115,9 @@ const MainPanel = observer(props => {
       </div>
       <div style={{display: 'flex', gap: 'var(--spacing)'}}>
         {loading? '': <LiquidityChart selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading}  span={span} displayData={displayData}  handleChange={handleSpanChange} dataStore={dataStore} />}
-        <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} span={span} dataStore={averageData}/>
+        <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} span={span} averageData={averageData}/>
       </div>
-      <VolatilityTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} dataStore={averageData}/>
+      <VolatilityTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData}/>
     </div>
   )
 })
