@@ -6,4 +6,5 @@ const timeWindows = {
   "365D": 365,
 }
 
+
 export default timeWindows

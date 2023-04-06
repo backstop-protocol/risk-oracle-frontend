@@ -13,6 +13,13 @@ function row(rowData){
   {values.map(_ => <td>{((_[1]*100).toFixed(2))}%</td>)}
 </tr>
 }
+const timeMap =  {
+  1: "24H",
+  7: "7D",
+  30: "30D",
+  180: "180D",
+  365: "365D",
+}
 
 const VolatilityTable = observer(props => {
   const { selectedBaseSymbol, quotes, dexes, dataStore } = props;
@@ -52,7 +59,7 @@ const VolatilityTable = observer(props => {
         <thead>
           <tr>
             <th scope="col">Avg Volatility</th>
-            {spans.map(_=> <th scope="col">{_}</th>)}
+            {spans.map(_=> <th scope="col">{timeMap[_]}</th>)}
           </tr>
         </thead>
         <tbody>
