@@ -53,12 +53,8 @@ const VolatilityTable = observer(props => {
       <table>
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Heading</th>
-            <th scope="col">Heading</th>
-            <th scope="col">Heading</th>
-            <th scope="col">Heading</th>
-            <th scope="col">Heading</th>
+            <th scope="col">Avg Volatility</th>
+            {spans.map(_=> <th scope="col">{_}</th>)}
           </tr>
         </thead>
         <tbody>
@@ -66,12 +62,6 @@ const VolatilityTable = observer(props => {
         </tbody>
         <tfoot>
           <tr>
-            <th scope="col">#</th>
-            <td scope="col">Total</td>
-            <td scope="col">Total</td>
-            <td scope="col">Total</td>
-            <td scope="col">Total</td>
-            <td scope="col">Total</td>
           </tr>
         </tfoot>
       </table>
