@@ -26,10 +26,13 @@ const VolatilityTable = observer(props => {
   const spans = mainStore.spans;
   const sortedData = {};
   const displayData = [];
+  const loading = mainStore.loading;
+  if(!loading){
   for (const dex of dexes) {
     for (const span of spans) {
       const dataForDexForSpanForBase = dataStore[dex][span][selectedBaseSymbol];
       for(const quote of quotes){
+
         if(!sortedData[quote]){
           sortedData[quote] = {}
         }
@@ -52,7 +55,7 @@ const VolatilityTable = observer(props => {
     toPush[key] = value;
     displayData.push(toPush);
   }
-
+  }
   return (
     <article style={{ marginTop: 0 }} className="box">
       <table>

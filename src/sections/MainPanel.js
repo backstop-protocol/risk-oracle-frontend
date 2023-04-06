@@ -29,7 +29,6 @@ const MainPanel = observer(props => {
   if (!loading) {
     const graphData = mainStore.graphData;
     averageData = mainStore.averageData;
-    console.log(JSON.stringify(averageData, null,2))
     const volumeData = {};
 
     for (const dex of dexes) {

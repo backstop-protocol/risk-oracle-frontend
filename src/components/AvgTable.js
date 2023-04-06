@@ -1,4 +1,5 @@
 import { largeNumberFormatter } from "../utils/utils";
+import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 
 function row(rowData) {
@@ -7,15 +8,17 @@ function row(rowData) {
 
   return <tr>
     <td>{symbol}</td>
-    <td>{largeNumberFormatter(data.average)}</td>
+    <td>{largeNumberFormatter(data.average.toFixed(2))}</td>
     <td>{(data.volatility * 100).toFixed(2)}%</td>
   </tr>
 }
 
 const AvgTable = observer(props => {
   const { selectedBaseSymbol, quotes, slippage, dexes, span, dataStore } = props;
+  const loading = mainStore.loading;
   const rowDataArray = [];
   const sortedData = {};
+  if(!loading){
   for (const dex of dexes) {
     const dataForDexForSpanForBase = dataStore[dex][span][selectedBaseSymbol];
     for (const quote of quotes) {
@@ -43,6 +46,7 @@ const AvgTable = observer(props => {
   const toPush = {}
   toPush[key] = value;
   rowDataArray.push(toPush);
+}
 }
 
 return (
