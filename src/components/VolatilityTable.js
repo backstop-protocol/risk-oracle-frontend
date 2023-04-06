@@ -8,7 +8,6 @@ function row(rowData){
   for(const [key, value] of Object.entries(objectToParse)){
     values.push([key, value]);
   }
-  console.log(values)
   return  <tr>
   <th>{symbol}</th>
   {values.map(_ => <td>{((_[1]*100).toFixed(2))}%</td>)}
@@ -46,7 +45,6 @@ const VolatilityTable = observer(props => {
     toPush[key] = value;
     displayData.push(toPush);
   }
-  console.log('displayData', displayData)
 
   return (
     <article style={{ marginTop: 0 }} className="box">

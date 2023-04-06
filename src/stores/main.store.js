@@ -14,7 +14,7 @@ class MainStore {
   graphData = null;
   averageData = null;
   loading = true;
-  spans = [1, 7, 30, 180];
+  spans = [1, 7, 30, 180, 365];
   platforms = ['uniswapv2', 'curve', 'uniswapv3'];
   
   constructor () {
