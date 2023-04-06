@@ -34,10 +34,10 @@ const VolatilityTable = observer(props => {
         }
       }
     }
-    for(const quote of Object.keys(sortedData)){
-      for(const span of Object.keys(sortedData[quote])){
-        sortedData[quote][span] = sortedData[quote][span] / dexes.length;
-      }
+  }
+  for(const quote of Object.keys(sortedData)){
+    for(const span of Object.keys(sortedData[quote])){
+      sortedData[quote][span] = sortedData[quote][span] / dexes.length;
     }
   }
   for(const [key, value] of Object.entries(sortedData)){

@@ -115,7 +115,7 @@ const MainPanel = observer(props => {
       </div>
       <div style={{display: 'flex', gap: 'var(--spacing)'}}>
         {loading? '': <LiquidityChart selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading}  span={span} displayData={displayData}  handleChange={handleSpanChange} dataStore={dataStore} />}
-        <AvgTable slippage={slippage} dexes={dexes} span={span} dataStore={averageData}/>
+        <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} span={span} dataStore={averageData}/>
       </div>
       <VolatilityTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} dataStore={averageData}/>
     </div>
