@@ -62,7 +62,7 @@ const AvgTable = observer(props => {
       <table>
         <thead>
           <tr>
-            <th scope="col">AVG {timeMap[span]}</th>
+            <th scope="col">AVG {selectedBaseSymbol} {timeMap[span]}</th>
             <th scope="col">Liquidity</th>
             <th scope="col">Volatility</th>
           </tr>
