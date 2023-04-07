@@ -10,6 +10,7 @@ class MainStore {
   searchedAsset = null
   selectedAsset = assets[defaultAsset]
   searchFieldValue = ''
+  selectedDexes = ['uniswapv2'];
   searchCounter = 0
   graphData = null;
   averageData = null;
@@ -114,11 +115,20 @@ class MainStore {
     this.scrollToAssets()
     assetName = assetName.toUpperCase()
     this.searchedAsset = assetName
+    this.selectedDexes = ['uniswapv2']
     this.selectedAsset = assets[assetName]
     this.searchFieldValue = ""
     runInAction(()=> {
       this.searchCounter++
     })
+  }
+  handleDexChanges =(dex) => {
+    if(this.selectedDexes.includes(dex)){
+      this.selectedDexes = this.selectedDexes.filter(_=> _ !== dex);
+    }
+    else{
+      this.selectedDexes = [...this.selectedDexes, dex];
+    }
   }
 
   setSearchFieldValue = (value) => {

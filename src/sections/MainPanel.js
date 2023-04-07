@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react"
+import { useState } from "react";
 
-import AvgTable from "../components/AvgTable"
-import ContractAddress from "../components/ContractAddress"
-import DexSelector from "../components/DexSelector"
-import InfoLine from "../components/InfoLine"
-import LastUpdate from "../components/LastUpdate"
-import LiquidityChart from "../components/LiquidityChart"
-import SlippageSelector from "../components/SlippageSelector"
-import VolatilityTable from "../components/VolatilityTable"
+import AvgTable from "../components/AvgTable";
+import ContractAddress from "../components/ContractAddress";
+import DexSelector from "../components/DexSelector";
+import InfoLine from "../components/InfoLine";
+import LastUpdate from "../components/LastUpdate";
+import LiquidityChart from "../components/LiquidityChart";
+import SlippageSelector from "../components/SlippageSelector";
+import VolatilityTable from "../components/VolatilityTable";
 // import ComparisonAssetsSelector from "../components/ComparisonAssetsSelector"
-import mainStore from "../stores/main.store"
-import { observer } from "mobx-react"
-import { roundTo } from "../utils/utils"
-import symbols from "../config"
+import mainStore from "../stores/main.store";
+import { observer } from "mobx-react";
+import { roundTo } from "../utils/utils";
+import symbols from "../config";
 
 const MainPanel = observer(props => {
   const [slippage, setSlippage] = useState(5);
-  const [dexes, setDexes] = useState([mainStore.platforms[0]]);
+  const dexes = mainStore.selectedDexes;
   const [span, setSpan] = useState(mainStore.spans[0]);
   const loading = mainStore.loading;
   const displayData = [];
@@ -24,9 +24,6 @@ const MainPanel = observer(props => {
   let averageData = null;
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseSymbol = symbols[selectedBase.name]
-  useEffect(() => {
-    setDexes([mainStore.platforms[0]]);
-  }, [selectedBase]);
   if (!loading) {
     const graphData = mainStore.graphData;
     averageData = mainStore.averageData;
@@ -60,15 +57,6 @@ const MainPanel = observer(props => {
         toPush[quote] = roundTo(slippageValue);
       }
       displayData.push(toPush);
-    }
-  }
-
-  function handleDexChanges(dex){
-    if(dexes.includes(dex)){
-      setDexes(dexes.filter(_=> _ !== dex));
-    }
-    else{
-      setDexes([...dexes, dex]);
     }
   }
 
@@ -107,7 +95,7 @@ const MainPanel = observer(props => {
           <article className="box">
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'calc(var(--spacing) * 4)', fontSize: "0.875em"}}>
               {/* <ComparisonAssetsSelector dataStore={dataStore}/> */}
-              <DexSelector dexes={dexes} handleChange={handleDexChanges}/>
+              <DexSelector dexes={dexes}/>
               <SlippageSelector slippage={slippage} handleChange={handleSlippageChange}/>
             </div>
           </article>

@@ -12,7 +12,8 @@ function isDexAvailableForBase(dexName, selectedBaseName){
 }
 
 const DexSelector = observer(props => {
-  const selectedDexes = props.dexes;
+  const selectedDexes = mainStore.selectedDexes;
+  const handleDexChanges = mainStore.handleDexChanges;
   const availableDexes = mainStore.platforms;
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseName = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
@@ -21,7 +22,7 @@ const DexSelector = observer(props => {
     <div style={{fontSize: "0.875em"}}>
       <fieldset className="dex-selector">
         {availableDexes.map(dex=> <label key={dex} htmlFor={dex}>
-          <input type="checkbox" id={dex} name={dex} checked={selectedDexes.includes(dex)} disabled={!isDexAvailableForBase(dex, selectedBaseName)} onChange={()=> props.handleChange(dex)}/>
+          <input type="checkbox" id={dex} name={dex} checked={selectedDexes.includes(dex)} disabled={!isDexAvailableForBase(dex, selectedBaseName)} onChange={()=> handleDexChanges(dex)}/>
           {nameMap[dex] || dex}
         </label>)}
       </fieldset>
