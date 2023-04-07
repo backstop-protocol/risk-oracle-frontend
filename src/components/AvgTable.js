@@ -2,6 +2,14 @@ import { largeNumberFormatter } from "../utils/utils";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 
+const timeMap = {
+  1: "24H",
+  7: "7D",
+  30: "30D",
+  180: "180D",
+  365: "365D",
+}
+
 function row(rowData) {
   const symbol = (Object.keys(rowData)[0])
   const data = rowData[symbol];
@@ -54,7 +62,7 @@ const AvgTable = observer(props => {
       <table>
         <thead>
           <tr>
-            <th scope="col">AVG</th>
+            <th scope="col">AVG {timeMap[span]}</th>
             <th scope="col">Liquidity</th>
             <th scope="col">Volatility</th>
           </tr>
