@@ -1,3 +1,5 @@
+import mainStore from "../stores/main.store";
+
 /**
  * round a number to 'dec' decimals
  * @param {number} num to round
@@ -29,3 +31,7 @@ export const coingeckoMap = {
     usdc: 'usd-coin',
     susd: 'nusd'
 }
+export function isDexAvailableForBase(dexName, selectedBaseName){
+    const availableBases = mainStore.graphData[dexName]['1'].map(_ => _.base);
+    return availableBases.includes(selectedBaseName);
+  }

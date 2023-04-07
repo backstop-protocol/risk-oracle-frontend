@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import AvgTable from "../components/AvgTable";
 import ContractAddress from "../components/ContractAddress";
 import DexSelector from "../components/DexSelector";
@@ -13,6 +11,7 @@ import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { roundTo } from "../utils/utils";
 import symbols from "../config";
+import { useState } from "react";
 
 const MainPanel = observer(props => {
   const [slippage, setSlippage] = useState(5);
@@ -23,7 +22,7 @@ const MainPanel = observer(props => {
   const quotes = [];
   let averageData = null;
   const selectedBase = mainStore.selectedAsset;
-  const selectedBaseSymbol = symbols[selectedBase.name]
+  const selectedBaseSymbol = symbols[selectedBase.name];
   if (!loading) {
     const graphData = mainStore.graphData;
     averageData = mainStore.averageData;
@@ -95,7 +94,7 @@ const MainPanel = observer(props => {
           <article className="box">
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'calc(var(--spacing) * 4)', fontSize: "0.875em"}}>
               {/* <ComparisonAssetsSelector dataStore={dataStore}/> */}
-              <DexSelector dexes={dexes}/>
+              <DexSelector selectedBaseSymbol={selectedBaseSymbol}/>
               <SlippageSelector slippage={slippage} handleChange={handleSlippageChange}/>
             </div>
           </article>

@@ -2,6 +2,8 @@ import { makeAutoObservable, runInAction } from "mobx";
 
 import assets from "./assets";
 import axios from "axios";
+import { isDexAvailableForBase } from "../utils/utils";
+import symbols from "../config";
 
 const defaultAsset ="ETH"
 const apiUrl = "https://api.dex-history.la-tribu.xyz/api";
@@ -9,8 +11,11 @@ class MainStore {
 
   searchedAsset = null
   selectedAsset = assets[defaultAsset]
+  selectedBaseSymbol = symbols[this.selectedAsset.name];
   searchFieldValue = ''
   selectedDexes = ['uniswapv2'];
+  allDexes = true;
+  selectedQuotes = [];
   searchCounter = 0
   graphData = null;
   averageData = null;
@@ -124,11 +129,27 @@ class MainStore {
   }
   handleDexChanges =(dex) => {
     if(this.selectedDexes.includes(dex)){
-      this.selectedDexes = this.selectedDexes.filter(_=> _ !== dex);
+      this.selectedDexes = this.selectedDexes.filter(_=> _ !== dex); 
+      this.allDexes = false;
     }
     else{
       this.selectedDexes = [...this.selectedDexes, dex];
     }
+  }
+  toggleAllDexes = (selectedBaseSymbol) => {
+    if(!this.allDexes){
+    const toPush = [];
+    for(const dex of this.platforms){
+      if(isDexAvailableForBase(dex, selectedBaseSymbol)){
+        toPush.push(dex);
+      }
+    }
+    this.selectedDexes = toPush;
+    this.allDexes = true;
+  }
+  else{
+    this.selectedDexes = [];
+    this.allDexes = false;}
   }
 
   setSearchFieldValue = (value) => {
