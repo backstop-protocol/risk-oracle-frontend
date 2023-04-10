@@ -12,10 +12,10 @@ class MainStore {
   searchedAsset = null
   selectedAsset = assets[defaultAsset]
   selectedBaseSymbol = symbols[this.selectedAsset.name];
-  searchFieldValue = ''
-  selectedDexes = ['uniswapv2'];
-  allDexes = true;
+  selectedDexes = [];
   selectedQuotes = [];
+  searchFieldValue = ''
+  allDexes = true;
   searchCounter = 0
   graphData = null;
   averageData = null;
@@ -58,6 +58,7 @@ class MainStore {
                     this.graphData[platform][span] = data[i].data.concatData;
                     this.lastUpdate[span] = data[i].data.lastUpdate;
                 }
+                this.initialDexes();
             })
             .catch(error => {
                 console.error('error', error);
@@ -91,6 +92,7 @@ class MainStore {
     return this.assets.filter(a=> a.name.indexOf(searchTerm) > -1)
   }
 
+
   getSearchQs = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const searchParam = urlParams.get('search');
@@ -109,6 +111,19 @@ class MainStore {
     }
   }
 
+  initialDexes = () => {
+    const available = [];
+    for(const platform of this.platforms){
+      if(this.graphData[platform]){
+      const availableBases = this.graphData[platform]['1'].map(_ => _.base);
+      if(availableBases.includes(this.selectedBaseSymbol)){
+        available.push(platform);
+      };
+    }
+  }
+    this.selectedDexes = available;
+  }
+
   search = (assetName) => {
     const searchQueryStringParam = this.getSearchQs()
     if(searchQueryStringParam !== assetName) {
@@ -120,8 +135,9 @@ class MainStore {
     this.scrollToAssets()
     assetName = assetName.toUpperCase()
     this.searchedAsset = assetName
-    this.selectedDexes = ['uniswapv2']
     this.selectedAsset = assets[assetName]
+    this.selectedBaseSymbol = symbols[assetName];
+    this.initialDexes();
     this.searchFieldValue = ""
     runInAction(()=> {
       this.searchCounter++
