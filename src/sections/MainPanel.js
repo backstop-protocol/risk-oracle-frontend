@@ -19,7 +19,7 @@ const MainPanel = observer(props => {
   const [span, setSpan] = useState(mainStore.spans[0]);
   const loading = mainStore.loading;
   const displayData = [];
-  const quotes = [];
+  const quotes = mainStore.selectedQuotes;
   let averageData = null;
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseSymbol = symbols[selectedBase.name];
@@ -32,9 +32,6 @@ const MainPanel = observer(props => {
       const dataForDex = graphData[dex][span];
       const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === selectedBaseSymbol.toLowerCase());
       for (const slippageData of dataForDexForBase) {
-        if (!quotes.includes(slippageData.quote)) {
-          quotes.push(slippageData.quote);
-        }
         const quote = slippageData.quote;
         for (const volumeForSlippage of slippageData.volumeForSlippage) {
           const blockNumber = volumeForSlippage.blockNumber;

@@ -5,7 +5,7 @@ import axios from "axios";
 import { isDexAvailableForBase } from "../utils/utils";
 import symbols from "../config";
 
-const defaultAsset ="ETH"
+const defaultAsset = "ETH"
 const apiUrl = "https://api.dex-history.la-tribu.xyz/api";
 class MainStore {
 
@@ -23,73 +23,74 @@ class MainStore {
   spans = [1, 7, 30, 180, 365];
   platforms = ['uniswapv2', 'curve', 'uniswapv3'];
   quotes = ['USDC', 'WBTC', 'WETH']
-  constructor () {
+  constructor() {
     this.assets = Object.entries(assets)
-      .filter(([,asset]) => asset.display)
-      .map(([k,v])=>{
+      .filter(([, asset]) => asset.display)
+      .map(([k, v]) => {
         v.name = k
         return v
       })
-      this.graphData = {};
-      this.averageData = {};
-        this.lastUpdate = {};
-        this.loading = true;
-        const urls = [];
-        const averageUrls = [];
-        for (let i = 0; i < this.platforms.length; i++) {
-            for (let j = 0; j < this.spans.length; j++) {
-                urls.push(`${apiUrl}/getprecomputeddata?platform=${this.platforms[i]}&span=${this.spans[j]}`);
-            }
-        }
-        for (let i = 0; i < this.platforms.length; i++) {
-          for (let j = 0; j < this.spans.length; j++) {
-            averageUrls.push(`${apiUrl}/getaveragedata?platform=${this.platforms[i]}&span=${this.spans[j]}`);
-          }
+    this.graphData = {};
+    this.averageData = {};
+    this.lastUpdate = {};
+    this.loading = true;
+    const urls = [];
+    const averageUrls = [];
+    for (let i = 0; i < this.platforms.length; i++) {
+      for (let j = 0; j < this.spans.length; j++) {
+        urls.push(`${apiUrl}/getprecomputeddata?platform=${this.platforms[i]}&span=${this.spans[j]}`);
       }
-        this.sendParallelRequests(urls)
-            .then(data => {
-                for(let i = 0; i < data.length; i++){
-                    const url = new URL(data[i].request.responseURL);
-                    const span = url.searchParams.get('span');
-                    const platform = url.searchParams.get('platform');
-                    if(!this.graphData[platform]){
-                        this.graphData[platform] = {}
-                    };
-                    this.graphData[platform][span] = data[i].data.concatData;
-                    this.lastUpdate[span] = data[i].data.lastUpdate;
-                }
-                this.initialDexes();
-            })
-            .catch(error => {
-                console.error('error', error);
-            });
-            this.sendParallelRequests(averageUrls)
-            .then(data => {
-                for(let i = 0; i < data.length; i++){
-                    const url = new URL(data[i].request.responseURL);
-                    const span = url.searchParams.get('span');
-                    const platform = url.searchParams.get('platform');
-                    if(!this.averageData[platform]){
-                        this.averageData[platform] = {}
-                    };
-                    this.averageData[platform][span] = data[i].data;
-                }
-                this.loading = false;
-            })
-            .catch(error => {
-                console.error('error', error);
-            });
+    }
+    for (let i = 0; i < this.platforms.length; i++) {
+      for (let j = 0; j < this.spans.length; j++) {
+        averageUrls.push(`${apiUrl}/getaveragedata?platform=${this.platforms[i]}&span=${this.spans[j]}`);
+      }
+    }
+    this.sendParallelRequests(urls)
+      .then(data => {
+        for (let i = 0; i < data.length; i++) {
+          const url = new URL(data[i].request.responseURL);
+          const span = url.searchParams.get('span');
+          const platform = url.searchParams.get('platform');
+          if (!this.graphData[platform]) {
+            this.graphData[platform] = {}
+          };
+          this.graphData[platform][span] = data[i].data.concatData;
+          this.lastUpdate[span] = data[i].data.lastUpdate;
+        }
+        this.initialDexes();
+        this.initialQuotes();
+      })
+      .catch(error => {
+        console.error('error', error);
+      });
+    this.sendParallelRequests(averageUrls)
+      .then(data => {
+        for (let i = 0; i < data.length; i++) {
+          const url = new URL(data[i].request.responseURL);
+          const span = url.searchParams.get('span');
+          const platform = url.searchParams.get('platform');
+          if (!this.averageData[platform]) {
+            this.averageData[platform] = {}
+          };
+          this.averageData[platform][span] = data[i].data;
+        }
+        this.loading = false;
+      })
+      .catch(error => {
+        console.error('error', error);
+      });
     makeAutoObservable(this);
   }
   async sendParallelRequests(urls) {
     const requests = urls.map(url => axios.get(url)); // Create an array of requests
     const data = await axios.all(requests); // Wait for all requests to complete
     return data;
-}
+  }
 
-  get searchList () {
+  get searchList() {
     const searchTerm = this.searchFieldValue.toUpperCase()
-    return this.assets.filter(a=> a.name.indexOf(searchTerm) > -1)
+    return this.assets.filter(a => a.name.indexOf(searchTerm) > -1)
   }
 
 
@@ -101,7 +102,7 @@ class MainStore {
 
   scrollToAssets = () => {
     const element = window.document.getElementById('assets');
-    if(!element) {
+    if (!element) {
       return
     }
     // check scroll is needed
@@ -111,22 +112,9 @@ class MainStore {
     }
   }
 
-  initialDexes = () => {
-    const available = [];
-    for(const platform of this.platforms){
-      if(this.graphData[platform]){
-      const availableBases = this.graphData[platform]['1'].map(_ => _.base);
-      if(availableBases.includes(this.selectedBaseSymbol)){
-        available.push(platform);
-      };
-    }
-  }
-    this.selectedDexes = available;
-  }
-
   search = (assetName) => {
     const searchQueryStringParam = this.getSearchQs()
-    if(searchQueryStringParam !== assetName) {
+    if (searchQueryStringParam !== assetName) {
       // update the url with the new query string param
       const url = new URL(window.location);
       url.searchParams.set('search', assetName);
@@ -138,34 +126,73 @@ class MainStore {
     this.selectedAsset = assets[assetName]
     this.selectedBaseSymbol = symbols[assetName];
     this.initialDexes();
+    this.initialQuotes();
     this.searchFieldValue = ""
-    runInAction(()=> {
+    runInAction(() => {
       this.searchCounter++
     })
   }
-  handleDexChanges =(dex) => {
-    if(this.selectedDexes.includes(dex)){
-      this.selectedDexes = this.selectedDexes.filter(_=> _ !== dex); 
+  initialDexes = () => {
+    const available = [];
+    for (const platform of this.platforms) {
+      if (this.graphData[platform]) {
+        const availableBases = this.graphData[platform]['1'].map(_ => _.base);
+        if (availableBases.includes(this.selectedBaseSymbol)) {
+          available.push(platform);
+        };
+      }
+    }
+    this.selectedDexes = available;
+  }
+
+  handleDexChanges = (dex) => {
+    if (this.selectedDexes.includes(dex)) {
+      this.selectedDexes = this.selectedDexes.filter(_ => _ !== dex);
       this.allDexes = false;
     }
-    else{
+    else {
       this.selectedDexes = [...this.selectedDexes, dex];
     }
   }
   toggleAllDexes = (selectedBaseSymbol) => {
-    if(!this.allDexes){
-    const toPush = [];
-    for(const dex of this.platforms){
-      if(isDexAvailableForBase(dex, selectedBaseSymbol)){
-        toPush.push(dex);
+    if (!this.allDexes) {
+      const toPush = [];
+      for (const dex of this.platforms) {
+        if (isDexAvailableForBase(dex, selectedBaseSymbol)) {
+          toPush.push(dex);
+        }
+      }
+      this.selectedDexes = toPush;
+      this.allDexes = true;
+    }
+    else {
+      this.selectedDexes = [];
+      this.allDexes = false;
+    }
+  }
+
+  initialQuotes = () => {
+    this.selectedQuotes = [];
+    const quotesHolder = [];
+    for (const dex of this.selectedDexes) {
+      const dataForDex = this.graphData[dex][1];
+      const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === this.selectedBaseSymbol.toLowerCase());
+      for (const slippageData of dataForDexForBase) {
+        if (!quotesHolder.includes(slippageData.quote)) {
+          quotesHolder.push(slippageData.quote);
+        }
       }
     }
-    this.selectedDexes = toPush;
-    this.allDexes = true;
+    this.selectedQuotes = [...this.selectedQuotes, ...quotesHolder];
   }
-  else{
-    this.selectedDexes = [];
-    this.allDexes = false;}
+
+  handleQuotesChanges = (quote) => {
+    if (this.selectedQuotes.includes(quote)) {
+      this.selectedQuotes = this.selectedQuotes.filter(_ => _ !== quote);
+    }
+    else {
+      this.selectedQuotes = [...this.selectedQuotes, quote];
+    }
   }
 
   setSearchFieldValue = (value) => {
