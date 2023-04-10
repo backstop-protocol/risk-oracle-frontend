@@ -23,16 +23,20 @@ const MainPanel = observer(props => {
   let averageData = null;
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseSymbol = symbols[selectedBase.name];
+  let availableQuotesForBase = [];
   if (!loading) {
     const graphData = mainStore.graphData;
     averageData = mainStore.averageData;
     const volumeData = {};
-
     for (const dex of dexes) {
       const dataForDex = graphData[dex][span];
       const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === selectedBaseSymbol.toLowerCase());
       for (const slippageData of dataForDexForBase) {
         const quote = slippageData.quote;
+        if(!availableQuotesForBase.includes(quote)){
+        availableQuotesForBase.push(quote);
+      }
+      availableQuotesForBase.sort();
         for (const volumeForSlippage of slippageData.volumeForSlippage) {
           const blockNumber = volumeForSlippage.blockNumber;
           const slippageValue = volumeForSlippage[slippage];
@@ -91,7 +95,7 @@ const MainPanel = observer(props => {
           <article className="box">
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'calc(var(--spacing) * 4)', fontSize: "0.875em"}}>
               {/* <ComparisonAssetsSelector dataStore={dataStore}/> */}
-              <DexSelector selectedBaseSymbol={selectedBaseSymbol}/>
+              <DexSelector selectedBaseSymbol={selectedBaseSymbol} availableQuotesForBase={availableQuotesForBase}/>
               <SlippageSelector slippage={slippage} handleChange={handleSlippageChange}/>
             </div>
           </article>
