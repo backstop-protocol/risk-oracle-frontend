@@ -14,6 +14,9 @@ const DexSelector = observer(props => {
   const handleDexChanges = mainStore.handleDexChanges;
   const availableDexes = mainStore.platforms;
   const toggleAllDexes = mainStore.toggleAllDexes;
+  const availableQuotes = mainStore.quotes;
+  const selectedQuotes = mainStore.selectedQuotes;
+  const handleQuotesChanges = mainStore.handleQuotesChanges;
 
   return (
     <div style={{fontSize: "0.875em"}}>
@@ -27,6 +30,13 @@ const DexSelector = observer(props => {
         {availableDexes.map(dex=> <label key={dex} htmlFor={dex}>
           <input type="checkbox" id={dex} name={dex} checked={selectedDexes.includes(dex)} disabled={!isDexAvailableForBase(dex, selectedBaseSymbol)} onChange={()=> handleDexChanges(dex)}/>
           {nameMap[dex] || dex}
+        </label>)}
+      </fieldset>
+      <hr></hr>
+      <fieldset className="quotes-selector">
+      {availableQuotes.map(quote=> <label key={quote} htmlFor={quote}>
+          <input type="checkbox" id={quote} name={quote} checked={selectedQuotes.includes(quote)} onChange={()=> handleQuotesChanges(quote)}/>
+          {nameMap[quote] || quote}
         </label>)}
       </fieldset>
     </div>
