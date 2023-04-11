@@ -151,9 +151,11 @@ class MainStore {
     if (this.selectedDexes.includes(dex)) {
       this.selectedDexes = this.selectedDexes.filter(_ => _ !== dex);
       this.allDexes = false;
+      this.initialQuotes();
     }
     else {
       this.selectedDexes = [...this.selectedDexes, dex];
+      this.initialQuotes();
     }
   }
   toggleAllDexes = (selectedBaseSymbol) => {
