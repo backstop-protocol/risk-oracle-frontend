@@ -1,7 +1,7 @@
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { largeNumberFormatter, roundTo } from '../utils/utils';
 
 import TimeFrameButtons from './TimeFrameButtons';
+import { largeNumberFormatter } from '../utils/utils';
 import mainStore from '../stores/main.store';
 import { observer } from "mobx-react";
 
@@ -16,8 +16,11 @@ const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     const loadedPayload = Object.assign({}, payload[0].payload)
     const selectedBase = mainStore.selectedAsset;
+    const timestamps = mainStore.timestamps;
     const blockNumber = loadedPayload.blockNumber;
+    const date = new Date(timestamps[blockNumber]*1000);
     delete loadedPayload.blockNumber;
+
     const displayValues = [];
     for (const key of Object.entries(loadedPayload)) {
       displayValues.push(key);
@@ -25,6 +28,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 
     return (
       <div className="tooltip-container">
+          <div>Date: {date.toLocaleString()}</div>
           <div>Blocknumber: {blockNumber}</div>
           {displayValues.map(_ => <div key={_[0]}>{_[0]}: {largeNumberFormatter(_[1])} {selectedBase.name}</div>)}
       </div>
