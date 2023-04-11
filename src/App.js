@@ -1,12 +1,13 @@
-import '@picocss/pico'
-import './App.css'
-import Header from './sections/Header'
-import SideNav from './sections/SideNav'
-import Footer from './sections/Footer'
-import First from './sections/First'
-import MainPanel from './sections/MainPanel'
-import React, { useEffect } from 'react';
-import mainStore from './stores/main.store'
+import '@picocss/pico';
+import './App.css';
+
+import { useEffect } from 'react';
+
+import First from './sections/First';
+import Header from './sections/Header';
+import MainPanel from './sections/MainPanel';
+import SideNav from './sections/SideNav';
+import mainStore from './stores/main.store';
 
 function App() {
   useEffect(()=> {
@@ -24,7 +25,6 @@ function App() {
           <SideNav/>
           <MainPanel/>
         </main>
-        {/* <Footer/> */}
     </div>
   );
 }

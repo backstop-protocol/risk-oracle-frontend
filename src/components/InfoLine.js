@@ -46,7 +46,7 @@ const InfoLine = observer(props => {
       setPrice(undefined);
       setDayChange(undefined);
     }
-  }, [selectedBaseSymbol]);
+  }, [selectedBaseSymbol, priceInfo.lastPrice]);
 
   return (
     <div className="info-line">

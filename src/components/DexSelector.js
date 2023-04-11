@@ -15,6 +15,7 @@ const DexSelector = observer(props => {
   const availableDexes = mainStore.platforms;
   const toggleAllDexes = mainStore.toggleAllDexes;
   const selectedQuotes = mainStore.selectedQuotes;
+  const availableQuotes = mainStore.quotes;
   const handleQuotesChanges = mainStore.handleQuotesChanges;
 
   return (
@@ -33,8 +34,8 @@ const DexSelector = observer(props => {
       </fieldset>
       <hr></hr>
       <fieldset className="quotes-selector">
-      {availableQuotesForBase.map(quote=> <label key={quote} htmlFor={quote}>
-          <input type="checkbox" id={quote} name={quote} checked={selectedQuotes.includes(quote)} onChange={()=> handleQuotesChanges(quote)}/>
+      {availableQuotes.map(quote=> <label key={quote} htmlFor={quote}>
+          <input type="checkbox" id={quote} name={quote} checked={selectedQuotes.includes(quote)} disabled={!availableQuotesForBase.includes(quote)} onChange={()=> handleQuotesChanges(quote)}/>
           {nameMap[quote] || quote}
         </label>)}
       </fieldset>
