@@ -20,7 +20,7 @@ class MainStore {
   graphData = null;
   averageData = null;
   loading = true;
-  timestamps = null;
+  timestamps = {};
   spans = [1, 7, 30, 180, 365];
   platforms = ['uniswapv2', 'curve', 'uniswapv3'];
   quotes = ['USDC', 'WBTC', 'WETH']
@@ -58,7 +58,7 @@ class MainStore {
           };
           this.graphData[platform][span] = data[i].data.concatData;
           this.lastUpdate[span] = data[i].data.lastUpdate;
-          this.timestamps = data[i].data.blockTimestamps;
+          this.timestamps[span] = data[i].data.blockTimestamps;
         }
         this.initialDexes();
         this.initialQuotes();

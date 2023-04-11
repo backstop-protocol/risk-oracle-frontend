@@ -14,17 +14,18 @@ const strokes = {
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
+    console.log(JSON.stringify(payload, null, 2))
     const loadedPayload = Object.assign({}, payload[0].payload)
     const selectedBase = mainStore.selectedAsset;
-    const timestamps = mainStore.timestamps;
     const blockNumber = loadedPayload.blockNumber;
-    const date = new Date(timestamps[blockNumber]*1000);
+    const date = new Date(loadedPayload.timestamp*1000);
     delete loadedPayload.blockNumber;
-
+    delete loadedPayload.timestamp;
     const displayValues = [];
     for (const key of Object.entries(loadedPayload)) {
       displayValues.push(key);
     }
+    console.log(displayValues)
 
     return (
       <div className="tooltip-container">
@@ -55,7 +56,7 @@ const LiquidityChart = observer(props => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="blockNumber" label={{ value: 'block number', position: 'bottom', offset: '7' }} />
           <YAxis unit={` ${selectedBaseSymbol}`} tickFormatter={largeNumberFormatter} />
-          <Tooltip content={CustomTooltip} />
+          <Tooltip content={CustomTooltip}/>
           <Legend verticalAlign='top' />
           {quotes.map(_ => <Line type="monotone" stroke={strokes[_]} dataKey={_} activeDot={{ r: 8 }} />)}
         </LineChart>

@@ -20,6 +20,7 @@ const MainPanel = observer(props => {
   const loading = mainStore.loading;
   const displayData = [];
   const quotes = mainStore.selectedQuotes;
+  const timestamps = mainStore.timestamps;
   let averageData = null;
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseSymbol = symbols[selectedBase.name];
@@ -53,6 +54,7 @@ const MainPanel = observer(props => {
     for (const [blockNumber, quotesData] of Object.entries(volumeData)) {
       const toPush = {};
       toPush['blockNumber'] = blockNumber;
+      toPush['timestamp'] = timestamps[span][blockNumber];
       for (const [quote, slippageValue] of Object.entries(quotesData)) {
         toPush[quote] = roundTo(slippageValue);
       }
