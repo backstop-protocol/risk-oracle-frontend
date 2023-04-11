@@ -149,6 +149,9 @@ class MainStore {
 
   handleDexChanges = (dex) => {
     if (this.selectedDexes.includes(dex)) {
+      if(this.selectedDexes.length === 1){
+        return
+      }
       this.selectedDexes = this.selectedDexes.filter(_ => _ !== dex);
       this.allDexes = false;
     }
