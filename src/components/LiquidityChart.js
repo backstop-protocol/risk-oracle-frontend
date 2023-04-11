@@ -14,7 +14,6 @@ const strokes = {
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
-    console.log(JSON.stringify(payload, null, 2))
     const loadedPayload = Object.assign({}, payload[0].payload)
     const selectedBase = mainStore.selectedAsset;
     const blockNumber = loadedPayload.blockNumber;
@@ -25,7 +24,6 @@ const CustomTooltip = ({ active, payload, label }) => {
     for (const key of Object.entries(loadedPayload)) {
       displayValues.push(key);
     }
-    console.log(displayValues)
 
     return (
       <div className="tooltip-container">
