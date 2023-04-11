@@ -151,13 +151,32 @@ class MainStore {
     if (this.selectedDexes.includes(dex)) {
       this.selectedDexes = this.selectedDexes.filter(_ => _ !== dex);
       this.allDexes = false;
-      this.initialQuotes();
     }
     else {
       this.selectedDexes = [...this.selectedDexes, dex];
-      this.initialQuotes();
     }
+
+    /// remove quotes not available
+    const currentQuotes = this.selectedQuotes;
+    const quotesHolder = [];
+    const newQuotes = [];
+    for (const dex of this.selectedDexes) {
+      const dataForDex = this.graphData[dex][1];
+      const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === this.selectedBaseSymbol.toLowerCase());
+      for (const slippageData of dataForDexForBase) {
+        if (!quotesHolder.includes(slippageData.quote)) {
+          quotesHolder.push(slippageData.quote);
+        }
+      }
+    }
+    for(const quote of currentQuotes){
+      if(quotesHolder.includes(quote)){
+        newQuotes.push(quote)
+      }
+    }
+    this.selectedQuotes = newQuotes;
   }
+  
   toggleAllDexes = (selectedBaseSymbol) => {
     if (!this.allDexes) {
       const toPush = [];
