@@ -7,7 +7,7 @@ const timeMap = {
   7: "7D",
   30: "30D",
   180: "180D",
-  365: "365D",
+  365: "1Y",
 }
 
 function row(rowData) {
