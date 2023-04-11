@@ -11,7 +11,7 @@ class MainStore {
 
   searchedAsset = null
   selectedAsset = assets[defaultAsset]
-  selectedBaseSymbol = symbols[this.selectedAsset.name];
+  selectedBaseSymbol = symbols[defaultAsset];
   selectedDexes = [];
   selectedQuotes = [];
   searchFieldValue = ''
