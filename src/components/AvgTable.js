@@ -59,8 +59,6 @@ const AvgTable = observer(props => {
           quoteRatio++
         }
       }
-      console.log('quote', quote)
-      console.log('ratio', quoteRatio)
       sortedData[quote].volatility = sortedData[quote].volatility / quoteRatio;
     }
     for (const [key, value] of Object.entries(sortedData)) {

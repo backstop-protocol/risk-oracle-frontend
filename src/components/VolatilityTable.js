@@ -10,7 +10,7 @@ function row(rowData) {
   }
   return <tr>
     <th>{symbol}</th>
-    {values.map(_ => <td>{((_[1] * 100).toFixed(2))}%</td>)}
+    {values.map(_ => <td>{ isNaN(_[1]) ? 'unavailable' : `${((_[1] * 100).toFixed(2))}%`}</td>)}
   </tr>
 }
 const timeMap = {
@@ -52,7 +52,6 @@ const VolatilityTable = observer(props => {
     }
     for (const quote of Object.keys(sortedData)) {
       const ratioMap = Object.entries(ratios);
-      console.log(ratioMap)
       for (const span of Object.keys(sortedData[quote])) {
         let quoteRatio = 0;
         for(let i = 0; i < ratioMap.length; i++){
