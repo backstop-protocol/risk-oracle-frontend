@@ -26,10 +26,13 @@ const AvgTable = observer(props => {
   const rowDataArray = [];
   const sortedData = {};
   const loading = mainStore.loading;
+  const ratios = {};
   if (!loading) {
     for (const dex of dexes) {
+      ratios[dex] = {};
       const dataForDexForSpanForBase = averageData[dex][span][selectedBaseSymbol];
       for (const quote of quotes) {
+        ratios[dex][quote] = 0;
         if (!sortedData[quote]) {
           sortedData[quote] = {}
         }
@@ -44,11 +47,21 @@ const AvgTable = observer(props => {
         }
         if (dataForDexForSpanForBase[quote]) {
           sortedData[quote]['volatility'] += dataForDexForSpanForBase[quote].volatility;
+          ratios[dex][quote]++;
         }
       }
     }
     for (const quote of Object.keys(sortedData)) {
-      sortedData[quote].volatility = sortedData[quote].volatility / dexes.length;
+      let quoteRatio = 0;
+      const ratioMap = Object.entries(ratios);
+      for(let i = 0; i < ratioMap.length; i++){
+        if(ratioMap[i][1][quote] === 1){
+          quoteRatio++
+        }
+      }
+      console.log('quote', quote)
+      console.log('ratio', quoteRatio)
+      sortedData[quote].volatility = sortedData[quote].volatility / quoteRatio;
     }
     for (const [key, value] of Object.entries(sortedData)) {
       const toPush = {}

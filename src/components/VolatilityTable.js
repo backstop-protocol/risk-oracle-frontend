@@ -26,13 +26,17 @@ const VolatilityTable = observer(props => {
   const spans = mainStore.spans;
   const sortedData = {};
   const displayData = [];
+  const ratios = {};
   const quotes = mainStore.quotes;
   const loading = mainStore.loading;
   if (!loading) {
     for (const dex of dexes) {
+      ratios[dex] = {};
       for (const span of spans) {
+        ratios[dex][span] = {};
         const dataForDexForSpanForBase = averageData[dex][span][selectedBaseSymbol];
         for (const quote of quotes) {
+          ratios[dex][span][quote] = 0;
           if (!sortedData[quote]) {
             sortedData[quote] = {}
           }
@@ -41,13 +45,22 @@ const VolatilityTable = observer(props => {
           }
           if(dataForDexForSpanForBase[quote]){
             sortedData[quote][span] += dataForDexForSpanForBase[quote].volatility
+            ratios[dex][span][quote]++
           }
         }
       }
     }
     for (const quote of Object.keys(sortedData)) {
+      const ratioMap = Object.entries(ratios);
+      console.log(ratioMap)
       for (const span of Object.keys(sortedData[quote])) {
-        sortedData[quote][span] = sortedData[quote][span] / dexes.length;
+        let quoteRatio = 0;
+        for(let i = 0; i < ratioMap.length; i++){
+          if(ratioMap[i][1][span][quote] === 1){
+            quoteRatio++;
+          }
+        }
+        sortedData[quote][span] = sortedData[quote][span] / quoteRatio;
       }
     }
     for (const [key, value] of Object.entries(sortedData)) {
