@@ -17,12 +17,15 @@ const CustomTooltip = ({ active, payload, label }) => {
     const loadedPayload = Object.assign({}, payload[0].payload)
     const selectedBase = mainStore.selectedAsset;
     const blockNumber = loadedPayload.blockNumber;
+    const selectedQuotes = mainStore.selectedQuotes;
     const date = new Date(loadedPayload.timestamp*1000);
     delete loadedPayload.blockNumber;
     delete loadedPayload.timestamp;
     const displayValues = [];
     for (const key of Object.entries(loadedPayload)) {
+      if(selectedQuotes.includes(key[0])){
       displayValues.push(key);
+    }
     }
 
     return (
