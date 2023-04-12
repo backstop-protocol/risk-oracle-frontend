@@ -214,6 +214,9 @@ class MainStore {
 
   handleQuotesChanges = (quote) => {
     if (this.selectedQuotes.includes(quote)) {
+      if(this.selectedQuotes.length === 1){
+        return
+      }
       this.selectedQuotes = this.selectedQuotes.filter(_ => _ !== quote);
     }
     else {
