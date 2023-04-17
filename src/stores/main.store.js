@@ -129,6 +129,7 @@ class MainStore {
     this.selectedBaseSymbol = symbols[assetName];
     this.initialDexes();
     this.initialQuotes();
+    this.allDexes = true;
     this.searchFieldValue = ""
     runInAction(() => {
       this.searchCounter++
