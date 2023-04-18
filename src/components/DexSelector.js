@@ -4,7 +4,8 @@ import { observer } from "mobx-react";
 
 const nameMap = {
   uniswapv2: "Uniswap v2",
-  curve: 'Curve'
+  curve: 'Curve',
+  uniswapv3: 'Uniswap v3'
 };
 
 
