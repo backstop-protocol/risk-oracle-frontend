@@ -40,7 +40,7 @@ const AvgTable = observer(props => {
           sortedData[quote]['average'] = 0;
         }
         if (dataForDexForSpanForBase[quote]) {
-          sortedData[quote]['average'] += dataForDexForSpanForBase[quote]['avgLiquidity'][slippage];
+          sortedData[quote]['average'] += (dataForDexForSpanForBase[quote]['avgLiquidity'][slippage]);
         }
         if (!sortedData[quote]['volatility']) {
           sortedData[quote]['volatility'] = 0
@@ -66,7 +66,9 @@ const AvgTable = observer(props => {
       toPush[key] = value;
       rowDataArray.push(toPush);
     }
+    rowDataArray.sort((a, b) => Object.entries(b)[0][1].average - Object.entries(a)[0][1].average);
   }
+
 
   return (
     <article style={{ marginTop: 0, }} className="box">
