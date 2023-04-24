@@ -55,7 +55,7 @@ const LiquidityChart = observer(props => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="blockNumber" tickMargin={10} label={{ value: 'block number', position: 'bottom', offset: '7' }} />
+          <XAxis dataKey="blockNumber" tickMargin={15} label={{ value: 'block number', position: 'bottom', offset: '7' }} />
           <YAxis unit={` ${selectedBaseSymbol}`} tickMargin={5} tickFormatter={largeNumberFormatter} />
           <Tooltip content={CustomTooltip}/>
           <Legend verticalAlign='top' />
