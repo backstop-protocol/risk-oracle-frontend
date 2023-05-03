@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 
-import assets from "./assets";
+import { assets } from "./config.store";
 import axios from "axios";
 import { isDexAvailableForBase } from "../utils/utils";
 import symbols from "../config";
