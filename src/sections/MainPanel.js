@@ -1,4 +1,5 @@
 import AvgTable from "../components/AvgTable";
+import ContractAddress from "../components/ContractAddress"
 import DexSelector from "../components/DexSelector";
 import InfoLine from "../components/InfoLine";
 import LastUpdate from "../components/LastUpdate";
@@ -89,7 +90,7 @@ const MainPanel = observer(props => {
           <article className="box" style={{display: 'flex', justifyContent: 'space-between', alignItems: "start"}}>
             <div >
               <InfoLine/>
-              {/* <ContractAddress address={"0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"}/> */}
+              <ContractAddress address={"0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"}/>
             </div>
             <LastUpdate date={mainStore.lastUpdate[span]}/>
           </article>
