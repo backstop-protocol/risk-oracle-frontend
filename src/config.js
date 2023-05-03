@@ -55,4 +55,15 @@ const symbols = {
     USDC: 'USDC',
     MANA: 'MANA'
 }
+
+export const pythiaTokens = [
+    "WETH",
+    "DAI",
+    "MANA",
+    "MKR",
+    "SNX",
+    "sUSD",
+    "UNI",
+    "USDT",
+]
 export default symbols;
