@@ -8,6 +8,7 @@ import LastUpdate from "../components/LastUpdate";
 import LiquidityChart from "../components/LiquidityChart";
 import SlippageSelector from "../components/SlippageSelector";
 import VolatilityTable from "../components/VolatilityTable";
+import Web3Data from "../components/Web3Data";
 // import ComparisonAssetsSelector from "../components/ComparisonAssetsSelector"
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
@@ -92,7 +93,9 @@ const MainPanel = observer(props => {
             <div >
               <InfoLine/>
               <ContractAddress address={pythiaAddress}/>
+              
             </div>
+            <Web3Data/>
             <LastUpdate date={mainStore.lastUpdate[span]}/>
           </article>
           <article className="box">

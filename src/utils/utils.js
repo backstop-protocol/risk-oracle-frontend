@@ -22,7 +22,7 @@ export function largeNumberFormatter(number) {
     if (number >= 1e3) {
         return `${(Number((number / (1e3)).toFixed(2)))}K`
     }
-    return number
+    return `${(Number(number).toFixed(2))}`
 }
 
 /**

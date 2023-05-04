@@ -1,18 +1,21 @@
-import PythiaABI from "../abi/pythia.abi.json";
-import { ethers } from "ethers";
+import { largeNumberFormatter } from "../utils/utils";
+import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
-import { pythiaAddress } from "../config";
-
-const provider = new ethers.providers.JsonRpcProvider('https://rpc.sepolia.dev');
-const pythiaContract = new ethers.Contract(pythiaAddress, PythiaABI, provider);
 
 const Web3Data = observer(props => {
-
-    return (
-        <div >
-            Hello!
-        </div>
-    )
+    const web3Data = mainStore.web3Data;
+    if (web3Data) {
+        const selectedBase = mainStore.selectedAsset.name;
+        if (web3Data[selectedBase]) {
+            return (
+                <div >
+                    Avg 30 days uniV3 liquidity
+                    <br />
+                    {selectedBase}: {largeNumberFormatter(web3Data[selectedBase])};
+                </div>
+            )
+        }
+    }
 })
 
 export default Web3Data

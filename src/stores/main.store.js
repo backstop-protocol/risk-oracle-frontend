@@ -12,11 +12,12 @@ const defaultAsset = "ETH"
 const apiUrl = "https://api.dex-history.la-tribu.xyz/api";
 class MainStore {
 
-  searchedAsset = null
+  searchedAsset = null;
   selectedAsset = assets[defaultAsset]
   selectedBaseSymbol = symbols[defaultAsset];
   selectedDexes = [];
   selectedQuotes = [];
+  web3Data = null;
   searchFieldValue = ''
   allDexes = true;
   searchCounter = 0
@@ -118,6 +119,7 @@ class MainStore {
       const assetConf = assets[symbols[i]];
       toReturn[symbols[i]] = normalize(results[i], BigInt(assetConf.decimals));
     }
+    this.web3Data = toReturn;
   }
 
   get searchList() {
