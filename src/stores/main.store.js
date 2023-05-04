@@ -1,3 +1,4 @@
+import { isDexAvailableForBase, normalize } from "../utils/utils";
 import { makeAutoObservable, runInAction } from "mobx";
 import { pythiaAddress, relayerAddress, rpcURL } from "../config";
 
@@ -5,7 +6,6 @@ import PythiaABI from "../abi/pythia.abi.json";
 import { assets } from "./config.store";
 import axios from "axios";
 import { ethers } from "ethers";
-import { isDexAvailableForBase } from "../utils/utils";
 import symbols from "../config";
 
 const defaultAsset = "ETH"
@@ -100,9 +100,12 @@ class MainStore {
     const assetsAddresses = [];
     const keys = [];
     const key = ethers.keccak256(ethers.toUtf8Bytes(`avg 30 days uni v3 liquidity`));
+    const symbols = [];
+    const toReturn = {};
     
     for (const [tokenSymbol, value] of Object.entries(assets)) {
       if (value.pythia) {
+        symbols.push(tokenSymbol);
         relayers.push(relayerAddress);
         keys.push(key);
         assetsAddresses.push(value.address)
@@ -111,6 +114,10 @@ class MainStore {
 
     const results = await pythiaContract.multiGet(relayers, assetsAddresses, keys);
 
+    for(let i = 0; i < symbols.length; i++){
+      const assetConf = assets[symbols[i]];
+      toReturn[symbols[i]] = normalize(results[i], BigInt(assetConf.decimals));
+    }
   }
 
   get searchList() {
