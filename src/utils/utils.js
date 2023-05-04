@@ -32,11 +32,11 @@ export function largeNumberFormatter(number) {
  * @returns {number} normalized number for the decimals in inputs
  */
 export function normalize(amount, decimals) {
-    if (decimals === 18) {
+    if (decimals === 18n) {
         return Number(ethers.formatEther(amount));
     }
-    else if (decimals > 18) {
-        const factor = 10n ** (decimals - 18n);
+    else if (decimals > 18n) {
+        const factor = Math.pow(10n, (decimals - 18n));
         const norm = BigInt(amount.toString()) / factor;
         return Number(ethers.formatEther(norm));
     } else {
