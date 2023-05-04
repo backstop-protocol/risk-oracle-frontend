@@ -8,8 +8,8 @@ const Web3Data = observer(props => {
         const selectedBase = mainStore.selectedAsset.name;
         if (web3Data[selectedBase]) {
             return (
-                <div >
-                    Avg 30 days uniV3 liquidity
+                <div>
+                    Avg 30 days uniV3 liquidity vs USDC
                     <br />
                     {selectedBase}: {largeNumberFormatter(web3Data[selectedBase])}
                 </div>
