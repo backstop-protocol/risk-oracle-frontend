@@ -1,5 +1,7 @@
+import symbols, { pythiaAddress } from "../config";
+
 import AvgTable from "../components/AvgTable";
-import ContractAddress from "../components/ContractAddress"
+import ContractAddress from "../components/ContractAddress";
 import DexSelector from "../components/DexSelector";
 import InfoLine from "../components/InfoLine";
 import LastUpdate from "../components/LastUpdate";
@@ -10,7 +12,6 @@ import VolatilityTable from "../components/VolatilityTable";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { roundTo } from "../utils/utils";
-import symbols from "../config";
 import { useState } from "react";
 
 const MainPanel = observer(props => {
@@ -90,7 +91,7 @@ const MainPanel = observer(props => {
           <article className="box" style={{display: 'flex', justifyContent: 'space-between', alignItems: "start"}}>
             <div >
               <InfoLine/>
-              <ContractAddress address={"0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419"}/>
+              <ContractAddress address={pythiaAddress}/>
             </div>
             <LastUpdate date={mainStore.lastUpdate[span]}/>
           </article>

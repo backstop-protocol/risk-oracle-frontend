@@ -1,7 +1,10 @@
 import { makeAutoObservable, runInAction } from "mobx";
+import { pythiaAddress, relayerAddress, rpcURL } from "../config";
 
+import PythiaABI from "../abi/pythia.abi.json";
 import { assets } from "./config.store";
 import axios from "axios";
+import { ethers } from "ethers";
 import { isDexAvailableForBase } from "../utils/utils";
 import symbols from "../config";
 
@@ -82,12 +85,32 @@ class MainStore {
       .catch(error => {
         console.error('error', error);
       });
+      this.getWeb3Data();
     makeAutoObservable(this);
   }
   async sendParallelRequests(urls) {
     const requests = urls.map(url => axios.get(url)); // Create an array of requests
     const data = await axios.all(requests); // Wait for all requests to complete
     return data;
+  }
+  async getWeb3Data() {
+    const provider = new ethers.JsonRpcProvider(rpcURL);
+    const pythiaContract = new ethers.Contract(pythiaAddress, PythiaABI, provider);
+    const relayers = [];
+    const assetsAddresses = [];
+    const keys = [];
+    const key = ethers.keccak256(ethers.toUtf8Bytes(`avg 30 days uni v3 liquidity`));
+    
+    for (const [tokenSymbol, value] of Object.entries(assets)) {
+      if (value.pythia) {
+        relayers.push(relayerAddress);
+        keys.push(key);
+        assetsAddresses.push(value.address)
+      }
+    }
+
+    const results = await pythiaContract.multiGet(relayers, assetsAddresses, keys);
+
   }
 
   get searchList() {
@@ -150,7 +173,7 @@ class MainStore {
 
   handleDexChanges = (dex) => {
     if (this.selectedDexes.includes(dex)) {
-      if(this.selectedDexes.length === 1){
+      if (this.selectedDexes.length === 1) {
         return
       }
       this.selectedDexes = this.selectedDexes.filter(_ => _ !== dex);
@@ -173,14 +196,14 @@ class MainStore {
         }
       }
     }
-    for(const quote of currentQuotes){
-      if(quotesHolder.includes(quote)){
+    for (const quote of currentQuotes) {
+      if (quotesHolder.includes(quote)) {
         newQuotes.push(quote)
       }
     }
     this.selectedQuotes = newQuotes;
   }
-  
+
   toggleAllDexes = (selectedBaseSymbol) => {
     if (!this.allDexes) {
       const toPush = [];
@@ -215,7 +238,7 @@ class MainStore {
 
   handleQuotesChanges = (quote) => {
     if (this.selectedQuotes.includes(quote)) {
-      if(this.selectedQuotes.length === 1){
+      if (this.selectedQuotes.length === 1) {
         return
       }
       this.selectedQuotes = this.selectedQuotes.filter(_ => _ !== quote);
