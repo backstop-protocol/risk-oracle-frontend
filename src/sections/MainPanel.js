@@ -96,7 +96,6 @@ const MainPanel = observer(props => {
             </div>
             <div style={{display: 'flex', flexDirection:'column', minHeight:'100%', alignItems: "end", alignContent:'end', flexWrap:'wrap'}}>
             <div style={{minHeight:'50%'}}><Web3Data/></div>
-            
             </div>
             <div>
             <LastUpdate date={mainStore.lastUpdate[span]}/>
