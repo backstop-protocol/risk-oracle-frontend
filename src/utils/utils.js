@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import mainStore from "../stores/main.store";
 
 /**
@@ -11,17 +12,38 @@ export function roundTo(num, dec = 2) {
     return Math.round((num + Number.EPSILON) * pow) / pow;
 }
 
-export function largeNumberFormatter(number){
-    if(number >= 1e9){
-        return `${(Number((number/(1e9)).toFixed(2)))}B`;
-    } 
-    if(number >= 1e6){
-        return `${(Number((number/(1e6)).toFixed(2)))}M`
-    } 
-    if(number >= 1e3){
-        return `${(Number((number/(1e3)).toFixed(2)))}K`
+export function largeNumberFormatter(number) {
+    if (number >= 1e9) {
+        return `${(Number((number / (1e9)).toFixed(2)))}B`;
     }
-    return number
+    if (number >= 1e6) {
+        return `${(Number((number / (1e6)).toFixed(2)))}M`
+    }
+    if (number >= 1e3) {
+        return `${(Number((number / (1e3)).toFixed(2)))}K`
+    }
+    return `${(Number(number).toFixed(2))}`
+}
+
+/**
+ * Normalize a integer value to a number
+ * @param {string | BigNumber} amount 
+ * @param {BigInt} decimals 
+ * @returns {number} normalized number for the decimals in inputs
+ */
+export function normalize(amount, decimals) {
+    if (decimals === 18n) {
+        return Number(ethers.formatEther(amount));
+    }
+    else if (decimals > 18n) {
+        const factor = Math.pow(10n, (decimals - 18n));
+        const norm = BigInt(amount.toString()) / factor;
+        return Number(ethers.formatEther(norm));
+    } else {
+        const factor = 10n ** (18n - decimals);
+        const norm = BigInt(amount.toString()) * factor;
+        return Number(ethers.formatEther(norm));
+    }
 }
 
 export const coingeckoMap = {
@@ -31,7 +53,7 @@ export const coingeckoMap = {
     usdc: 'usd-coin',
     susd: 'nusd'
 }
-export function isDexAvailableForBase(dexName, selectedBaseName){
+export function isDexAvailableForBase(dexName, selectedBaseName) {
     const availableBases = mainStore.graphData[dexName]['1'].map(_ => _.base);
     return availableBases.includes(selectedBaseName);
-  }
+}

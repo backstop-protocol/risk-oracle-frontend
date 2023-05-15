@@ -1,5 +1,5 @@
 import { observer } from "mobx-react"
-import timeWindows from "../stores/timeWindows"
+import { timeWindows } from "../stores/config.store"
 
 const TimeFrameButtons = observer(props => {
   return (
