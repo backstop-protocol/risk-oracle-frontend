@@ -33,7 +33,7 @@ export const assets = {
         display: true,
         pythia: true,
         address: '0x57Ab1ec28D129707052df4dF418D58a2D46d5f51',
-        decimals: 8
+        decimals: 18
     },
     UNI: {
         display: true,
