@@ -34,7 +34,7 @@ const MainPanel = observer(props => {
     for (const dex of dexes) {
       const dataForDex = graphData[dex][span];
       const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === selectedBaseSymbol.toLowerCase());
-      for (const slippageData of dataForDexForBase) {
+    for (const slippageData of dataForDexForBase) {
         const quote = slippageData.quote;
         if(!availableQuotesForBase.includes(quote)){
         availableQuotesForBase.push(quote);
