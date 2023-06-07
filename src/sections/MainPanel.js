@@ -4,6 +4,7 @@ import AvgTable from "../components/AvgTable";
 import ContractAddress from "../components/ContractAddress";
 import DexSelector from "../components/DexSelector";
 import InfoLine from "../components/InfoLine";
+import LTVCalculator from "../components/LTVCalculator";
 import LastUpdate from "../components/LastUpdate";
 import LiquidityChart from "../components/LiquidityChart";
 import SlippageSelector from "../components/SlippageSelector";
@@ -106,7 +107,9 @@ const MainPanel = observer(props => {
               {/* <ComparisonAssetsSelector dataStore={dataStore}/> */}
               <DexSelector selectedBaseSymbol={selectedBaseSymbol} availableQuotesForBase={availableQuotesForBase}/>
               <SlippageSelector slippage={slippage} handleChange={handleSlippageChange}/>
+              <LTVCalculator span={span} handleSpanChange={handleSpanChange} slippage={slippage} handleSlippageChange={handleSlippageChange} quotes={quotes} averageData={averageData} />
             </div>
+            
           </article>
         </div>
       </div>
