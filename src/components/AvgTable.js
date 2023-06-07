@@ -68,6 +68,7 @@ const AvgTable = observer(props => {
       rowDataArray.push(toPush);
     }
     rowDataArray.sort((a, b) => Object.entries(b)[0][1].average - Object.entries(a)[0][1].average);
+    mainStore.updateAverages(rowDataArray);
   }
 
 

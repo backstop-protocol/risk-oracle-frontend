@@ -30,7 +30,6 @@ class MainStore {
     this.allDexes = true;
     this.searchCounter = 0
     this.graphData = null;
-    this.averageData = null;
     this.loading = true;
     this.timestamps = {};
     this.spans = [1, 7, 30, 180, 365];
@@ -39,6 +38,7 @@ class MainStore {
     this.graphData = {};
     this.averageData = {};
     this.lastUpdate = {};
+    this.averages = {};
     this.loading = true;
     const urls = [];
     const averageUrls = [];
@@ -145,6 +145,15 @@ class MainStore {
     if (rect.top < 0 || rect.top > 1) {
       element.scrollIntoView();
     }
+  }
+
+  updateAverages = (averageArray) => {
+    for(let i = 0; i < averageArray.length; i++){
+      const tokenName = Object.keys(averageArray[i])[0];
+      this.averages[tokenName] = averageArray[i][tokenName];
+      console.log(this.averages)
+    }
+
   }
 
   search = (assetName) => {

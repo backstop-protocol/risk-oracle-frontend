@@ -7,7 +7,6 @@ const options = [
 
 const SlippageSelector = observer(props => {
   const currentValue = mainStore.selectedSlippage;
-  console.log('currentvalue', currentValue)
   return (
     <div>
       <select id="slippage-selector" value={currentValue} onChange={(event) => mainStore.handleSlippageChange(event.target.value)}>
