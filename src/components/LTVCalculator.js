@@ -6,6 +6,7 @@ import { useState } from "react";
 const LTVCalculator = observer(props => {
     const quotes = props.quotes;
     const [selectedQuote, setSelectedQuote] = useState(quotes[0]);
+    const [recommendedLTV, setRecommendedLTV] = useState(0);
     const [borrowCap, setBorrowCap] = useState(0);
     const span = mainStore.selectedSpan;
     const slippage = mainStore.selectedSlippage;
@@ -34,6 +35,8 @@ const LTVCalculator = observer(props => {
                     <td>l</td>
                     <td><select value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <option key={_} value={_}>{_}</option>)}</select></td>
                     <td><input type="tel" value={borrowCap} onChange={(event)=> {setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '')}} /></td>
+                    <td>clf</td>
+                    <td>{recommendedLTV}</td>
                 </tbody>
             </table>
         </article>
