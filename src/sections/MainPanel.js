@@ -14,13 +14,12 @@ import Web3Data from "../components/Web3Data";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { roundTo } from "../utils/utils";
-import { useState } from "react";
 
 const MainPanel = observer(props => {
-  const [slippage, setSlippage] = useState(5);
+  const slippage = mainStore.selectedSlippage;
   const dexes = mainStore.selectedDexes;
-  const [span, setSpan] = useState(mainStore.spans[0]);
   const loading = mainStore.loading;
+  const span = mainStore.selectedSpan;
   const displayData = [];
   const quotes = mainStore.selectedQuotes;
   const timestamps = mainStore.timestamps;
@@ -65,13 +64,6 @@ const MainPanel = observer(props => {
     }
   }
 
-  function handleSlippageChange(value){
-    setSlippage(value);
-  }
-  function handleSpanChange(value){
-    setSpan(value);
-  }
-
   
   const {searchedAsset, selectedAsset, dataStore} = mainStore
 
@@ -106,16 +98,16 @@ const MainPanel = observer(props => {
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'calc(var(--spacing) * 4)', fontSize: "0.875em"}}>
               {/* <ComparisonAssetsSelector dataStore={dataStore}/> */}
               <DexSelector selectedBaseSymbol={selectedBaseSymbol} availableQuotesForBase={availableQuotesForBase}/>
-              <SlippageSelector slippage={slippage} handleChange={handleSlippageChange}/>
-              <LTVCalculator span={span} handleSpanChange={handleSpanChange} slippage={slippage} handleSlippageChange={handleSlippageChange} quotes={quotes} averageData={averageData} />
+              <SlippageSelector slippage={slippage}/>
+              <LTVCalculator slippage={slippage} quotes={quotes} averageData={averageData} />
             </div>
             
           </article>
         </div>
       </div>
       <div style={{display: 'flex', gap: 'var(--spacing)'}}>
-        {loading? '': <LiquidityChart selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading}  span={span} displayData={displayData}  handleChange={handleSpanChange} dataStore={dataStore} />}
-        <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} span={span} averageData={averageData}/>
+        {loading? '': <LiquidityChart selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading} displayData={displayData} dataStore={dataStore} />}
+        <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData}/>
       </div>
       <VolatilityTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData}/>
     </div>

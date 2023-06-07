@@ -40,10 +40,10 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 
 const LiquidityChart = observer(props => {
- const {span, handleChange, loading, quotes, displayData, selectedBaseSymbol} = props;
+ const {loading, quotes, displayData, selectedBaseSymbol} = props;
   return (
     <article className='box' style={{ width: '100%', height: '30vh', minHeight: '440px', marginTop: "0px", }}>
-      <TimeFrameButtons span={span} handleChange={handleChange} />
+      <TimeFrameButtons/>
       {!loading && <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={displayData}

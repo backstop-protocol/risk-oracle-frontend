@@ -22,7 +22,8 @@ function row(rowData) {
 }
 
 const AvgTable = observer(props => {
-  const { selectedBaseSymbol, quotes, slippage, dexes, span, averageData } = props;
+  const { selectedBaseSymbol, quotes, slippage, dexes, averageData } = props;
+  const span = mainStore.selectedSpan;
   const rowDataArray = [];
   const sortedData = {};
   const loading = mainStore.loading;
