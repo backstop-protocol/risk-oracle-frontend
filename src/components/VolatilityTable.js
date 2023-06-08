@@ -70,7 +70,7 @@ const VolatilityTable = observer(props => {
   }
   return (
     <article style={{ marginTop: 0 }} className="box">
-      <table>
+      <table style={{marginBottom :0}}>
         <thead>
           <tr>
             <th scope="col">Avg Volatility</th>
