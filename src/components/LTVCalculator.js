@@ -30,7 +30,7 @@ const LTVCalculator = observer(props => {
         const exponential = Math.exp(clfMinusSigmaOverSqrRoot);
         //         5/ calc (d) - beta
         const ltv = exponential - slippage;
-        setRecommendedLTV(ltv);
+        setRecommendedLTV(ltv.toFixed(2));
     }, [borrowCap, liquidity, slippage, volatility])
 
 
