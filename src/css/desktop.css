@@ -93,6 +93,7 @@ main {
 
 #slippage-selector {
   margin: 0;
+  font-size: 0.8rem;
   padding-top: 5px !important;
   padding-left: 10px !important;
   padding-bottom: 5px !important;

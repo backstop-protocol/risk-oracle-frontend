@@ -7,7 +7,6 @@ import InfoLine from "../components/InfoLine";
 import LTVCalculator from "../components/LTVCalculator";
 import LastUpdate from "../components/LastUpdate";
 import LiquidityChart from "../components/LiquidityChart";
-import SlippageSelector from "../components/SlippageSelector";
 import VolatilityTable from "../components/VolatilityTable";
 import Web3Data from "../components/Web3Data";
 // import ComparisonAssetsSelector from "../components/ComparisonAssetsSelector"
@@ -95,10 +94,9 @@ const MainPanel = observer(props => {
             </div>
           </article>
           <article className="box">
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'calc(var(--spacing) * 4)', fontSize: "0.875em"}}>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '', fontSize: "0.875em"}}>
               {/* <ComparisonAssetsSelector dataStore={dataStore}/> */}
               <DexSelector selectedBaseSymbol={selectedBaseSymbol} availableQuotesForBase={availableQuotesForBase}/>
-              <SlippageSelector slippage={slippage}/>
               <LTVCalculator slippage={slippage} quotes={quotes} averageData={averageData} />
             </div>
             
