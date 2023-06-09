@@ -16,7 +16,7 @@ const LTVCalculator = observer(props => {
     const slippageOptions = [1, 5, 10, 15, 20];
     const volatility = averages[selectedQuote]['volatility'];
     const liquidity = averages[selectedQuote]['average'];
-    const clf = 1;
+    const clf = 10;
 
 
     useEffect(() => {
@@ -25,11 +25,11 @@ const LTVCalculator = observer(props => {
         //         2/ calc theta / (a) ==> on appelle ça (b)
         const sigmaOverSqrRoot = volatility / sqrRoot;
         //         3/ calc -c * (b) ==> on appelle ça (c)
-        const clfMinusSigmaOverSqrRoot = clf - sigmaOverSqrRoot;
+        const clfMinusSigmaOverSqrRoot = - clf * sigmaOverSqrRoot;
         //         4/ calc exponentielle de (c)  ==> on appelle ça (d)
         const exponential = Math.exp(clfMinusSigmaOverSqrRoot);
         //         5/ calc (d) - beta
-        const ltv = exponential - slippage;
+        const ltv = exponential - (slippage / 100);
         setRecommendedLTV(ltv.toFixed(2));
     }, [borrowCap, liquidity, slippage, volatility])
 
@@ -57,7 +57,7 @@ const LTVCalculator = observer(props => {
                     <td>{largeNumberFormatter((liquidity).toFixed(2))}</td>
                     <td><select value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <option key={_} value={_}>{_}</option>)}</select></td>
                     <td><input type="tel" value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} /></td>
-                    <td>clf</td>
+                    <td>{clf}</td>
                     <td>{recommendedLTV}</td>
                 </tbody>
             </table>
