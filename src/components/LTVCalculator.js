@@ -37,15 +37,15 @@ const LTVCalculator = observer(props => {
 
     return (
         <article style={{ marginTop: 0, marginBottom: 0 }} className="box">
-            <table style={{ marginBottom: 0 }}>
+            <table>
                 <thead>
                     <tr>
                         <th scope="col">Borrowed Asset</th>
                         <th scope="col">Time Frame</th>
-                        <th scope="col">a (Volatility %)</th>
-                        <th scope="col">l (liquidity)</th>
-                        <th scope="col">b (liquidation bonus)</th>
-                        <th scope="col">d (borrow caps)</th>
+                        <th scope="col">a<br/>(Volatility %)</th>
+                        <th scope="col">l<br/>(liquidity)</th>
+                        <th scope="col">b<br/>(liquidation bonus)</th>
+                        <th scope="col">d<br/>(borrow caps)</th>
                         <th scope="col">CLF</th>
                         <th scope="col">Recommended LTV</th>
                     </tr>
@@ -58,7 +58,7 @@ const LTVCalculator = observer(props => {
                     <td><select value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <option key={_} value={_}>{_}</option>)}</select></td>
                     <td><input type="tel" value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} /></td>
                     <td>{clf}</td>
-                    <td>{recommendedLTV}</td>
+                    <td>{recommendedLTV < 0 ? 0 : recommendedLTV}</td>
                 </tbody>
             </table>
         </article>

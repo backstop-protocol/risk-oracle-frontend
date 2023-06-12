@@ -21,6 +21,7 @@ const DexSelector = observer(props => {
 
   return (
     <div style={{fontSize: "0.875em"}}>
+      <article>
       <fieldset className="dex-selector">
       <label htmlFor="switch">
           <input type="checkbox" id="switch" name="switch" role="switch" readOnly 
@@ -40,6 +41,7 @@ const DexSelector = observer(props => {
           {nameMap[quote] || quote}
         </label>)}
       </fieldset>
+      </article>
     </div>
   )
 })
