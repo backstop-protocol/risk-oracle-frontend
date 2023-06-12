@@ -40,14 +40,14 @@ const LTVCalculator = observer(props => {
             <table style={{ marginTop: 0, marginBottom: 0 }}>
                 <thead>
                     <tr>
-                        <th className="ltv-header" scope="col">Borrowed Asset</th>
-                        <th className="ltv-header" scope="col">Time Frame</th>
-                        <th className="ltv-header" scope="col">a<br />(Volatility %)</th>
-                        <th className="ltv-header" scope="col">l<br />(liquidity)</th>
-                        <th className="ltv-header" scope="col">b<br />(liquidation bonus)</th>
-                        <th className="ltv-header" scope="col">d<br />(borrow caps)</th>
-                        <th className="ltv-header" scope="col">CLF</th>
-                        <th className="ltv-header" scope="col">Recommended LTV</th>
+                        <th title="The asset pair against which the data is being fetched." className="ltv-header" scope="col">Debt Asset</th>
+                        <th title="The time frame that is used for fetching the data." className="ltv-header" scope="col">Time Frame</th>
+                        <th title="The price volatility between the collateral and debt asset (normalized to the base asset price)." className="ltv-header" scope="col">a<br />(Volatility %)</th>
+                        <th title="The available DEX liquidity with a slippage of β." className="ltv-header" scope="col">l<br />(liquidity)</th>
+                        <th title="The bonus liquidators get as an incentive to liquidate a position." className="ltv-header" scope="col">b<br />(liquidation bonus)</th>
+                        <th title="The borrow cap of the debt asset in USD value." className="ltv-header" scope="col">d<br />(borrow caps)</th>
+                        <th title="Confidence Level Factor. The higher it is, the odds of insolvency are decreasing." className="ltv-header" scope="col">CLF</th>
+                        <th title="Loan To Value ratio." className="ltv-header" scope="col">Recommended LTV</th>
                     </tr>
                 </thead>
                 <tbody>
