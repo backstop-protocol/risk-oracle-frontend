@@ -42,6 +42,10 @@ main {
   height: calc(100vh - 102px);
 }
 
+.ltv-header{
+  text-align: center;
+}
+
 .side-nav-item a {
   display: flex;
   align-items: center;

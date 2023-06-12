@@ -37,28 +37,30 @@ const LTVCalculator = observer(props => {
 
     return (
         <article style={{ marginTop: 0, marginBottom: 0 }} className="box">
-            <table>
+            <table style={{ marginTop: 0, marginBottom: 0 }}>
                 <thead>
                     <tr>
-                        <th scope="col">Borrowed Asset</th>
-                        <th scope="col">Time Frame</th>
-                        <th scope="col">a<br/>(Volatility %)</th>
-                        <th scope="col">l<br/>(liquidity)</th>
-                        <th scope="col">b<br/>(liquidation bonus)</th>
-                        <th scope="col">d<br/>(borrow caps)</th>
-                        <th scope="col">CLF</th>
-                        <th scope="col">Recommended LTV</th>
+                        <th className="ltv-header" scope="col">Borrowed Asset</th>
+                        <th className="ltv-header" scope="col">Time Frame</th>
+                        <th className="ltv-header" scope="col">a<br />(Volatility %)</th>
+                        <th className="ltv-header" scope="col">l<br />(liquidity)</th>
+                        <th className="ltv-header" scope="col">b<br />(liquidation bonus)</th>
+                        <th className="ltv-header" scope="col">d<br />(borrow caps)</th>
+                        <th className="ltv-header" scope="col">CLF</th>
+                        <th className="ltv-header" scope="col">Recommended LTV</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <td><select onChange={(event) => { setSelectedQuote(event.target.value) }}>{quotes.map((_) => <option key={_} value={_}>{_}</option>)}</select></td>
-                    <td><select value={span} onChange={(event) => { mainStore.handleSpanChange(event.target.value) }}>{Object.entries(timeWindows).map(([tw, v]) => <option key={tw} value={v}>{tw}</option>)}</select></td>
-                    <td>{(volatility * 100).toFixed(2)}%</td>
-                    <td>{largeNumberFormatter((liquidity).toFixed(2))}</td>
-                    <td><select value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <option key={_} value={_}>{_}</option>)}</select></td>
-                    <td><input type="tel" value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} /></td>
-                    <td>{clf}</td>
-                    <td>{recommendedLTV < 0 ? 0 : recommendedLTV}</td>
+                    <tr style={{borderBottomStyle: "hidden"}}>
+                        <td><select onChange={(event) => { setSelectedQuote(event.target.value) }}>{quotes.map((_) => <option key={_} value={_}>{_}</option>)}</select></td>
+                        <td><select value={span} onChange={(event) => { mainStore.handleSpanChange(event.target.value) }}>{Object.entries(timeWindows).map(([tw, v]) => <option key={tw} value={v}>{tw}</option>)}</select></td>
+                        <td>{(volatility * 100).toFixed(2)}%</td>
+                        <td>{largeNumberFormatter((liquidity).toFixed(2))}</td>
+                        <td><select value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <option key={_} value={_}>{_}</option>)}</select></td>
+                        <td><input type="tel" value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} /></td>
+                        <td>{clf}</td>
+                        <td>{recommendedLTV < 0 ? 0 : recommendedLTV}</td>
+                    </tr>
                 </tbody>
             </table>
         </article>
