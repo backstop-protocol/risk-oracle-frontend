@@ -151,7 +151,6 @@ class MainStore {
     for(let i = 0; i < averageArray.length; i++){
       const tokenName = Object.keys(averageArray[i])[0];
       this.averages[tokenName] = averageArray[i][tokenName];
-      console.log(this.averages)
     }
 
   }

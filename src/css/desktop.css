@@ -46,6 +46,16 @@ main {
   text-align: center;
 }
 
+.ltv-td{
+  text-align: center;
+  vertical-align: center;
+  font-size: 0.8rem;
+}
+
+.ltv-select{
+  font-size: 0.8rem;
+}
+
 .side-nav-item a {
   display: flex;
   align-items: center;
