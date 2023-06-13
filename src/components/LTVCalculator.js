@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 
-import Autocomplete from '@mui/material/Autocomplete';
-import { TextField } from "@mui/material";
 import { largeNumberFormatter } from "../utils/utils";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { timeWindows } from "../stores/config.store";
+import { useCombobox } from "downshift";
 
 const CLFValues = [
     {
@@ -21,15 +20,79 @@ const CLFValues = [
         value: '10'
     },
 ]
-function CLFInput() {
+function getCLFFilter(inputValue) {
+    const lowerCasedInputValue = inputValue.toLowerCase()
+
+    return function CLFFilter(item) {
+        return (
+            !inputValue ||
+            item.text.toLowerCase().includes(lowerCasedInputValue) ||
+            item.value.toLowerCase().includes(lowerCasedInputValue)
+        )
+    }
+}
+
+function CLFInput(props) {
+    const [CLFOptions, setCLFOptions] = useState(CLFValues)
+    const setCLF = props.setCLF;
+    const {
+        isOpen,
+        getMenuProps,
+        getInputProps,
+        highlightedIndex,
+        getItemProps,
+        getToggleButtonProps,
+    } = useCombobox({
+        items: CLFOptions,
+        itemToString(item) { return item ? item.value : '' },
+        onInputValueChange: ({ inputValue }) => {
+            setCLFOptions(CLFValues.filter(getCLFFilter(inputValue)
+                ),
+            )
+        },
+        setCLF,
+        onSelectedItemChange: ((newItem) => setCLF(Number(newItem.selectedItem.value)))
+    })
     return (
-            <Autocomplete
-                id="CLFInput"
-                freeSolo
-                options={CLFValues.map((option) => option.text)}
-                renderInput={(params) => <TextField {...params} label="" />}
-            />
-    );
+        <div>
+            <div>
+                <input
+                    style={{ padding: '4px' }}
+                    {...getInputProps()}
+                    data-testid="combobox-input"
+                />
+            </div>
+            <ul
+
+                {...getMenuProps()}
+                style={{
+                    listStyle: 'none',
+                    width: '100%',
+                    padding: '0',
+                    margin: '4px 0 0 0',
+                }}
+            >
+                {isOpen &&
+                    CLFOptions.map((item, index) => (
+                        <li
+                            style={{
+                                padding: '4px',
+                                backgroundColor: highlightedIndex === index ? '#bde4ff' : null,
+                            }}
+                            key={`${item}${index}`}
+                            {...getItemProps({
+                                item,
+                                index,
+                            })}
+                        >
+                            <span>{item.text}</span>
+                            <span>{item.value}</span>
+                            
+                        </li>
+                    ))}
+            </ul>
+        </div>
+    )
 }
 
 const LTVCalculator = observer(props => {
@@ -43,7 +106,7 @@ const LTVCalculator = observer(props => {
     const slippageOptions = [1, 5, 10, 15, 20];
     const volatility = averages[selectedQuote]['volatility'];
     const liquidity = averages[selectedQuote]['average'];
-    const clf = 10;
+    const [clf, setCLF] = useState(10);
 
 
     useEffect(() => {
@@ -58,7 +121,7 @@ const LTVCalculator = observer(props => {
         //         5/ calc (d) - beta
         const ltv = exponential - (slippage / 100);
         setRecommendedLTV(ltv.toFixed(2));
-    }, [borrowCap, liquidity, slippage, volatility])
+    }, [borrowCap, liquidity, slippage, volatility, clf])
     
 
     return (
@@ -84,7 +147,7 @@ const LTVCalculator = observer(props => {
                         <td className="ltv-td">{largeNumberFormatter((liquidity).toFixed(2))}</td>
                         <td className="ltv-td"><select className="ltv-select" value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <option key={_} value={_}>{_}</option>)}</select></td>
                         <td className="ltv-td"><input className="ltv-select" type="tel" value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} /></td>
-                        <td className="ltv-td"><CLFInput /></td>
+                        <td className="ltv-td"><CLFInput setCLF={setCLF} /></td>
                         <td className="ltv-td">{recommendedLTV < 0 ? 0 : recommendedLTV}</td>
                     </tr>
                 </tbody>
