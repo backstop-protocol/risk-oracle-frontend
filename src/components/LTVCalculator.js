@@ -44,10 +44,11 @@ function CLFInput(props) {
         getToggleButtonProps,
     } = useCombobox({
         items: CLFOptions,
+        initialSelectedItem: CLFValues[0],
         itemToString(item) { return item ? item.value : '' },
         onInputValueChange: ({ inputValue }) => {
-            setCLFOptions(CLFValues.filter(getCLFFilter(inputValue)
-                ),
+            setCLFOptions(CLFValues.filter(getCLFFilter(inputValue), setCLF(inputValue)
+            ),
             )
         },
         setCLF,
@@ -57,24 +58,19 @@ function CLFInput(props) {
         <div>
             <div>
                 <input
-                    style={{ padding: '4px' }}
+                    className="ltv-select"
                     {...getInputProps()}
                     data-testid="combobox-input"
                 />
             </div>
             <ul
-
+            className="ltv-dropdown-content"
                 {...getMenuProps()}
-                style={{
-                    listStyle: 'none',
-                    width: '100%',
-                    padding: '0',
-                    margin: '4px 0 0 0',
-                }}
             >
                 {isOpen &&
                     CLFOptions.map((item, index) => (
                         <li
+                        className="ltv-dropdown-item"
                             style={{
                                 padding: '4px',
                                 backgroundColor: highlightedIndex === index ? '#bde4ff' : null,
@@ -85,9 +81,9 @@ function CLFInput(props) {
                                 index,
                             })}
                         >
-                            <span>{item.text}</span>
-                            <span>{item.value}</span>
-                            
+                            <div className="ltv-dropdown-text">{item.text}</div>
+                            <div className="ltv-dropdown-value">{item.value}</div>
+
                         </li>
                     ))}
             </ul>
@@ -101,7 +97,7 @@ const LTVCalculator = observer(props => {
     const [recommendedLTV, setRecommendedLTV] = useState(0);
     const averages = mainStore.averages;
     const [borrowCap, setBorrowCap] = useState(0);
-    const span = mainStore.selectedSpan;
+    const div = mainStore.selecteddiv;
     const slippage = mainStore.selectedSlippage;
     const slippageOptions = [1, 5, 10, 15, 20];
     const volatility = averages[selectedQuote]['volatility'];
@@ -122,36 +118,66 @@ const LTVCalculator = observer(props => {
         const ltv = exponential - (slippage / 100);
         setRecommendedLTV(ltv.toFixed(2));
     }, [borrowCap, liquidity, slippage, volatility, clf])
-    
 
     return (
-        <article style={{ marginTop: 0, marginBottom: 0 }} className="box">
-            <table style={{ marginTop: 0, marginBottom: 0 }}>
-                <thead>
-                    <tr>
-                        <th title="The asset pair against which the data is being fetched." className="ltv-header" scope="col"><small>Debt Asset</small></th>
-                        <th title="The time frame that is used for fetching the data." className="ltv-header" scope="col"><small>Time Frame</small></th>
-                        <th title="The available DEX liquidity with a slippage of β." className="ltv-header" scope="col"><small>l<br />liquidity</small></th>
-                        <th title="The price volatility between the collateral and debt asset (normalized to the base asset price)." className="ltv-header" scope="col"><small>&sigma;<br />Volatility %</small></th>
-                        <th title="The bonus liquidators get as an incentive to liquidate a position." className="ltv-header" scope="col"><small>&beta;<br />liquidation bonus</small></th>
-                        <th title="The borrow cap of the debt asset in USD value." className="ltv-header" scope="col"><small>d<br />borrow cap</small></th>
-                        <th title="Confidence Level Factor. The higher it is, the odds of insolvency are decreasing." className="ltv-header" scope="col"><small>CLF</small></th>
-                        <th title="Loan To Value ratio." className="ltv-header" scope="col"><small>Recommended LTV</small></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style={{ borderBottomStyle: "hidden", textAlign: 'center' }}>
-                        <td className="ltv-td"><select className="ltv-select" onChange={(event) => { setSelectedQuote(event.target.value) }}>{quotes.map((_) => <option key={_} value={_}>{_}</option>)}</select></td>
-                        <td className="ltv-td"><select className="ltv-select" value={span} onChange={(event) => { mainStore.handleSpanChange(event.target.value) }}>{Object.entries(timeWindows).map(([tw, v]) => <option key={tw} value={v}>{tw}</option>)}</select></td>
-                        <td className="ltv-td">{(volatility * 100).toFixed(2)}%</td>
-                        <td className="ltv-td">{largeNumberFormatter((liquidity).toFixed(2))}</td>
-                        <td className="ltv-td"><select className="ltv-select" value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <option key={_} value={_}>{_}</option>)}</select></td>
-                        <td className="ltv-td"><input className="ltv-select" type="tel" value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} /></td>
-                        <td className="ltv-td"><CLFInput setCLF={setCLF} /></td>
-                        <td className="ltv-td">{recommendedLTV < 0 ? 0 : recommendedLTV}</td>
-                    </tr>
-                </tbody>
-            </table>
+        <article style={{ marginTop: 0, marginBottom: 0 }} className="ltv-container">
+            <div className="ltv-table">
+                <div className="ltv-asset" title="The asset pair against which the data is being fetched.">
+                    <div className="ltv-title-div">
+                        <small >Debt Asset</small></div>
+                    <div className="ltv-value-div">
+                        <select className="ltv-select" onChange={(event) => { setSelectedQuote(event.target.value) }}>{quotes.map((_) => <option key={_} value={_}>{_}</option>)}</select>
+                    </div>
+                </div>
+                <div className="ltv-asset" title="The time frame that is used for fetching the data.">
+                    <div className="ltv-title-div">
+                        <small >Time Frame</small></div>
+                    <div className="ltv-value-div"><select className="ltv-select" value={div} onChange={(event) => { mainStore.handledivChange(event.target.value) }}>{Object.entries(timeWindows).map(([tw, v]) => <option key={tw} value={v}>{tw}</option>)}</select>
+                    </div>
+                </div>
+                <div className="ltv-asset" title="The available DEX liquidity with a slippage of β.">
+                    <div className="ltv-title-div">
+                        <small>l<br />liquidity</small>
+                    </div>
+                    <div className="ltv-value-div">{largeNumberFormatter((liquidity).toFixed(2))}
+                    </div>
+                </div>
+                <div className="ltv-asset" title="The price volatility between the collateral and debt asset (normalized to the base asset price).">
+                    <div className="ltv-title-div">
+                        <small>&sigma;<br />Volatility</small>
+                    </div>
+                    <div className="ltv-value-div">{(volatility * 100).toFixed(2)}%
+                    </div>
+                </div>
+                <div className="ltv-asset" title="The bonus liquidators get as an incentive to liquidate a position.">
+                    <div className="ltv-title-div">
+                        <small>&beta;<br />liquidation bonus</small>
+                    </div>
+                    <div className="ltv-value-div"><select className="ltv-select" value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <option key={_} value={_}>{_}</option>)}</select>
+                    </div>
+                </div>
+                <div className="ltv-asset" title="The borrow cap of the debt asset in USD value.">
+                    <div className="ltv-title-div">
+                        <small>d<br />borrow cap</small>
+                    </div>
+                    <div className="ltv-value-div"><input className="ltv-select" type="tel" value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} />
+                    </div>
+                </div>
+                <div className="ltv-asset" title="Confidence Level Factor. The higher it is, the odds of insolvency are decreasing.">
+                    <div className="ltv-title-div">
+                        <small>CLF</small>
+                    </div>
+                    <div className="ltv-value-div"><CLFInput setCLF={setCLF} />
+                    </div>
+                </div>
+                <div className="ltv-asset" title="Loan To Value ratio.">
+                    <div className="ltv-title-div">
+                        <small>Recommended LTV</small>
+                    </div>
+                    <div className="ltv-value-div">{recommendedLTV < 0 ? 0 : recommendedLTV}
+                    </div>
+                </div>
+            </div>
         </article>
     )
 

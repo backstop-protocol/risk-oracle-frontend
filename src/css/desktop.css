@@ -42,6 +42,45 @@ main {
   height: calc(100vh - 102px);
 }
 
+.ltv-container{
+  min-height: 95%;
+}
+.ltv-table{
+  display: flex;
+  flex-direction: row;
+  min-height: 95%;
+}
+
+.ltv-asset{
+  display: flex;
+  flex-direction: column;
+  width: 12.5%;
+  min-height: 100%;
+}
+.ltv-title-div{
+  display: flex;
+  text-align: center;
+  min-height: 50%;
+  align-items: center;
+  justify-content: center;
+  border-bottom: solid;
+}
+.ltv-value-div{
+  margin-top: 10px;
+  display: flex;
+  text-align: center;
+  min-height: 50%;
+  align-items: center;
+  justify-content: center;
+}
+.clf-value-div{
+  display: flex;
+  text-align: center;
+  min-height: 50%;
+  align-items: center;
+  justify-content: center;
+}
+
 .ltv-header{
   text-align: center;
 }
@@ -54,15 +93,31 @@ main {
 
 .ltv-select{
   font-size: 0.8rem;
+  margin: 0px;
+  margin-bottom: 0px;
+  height: 85%;
 }
 
 .ltv-dropdown-content {
-  display: none;
   position: absolute;
-  background-color: #f9f9f9;
+  list-style-type: none;
+  background-color: white;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+  padding: 0;
+}
+.ltv-dropdown-item {
+  list-style-type: none; /* Remove bullets */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margins */
+}
+.ltv-dropdown-text{
+  font-size: 0.8rem;
+}
+.ltv-dropdown-value{
+  font-size: 0.8rem;
+  color: grey;
 }
 
 .side-nav-item a {
