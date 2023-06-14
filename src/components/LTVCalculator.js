@@ -45,10 +45,13 @@ function CLFInput(props) {
         items: CLFOptions,
         initialSelectedItem: CLFValues[0],
         itemToString(item) { return item ? item.value : '' },
+        // onInputValueChange: ({ inputValue }) => {
+        //     setCLFOptions(CLFValues.filter(getCLFFilter(inputValue), setCLF(inputValue)
+        //     ),
+        //     )
+        // },
         onInputValueChange: ({ inputValue }) => {
-            setCLFOptions(CLFValues.filter(getCLFFilter(inputValue), setCLF(inputValue)
-            ),
-            )
+            setCLF(inputValue)
         },
         setCLF,
         onSelectedItemChange: ((newItem) => setCLF(Number(newItem.selectedItem.value)))
