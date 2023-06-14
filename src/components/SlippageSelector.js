@@ -8,7 +8,7 @@ const options = [
 const SlippageSelector = observer(props => {
   const currentValue = mainStore.selectedSlippage;
   return (
-    <div>
+    <div className="slippage-selector-container">
       <select id="slippage-selector" value={currentValue} onChange={(event) => mainStore.handleSlippageChange(event.target.value)}>
         {options.map((option) => <option key={option} value={option}>{option}% slippage</option>)}
       </select>

@@ -1,6 +1,5 @@
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-import SlippageSelector from './SlippageSelector';
 import TimeFrameButtons from './TimeFrameButtons';
 import { largeNumberFormatter } from '../utils/utils';
 import mainStore from '../stores/main.store';
@@ -46,7 +45,6 @@ const LiquidityChart = observer(props => {
     <article className='box' style={{ width: '100%', height: '30vh', minHeight: '440px', marginTop: "0px", }}>
       <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
       <TimeFrameButtons/>
-      <SlippageSelector />
       </div>
       
       {!loading && <ResponsiveContainer width="100%" height="100%">
