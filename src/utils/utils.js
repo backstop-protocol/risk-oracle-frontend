@@ -51,7 +51,9 @@ export const coingeckoMap = {
     mana: 'decentraland',
     snx: 'havven',
     usdc: 'usd-coin',
-    susd: 'nusd'
+    susd: 'nusd',
+    wbtc: 'wrapped-bitcoin',
+    weth: 'weth'
 }
 export function isDexAvailableForBase(dexName, selectedBaseName) {
     const availableBases = mainStore.graphData[dexName]['1'].map(_ => _.base);

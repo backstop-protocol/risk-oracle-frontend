@@ -57,7 +57,6 @@ function CLFInput(props) {
         setCLF,
         onSelectedItemChange: ((newItem) => setCLF(Number(newItem.selectedItem.value)))
     })
-    console.log(clf);
     return (
         <div>
             <div>
@@ -107,11 +106,23 @@ const LTVCalculator = observer(props => {
     const volatility = averages[selectedQuote]['volatility'];
     const liquidity = averages[selectedQuote]['average'];
     const [clf, setCLF] = useState(10);
-
+    const [debtAssetPrice, setDebtAssetPrice] = useState(0)
+    
+    // useEffect(()=> {
+    //     async function getInitialPrice(selectedQuote, setDebtAssetPrice){
+    //         const id = coingeckoMap[selectedQuote.toLowerCase()];
+    //         const url = `https://api.coingecko.com/api/v3/coins/${id}`
+    //         const data = await axios.get(url);
+    //         setDebtAssetPrice((data.data['market_data']['current_price']['usd']).toFixed(2));
+    //     }
+    //     getInitialPrice(selectedQuote, setDebtAssetPrice);
+        
+    // }, [selectedQuote])
 
     useEffect(() => {
         //         1/ calc racine carré de l / d ==> on appelle ça (a)
         const sqrRoot = Math.sqrt(liquidity / borrowCap);
+        // const sqrRoot = Math.sqrt(liquidity / (borrowCap / debtAssetPrice));
         //         2/ calc theta / (a) ==> on appelle ça (b)
         const sigmaOverSqrRoot = volatility / sqrRoot;
         //         3/ calc -c * (b) ==> on appelle ça (c)
@@ -141,7 +152,7 @@ const LTVCalculator = observer(props => {
                 </div>
                 <div className="ltv-asset" title="The available DEX liquidity with a slippage of β.">
                     <div className="ltv-title-div">
-                        <small>l<br />liquidity</small>
+                        <small>&#8467;<br />liquidity</small>
                     </div>
                     <div className="ltv-value-div">{largeNumberFormatter((liquidity).toFixed(2))}
                     </div>
@@ -157,12 +168,12 @@ const LTVCalculator = observer(props => {
                     <div className="ltv-title-div">
                         <small>&beta;<br />liquidation bonus</small>
                     </div>
-                    <div className="ltv-value-div"><select className="ltv-select" value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <option key={_} value={_}>{_}</option>)}</select>
+                    <div className="ltv-value-div"><select className="ltv-select" value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <option key={_} value={_}>{_}%</option>)}</select>
                     </div>
                 </div>
                 <div className="ltv-asset" title="The borrow cap of the debt asset in USD value.">
                     <div className="ltv-title-div">
-                        <small>d<br />borrow cap</small>
+                        <small><em>&#100;</em><br />borrow cap</small>
                     </div>
                     <div className="ltv-value-div"><input className="ltv-select" value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} />
                     </div>
