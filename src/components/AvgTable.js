@@ -14,7 +14,7 @@ function row(rowData) {
   const symbol = (Object.keys(rowData)[0])
   const data = rowData[symbol];
 
-  return <tr>
+  return <tr key={symbol}>
     <td>{symbol}</td>
     <td>{largeNumberFormatter(data.average.toFixed(2))}</td>
     <td>{(data.volatility * 100).toFixed(2)}%</td>

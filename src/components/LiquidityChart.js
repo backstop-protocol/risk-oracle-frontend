@@ -62,7 +62,7 @@ const LiquidityChart = observer(props => {
           <YAxis unit={` ${selectedBaseSymbol}`} tickMargin={5} tickFormatter={largeNumberFormatter} />
           <Tooltip content={CustomTooltip}/>
           <Legend verticalAlign='top' />
-          {quotes.map(_ => <Line type="monotone" stroke={strokes[_]} dataKey={_} activeDot={{ r: 8 }} />)}
+          {quotes.map(_ => <Line key={_} type="monotone" stroke={strokes[_]} dataKey={_} activeDot={{ r: 8 }} />)}
         </LineChart>
       </ResponsiveContainer>}
       {loading && <div style={{ marginTop: '100px' }} aria-busy="true"></div>}

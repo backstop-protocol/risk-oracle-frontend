@@ -8,9 +8,9 @@ function row(rowData) {
   for (const [key, value] of Object.entries(objectToParse)) {
     values.push([key, value]);
   }
-  return <tr>
+  return <tr key={symbol}>
     <th>{symbol}</th>
-    {values.map(_ => <td>{ isNaN(_[1]) ? 'unavailable' : `${((_[1] * 100).toFixed(2))}%`}</td>)}
+    {values.map((_, index) => <td key={index}>{ isNaN(_[1]) ? 'unavailable' : `${((_[1] * 100).toFixed(2))}%`}</td>)}
   </tr>
 }
 const timeMap = {
@@ -74,7 +74,7 @@ const VolatilityTable = observer(props => {
         <thead>
           <tr>
             <th scope="col">Avg Volatility</th>
-            {spans.map(_ => <th scope="col">{timeMap[_]}</th>)}
+            {spans.map((_, index) => <th key={index} scope="col">{timeMap[_]}</th>)}
           </tr>
         </thead>
         <tbody>
