@@ -41,7 +41,6 @@ function CLFInput(props) {
         getInputProps,
         highlightedIndex,
         getItemProps,
-        getToggleButtonProps,
     } = useCombobox({
         items: CLFOptions,
         initialSelectedItem: CLFValues[0],
@@ -60,7 +59,6 @@ function CLFInput(props) {
                 <input
                     className="ltv-select"
                     {...getInputProps()}
-                    data-testid="combobox-input"
                 />
             </div>
             <ul
@@ -97,12 +95,13 @@ const LTVCalculator = observer(props => {
     const [recommendedLTV, setRecommendedLTV] = useState(0);
     const averages = mainStore.averages;
     const [borrowCap, setBorrowCap] = useState(0);
-    const div = mainStore.selecteddiv;
+    const span = mainStore.selectedSpan;
     const slippage = mainStore.selectedSlippage;
     const slippageOptions = [1, 5, 10, 15, 20];
     const volatility = averages[selectedQuote]['volatility'];
     const liquidity = averages[selectedQuote]['average'];
     const [clf, setCLF] = useState(10);
+    const price = props.price;
 
 
     useEffect(() => {
@@ -111,7 +110,7 @@ const LTVCalculator = observer(props => {
         //         2/ calc theta / (a) ==> on appelle ça (b)
         const sigmaOverSqrRoot = volatility / sqrRoot;
         //         3/ calc -c * (b) ==> on appelle ça (c)
-        const clfMinusSigmaOverSqrRoot = - clf * sigmaOverSqrRoot;
+        const clfMinusSigmaOverSqrRoot = (-1 * clf) * sigmaOverSqrRoot;
         //         4/ calc exponentielle de (c)  ==> on appelle ça (d)
         const exponential = Math.exp(clfMinusSigmaOverSqrRoot);
         //         5/ calc (d) - beta
@@ -132,7 +131,7 @@ const LTVCalculator = observer(props => {
                 <div className="ltv-asset" title="The time frame that is used for fetching the data.">
                     <div className="ltv-title-div">
                         <small >Time Frame</small></div>
-                    <div className="ltv-value-div"><select className="ltv-select" value={div} onChange={(event) => { mainStore.handledivChange(event.target.value) }}>{Object.entries(timeWindows).map(([tw, v]) => <option key={tw} value={v}>{tw}</option>)}</select>
+                    <div className="ltv-value-div"><select className="ltv-select" value={span} onChange={(event) => { mainStore.handleSpanChange(event.target.value) }}>{Object.entries(timeWindows).map(([tw, v]) => <option key={tw} value={v}>{tw}</option>)}</select>
                     </div>
                 </div>
                 <div className="ltv-asset" title="The available DEX liquidity with a slippage of β.">
@@ -160,7 +159,7 @@ const LTVCalculator = observer(props => {
                     <div className="ltv-title-div">
                         <small>d<br />borrow cap</small>
                     </div>
-                    <div className="ltv-value-div"><input className="ltv-select" type="tel" value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} />
+                    <div className="ltv-value-div"><input className="ltv-select" value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} />
                     </div>
                 </div>
                 <div className="ltv-asset" title="Confidence Level Factor. The higher it is, the odds of insolvency are decreasing.">
