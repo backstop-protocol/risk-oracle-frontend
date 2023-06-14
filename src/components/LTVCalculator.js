@@ -35,6 +35,7 @@ function getCLFFilter(inputValue) {
 function CLFInput(props) {
     const [CLFOptions, setCLFOptions] = useState(CLFValues)
     const setCLF = props.setCLF;
+    const clf = props.clf;
     const {
         isOpen,
         getMenuProps,
@@ -51,16 +52,18 @@ function CLFInput(props) {
         //     )
         // },
         onInputValueChange: ({ inputValue }) => {
-            setCLF(inputValue)
+            setCLF(Number(inputValue))
         },
         setCLF,
         onSelectedItemChange: ((newItem) => setCLF(Number(newItem.selectedItem.value)))
     })
+    console.log(clf);
     return (
         <div>
             <div>
                 <input
                     className="ltv-select"
+                    style={{borderColor: isNaN(clf) ? '#FF0000' : ''}}
                     {...getInputProps()}
                 />
             </div>
@@ -104,7 +107,6 @@ const LTVCalculator = observer(props => {
     const volatility = averages[selectedQuote]['volatility'];
     const liquidity = averages[selectedQuote]['average'];
     const [clf, setCLF] = useState(10);
-    const price = props.price;
 
 
     useEffect(() => {
@@ -169,14 +171,14 @@ const LTVCalculator = observer(props => {
                     <div className="ltv-title-div">
                         <small>CLF</small>
                     </div>
-                    <div className="ltv-value-div"><CLFInput setCLF={setCLF} />
+                    <div className="ltv-value-div"><CLFInput setCLF={setCLF} clf={clf} />
                     </div>
                 </div>
                 <div className="ltv-asset" title="Loan To Value ratio.">
                     <div className="ltv-title-div">
                         <small>Recommended LTV</small>
                     </div>
-                    <div className="ltv-value-div">{recommendedLTV < 0 ? 0 : recommendedLTV}
+                    <div className="ltv-value-div" style={{color: isNaN(recommendedLTV) ? '#FF0000' : ''}}>{isNaN(recommendedLTV) ? 'CLF must be a number' : recommendedLTV < 0 ? 0 : recommendedLTV}
                     </div>
                 </div>
             </div>
