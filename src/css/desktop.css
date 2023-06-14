@@ -1,14 +1,17 @@
-
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
 }
-body::-webkit-scrollbar { 
-  display: none;  /* Safari and Chrome */
+
+body::-webkit-scrollbar {
+  display: none;
+  /* Safari and Chrome */
 }
 
 [role=button] {
@@ -22,7 +25,7 @@ main {
   display: flex;
 }
 
-.tooltip-container{
+.tooltip-container {
   border-radius: var(--border-radius);
   box-shadow: var(--card-box-shadow);
   padding: 20px;
@@ -42,31 +45,35 @@ main {
   height: calc(100vh - 102px);
 }
 
-.ltv-container{
+.ltv-container {
   min-height: 95%;
 }
-.ltv-table{
+
+.ltv-table {
   display: flex;
   flex-direction: row;
   min-height: 95%;
   gap: 1vw;
 }
 
-.ltv-asset{
+.ltv-asset {
   display: flex;
   flex-direction: column;
   width: 12.5%;
   min-height: 100%;
 }
-.ltv-title-div{
+
+.ltv-title-div {
   display: flex;
   text-align: center;
   min-height: 50%;
   align-items: center;
   justify-content: center;
   border-bottom: solid;
+  border-color: #5a5a5a31;
 }
-.ltv-value-div{
+
+.ltv-value-div {
   margin-top: 10px;
   display: flex;
   text-align: center;
@@ -74,7 +81,8 @@ main {
   align-items: center;
   justify-content: center;
 }
-.clf-value-div{
+
+.clf-value-div {
   display: flex;
   text-align: center;
   min-height: 50%;
@@ -82,17 +90,17 @@ main {
   justify-content: center;
 }
 
-.ltv-header{
+.ltv-header {
   text-align: center;
 }
 
-.ltv-td{
+.ltv-td {
   text-align: center;
   vertical-align: center;
   font-size: 0.8rem;
 }
 
-.ltv-select{
+.ltv-select {
   font-size: 0.8rem;
   margin-bottom: 0px !important;
   height: 100%;
@@ -101,21 +109,27 @@ main {
 .ltv-dropdown-content {
   position: absolute;
   list-style-type: none;
-  background-color: white;
+  background-color: var(--contrast-inverse);
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   padding: 0;
 }
+
 .ltv-dropdown-item {
-  list-style-type: none; /* Remove bullets */
-  padding: 0; /* Remove padding */
-  margin: 0; /* Remove margins */
+  list-style-type: none;
+  /* Remove bullets */
+  padding: 0;
+  /* Remove padding */
+  margin: 0;
+  /* Remove margins */
 }
-.ltv-dropdown-text{
+
+.ltv-dropdown-text {
   font-size: 0.8rem;
 }
-.ltv-dropdown-value{
+
+.ltv-dropdown-value {
   font-size: 0.8rem;
   color: grey;
 }
@@ -130,13 +144,13 @@ main {
   color: var(--contrast);
 }
 
-.side-nav-item a > img{
+.side-nav-item a>img {
   margin: 0 20px;
   width: 32px;
   height: 32px;
 }
 
-.search-list-item.side-nav-item a > img{
+.search-list-item.side-nav-item a>img {
   margin: 0 10px;
   width: 22px;
   height: 22px;
@@ -149,14 +163,14 @@ main {
   line-height: 0.8rem;
 }
 
-.main-content{
+.main-content {
   padding: 10px calc(var(--spacing) * 2);
   width: 100%;
   height: calc(100vh - 102px);
   overflow-y: scroll;
 }
 
-.info-line{
+.info-line {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -168,10 +182,12 @@ main {
   height: calc(var(--font-size) * 1.2);
   filter: invert(var(--inverter));
 }
-.slippage-selector-container{
+
+.slippage-selector-container {
   display: flex;
   justify-content: center;
 }
+
 #slippage-selector {
   margin: 0;
   font-size: 0.8rem;
@@ -187,7 +203,7 @@ main {
   gap: 20px;
 }
 
-.left-selector{
+.left-selector {
   margin: 0 !important;
 }
 
@@ -213,11 +229,12 @@ article.box {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-justify-content: center;
-border-bottom: solid;
-border-color: #D4F1E1;
-padding-bottom: 1vh;
+  justify-content: center;
+  border-bottom: solid;
+  border-color: #5a5a5a31;
+  padding-bottom: 1vh;
 }
+
 .quotes-selector {
   margin: 0;
   display: flex;
@@ -226,8 +243,8 @@ padding-bottom: 1vh;
   margin-left: 0%;
   justify-content: center;
   border-bottom: solid;
-border-color: #D4F1E1;
-padding-bottom: 1vh;
+  border-color: #5a5a5a31;
+  padding-bottom: 1vh;
 }
 
 
@@ -248,7 +265,8 @@ header {
   width: 100%;
 }
 
-.button-container a, .app-button{
+.button-container a,
+.app-button {
   padding: 12px 27px;
   font-family: 'Inter';
   font-style: normal;
@@ -258,7 +276,7 @@ header {
   text-align: center;
 }
 
-:root{
+:root {
   --calm-bg: #1F202F;
   --main-bg: #1F202F;
   --main-bg-inverse: #fff;
@@ -267,6 +285,7 @@ header {
   --side-nav-width: 200px;
   --inverter: 1;
 }
+
 /* Pink Light scheme (Default) */
 /* Can be forced with data-theme="light" */
 [data-theme="light"],
@@ -304,13 +323,13 @@ header {
   border: none;
 }
 
-.card-logo{
+.card-logo {
   width: 50%;
   height: 50%;
   object-fit: contain;
 }
 
-.card-name{
+.card-name {
   font-style: normal;
   font-weight: 600;
   font-size: 2.1rem;
@@ -343,17 +362,17 @@ header {
   --form-element-focus-color: var(--primary-focus);
   --switch-color: var(--primary-inverse);
   --switch-checked-background-color: var(--primary);
-  --font-family: 'Inter', system-ui,-apple-system,"Segoe UI","Roboto","Ubuntu","Cantarell","Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  --font-family: 'Inter', system-ui, -apple-system, "Segoe UI", "Roboto", "Ubuntu", "Cantarell", "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .footer {
-  background: #1F202F; 
+  background: #1F202F;
 }
 
 .footer-main {
-  display: flex; 
-  flex-direction: column; 
-  justify-content: center; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
@@ -399,7 +418,7 @@ header {
   padding: 80px 0;
 }
 
-.backed-by-img-container{
+.backed-by-img-container {
   display: flex;
   align-items: center;
   margin: var(--spacing);
@@ -410,7 +429,7 @@ header {
   margin: 25px;
 }
 
-.backed-by-img-container > a {
+.backed-by-img-container>a {
   font-size: 1.8rem;
   text-decoration: none;
   font-weight: 600;
@@ -419,11 +438,12 @@ header {
   text-align: center;
 }
 
-.withOverflowingBackground-white::before, .withOverflowingBackground-white > section {
+.withOverflowingBackground-white::before,
+.withOverflowingBackground-white>section {
   height: 500px;
 }
 
-.backed-by-img{
+.backed-by-img {
   width: 150px;
   height: 150px;
   object-fit: contain;
@@ -474,7 +494,7 @@ section {
   align-items: center;
 }
 
-.section-icon-wrapper img{
+.section-icon-wrapper img {
   width: 45%;
   height: 45%;
   object-fit: contain;
@@ -552,7 +572,7 @@ section {
   font-size: 1.8rem;
   line-height: 175.52%;
   /* or 32px */
-  
+
   color: var(--contrast);
   padding-bottom: var(--spacing);
   margin-bottom: var(--spacing);
@@ -601,25 +621,25 @@ a.card-link {
   height: 640px;
 }
 
-.card-1{
+.card-1 {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-.card-2{
+.card-2 {
   position: absolute;
   top: 0;
   right: 0;
 }
 
-.card-3{
+.card-3 {
   position: absolute;
   bottom: 0;
   right: calc(50% - 125px);
 }
 
-.dashed-circle{
+.dashed-circle {
   box-sizing: border-box;
   position: absolute;
   width: 378px;
@@ -635,20 +655,20 @@ a.card-link {
   content: " ";
   position: absolute;
   right: 0;
-  left: 0;  
+  left: 0;
   height: 900px;
   z-index: -1;
-  background: linear-gradient(90deg,  var(--calm-bg) 72%, rgba(35,164,85,1) 72%);
+  background: linear-gradient(90deg, var(--calm-bg) 72%, rgba(35, 164, 85, 1) 72%);
 }
 
 .withOverflowingBackground-4::before {
   content: " ";
   position: absolute;
   right: 0;
-  left: 0;  
+  left: 0;
   height: 900px;
   z-index: -1;
-  background: linear-gradient(90deg,  var(--calm-bg) 72%, rgba(35,164,85,1) 72%);
+  background: linear-gradient(90deg, var(--calm-bg) 72%, rgba(35, 164, 85, 1) 72%);
 }
 
 .withOverflowingBackground-1::before {
@@ -656,9 +676,9 @@ a.card-link {
   position: absolute;
   right: 0;
   left: 0;
-  height: 900px;  
+  height: 900px;
   z-index: -1;
-  background: linear-gradient(90deg, rgba(35,164,85,1) 28%, var(--main-bg) 28%);
+  background: linear-gradient(90deg, rgba(35, 164, 85, 1) 28%, var(--main-bg) 28%);
 }
 
 .withOverflowingBackground-white::before {
@@ -680,6 +700,7 @@ a.card-link {
 .section-main {
   margin-right: calc((100vw / 20));
 }
+
 .section-main-reverse {
   margin-left: calc((100vw / 20));
 }
@@ -699,13 +720,10 @@ a.card-link {
 }
 
 .container {
-    width: 80vw;
-    max-width: 1400px;
+  width: 80vw;
+  max-width: 1400px;
 }
 
 .mobile-menu {
   display: none;
 }
-
-
-
