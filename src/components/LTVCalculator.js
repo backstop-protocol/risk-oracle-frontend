@@ -61,6 +61,7 @@ function CLFInput(props) {
         <div>
             <div>
                 <input
+                    pattern="[0-9]+"
                     className="ltv-select"
                     style={{borderColor: isNaN(clf) ? '#FF0000' : ''}}
                     {...getInputProps()}
