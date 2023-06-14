@@ -100,28 +100,29 @@ const LTVCalculator = observer(props => {
     const [recommendedLTV, setRecommendedLTV] = useState(0);
     const averages = mainStore.averages;
     const [borrowCap, setBorrowCap] = useState(0);
+    const [borrowCapInKind, setBorrowCapInKind] = useState(undefined);
     const span = mainStore.selectedSpan;
     const slippage = mainStore.selectedSlippage;
     const slippageOptions = [1, 5, 10, 15, 20];
     const volatility = selectedQuote ? averages[selectedQuote]['volatility'] : undefined;
     const liquidity = averages[selectedQuote]['average'];
     const [clf, setCLF] = useState(10);
-    const [debtAssetPrice, setDebtAssetPrice] = useState(0)
-    
-    // useEffect(()=> {
-    //     async function getInitialPrice(selectedQuote, setDebtAssetPrice){
-    //         const id = coingeckoMap[selectedQuote.toLowerCase()];
-    //         const url = `https://api.coingecko.com/api/v3/coins/${id}`
-    //         const data = await axios.get(url);
-    //         setDebtAssetPrice((data.data['market_data']['current_price']['usd']).toFixed(2));
-    //     }
-    //     getInitialPrice(selectedQuote, setDebtAssetPrice);
-        
-    // }, [selectedQuote])
+    const debtAssetPrice = mainStore.debtAssetPrices[selectedQuote] ? mainStore.debtAssetPrices[selectedQuote] : undefined;
+    console.log('mainStore.debtAssetPrices', mainStore.debtAssetPrices)
+
+    useEffect(()=> {
+        if(!mainStore.debtAssetPrices[selectedQuote]){
+            mainStore.updateDebtAssetPrices(selectedQuote);
+        }
+    }, [selectedQuote]);
+
+    useEffect(()=> {
+        setBorrowCapInKind(borrowCap / debtAssetPrice);
+    }, [borrowCap, debtAssetPrice, setBorrowCapInKind]);
 
     useEffect(() => {
         //         1/ calc racine carré de l / d ==> on appelle ça (a)
-        const sqrRoot = Math.sqrt(liquidity / borrowCap);
+        const sqrRoot = Math.sqrt(liquidity / borrowCapInKind);
         // const sqrRoot = Math.sqrt(liquidity / (borrowCap / debtAssetPrice));
         //         2/ calc theta / (a) ==> on appelle ça (b)
         const sigmaOverSqrRoot = volatility / sqrRoot;
@@ -132,7 +133,7 @@ const LTVCalculator = observer(props => {
         //         5/ calc (d) - beta
         const ltv = exponential - (slippage / 100);
         setRecommendedLTV(ltv.toFixed(2));
-    }, [borrowCap, liquidity, slippage, volatility, clf])
+    }, [liquidity, slippage, volatility, clf, borrowCapInKind])
 
     return (
         <article style={{ marginTop: 0, marginBottom: 0 }} className="ltv-container">

@@ -1,4 +1,4 @@
-import { isDexAvailableForBase, normalize } from "../utils/utils";
+import { coingeckoMap, isDexAvailableForBase, normalize } from "../utils/utils";
 import { makeAutoObservable, runInAction } from "mobx";
 import { pythiaAddress, relayerAddress, rpcURL } from "../config";
 
@@ -39,6 +39,7 @@ class MainStore {
     this.averageData = {};
     this.lastUpdate = {};
     this.averages = {};
+    this.debtAssetPrices = {};
     this.loading = true;
     const urls = [];
     const averageUrls = [];
@@ -153,6 +154,14 @@ class MainStore {
       this.averages[tokenName] = averageArray[i][tokenName];
     }
 
+  }
+
+  async updateDebtAssetPrices(asset){
+      const id = coingeckoMap[asset.toLowerCase()];
+      const url = `https://api.coingecko.com/api/v3/coins/${id}`
+      const data = await axios.get(url);
+      const price = (data.data['market_data']['current_price']['usd']).toFixed(2); 
+      this.debtAssetPrices[asset] = price;
   }
 
   search = (assetName) => {
