@@ -158,7 +158,7 @@ const LTVCalculator = observer(props => {
                 </div>
                 <div className="ltv-asset" title="The available DEX liquidity with a slippage of β.">
                     <div className="ltv-title-div">
-                        <small>&#8467;<br />liquidity</small>
+                        <small>&#8467;<br />Liquidity</small>
                     </div>
                     <div className="ltv-value-div">{largeNumberFormatter((liquidity).toFixed(2))}
                     </div>
@@ -172,21 +172,21 @@ const LTVCalculator = observer(props => {
                 </div>
                 <div className="ltv-asset" title="The bonus liquidators get as an incentive to liquidate a position.">
                     <div className="ltv-title-div">
-                        <small>&beta;<br />liquidation bonus</small>
+                        <small>&beta;<br />Liquidation bonus</small>
                     </div>
                     <div className="ltv-value-div"><select className="ltv-select" value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <option key={_} value={_}>{_}%</option>)}</select>
                     </div>
                 </div>
                 <div className="ltv-asset" title="The borrow cap of the debt asset in USD value.">
                     <div className="ltv-title-div">
-                        <small><em>&#100;</em><br />borrow cap</small>
+                        <small><em>&#100;</em><br />Borrow cap $</small>
                     </div>
                     <div className="ltv-value-div"><input className="ltv-select" value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} />
                     </div>
                 </div>
                 <div className="ltv-asset" title="Confidence Level Factor. The higher it is, the odds of insolvency are decreasing.">
                     <div className="ltv-title-div">
-                        <small>CLF</small>
+                        <small>CLF<br />Confidence Level Factor</small>
                     </div>
                     <div className="ltv-value-div"><CLFInput setCLF={setCLF} clf={clf} />
                     </div>
