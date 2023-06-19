@@ -53,6 +53,9 @@ export const coingeckoMap = {
     usdc: 'usd-coin',
     susd: 'nusd',
     wbtc: 'wrapped-bitcoin',
+    uni: 'uniswap',
+    dai: 'dai',
+    eth: 'ethereum',
     weth: 'weth'
 }
 export function isDexAvailableForBase(dexName, selectedBaseName) {
