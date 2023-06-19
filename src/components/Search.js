@@ -1,6 +1,7 @@
-import { observer } from "mobx-react"
-import mainStore from "../stores/main.store"
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
+import mainStore from "../stores/main.store";
+import { observer } from "mobx-react";
 
 /**
  * Hook that alerts clicks outside of the passed ref
@@ -34,7 +35,7 @@ const Search = observer(props => {
   return (
     <div ref={wrapperRef}>
       <form onSubmit={(e)=>{e.preventDefault(); search(searchFieldValue)}} style={{margin: 0}}>   
-        <input onClick={()=> setSearchListOpen(true)} autocomplete="off" value={searchFieldValue} onChange={(e) => setSearchFieldValue(e.target.value)}type="search" id="search" name="search" placeholder="Search Assets"/>
+        <input onClick={()=> setSearchListOpen(true)} autoComplete="off" value={searchFieldValue} onChange={(e) => setSearchFieldValue(e.target.value)}type="search" id="search" name="search" placeholder="Search Assets"/>
       </form> 
       {searchList.length > 0 && searchListOpen && <article className="search-list">
         <aside>

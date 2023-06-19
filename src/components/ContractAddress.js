@@ -1,5 +1,6 @@
-import { observer } from "mobx-react"
 import { makeAutoObservable, runInAction } from "mobx"
+
+import { observer } from "mobx-react"
 
 class LocalStore {
 
@@ -39,7 +40,7 @@ const ContractAddress = observer(props => {
     </div>
     <div>
       <small>
-        <a href={`https://etherscan.io/address/${address}`} target>{address}</a>
+        <a href={`https://sepolia.etherscan.io/address/${address}`} target>{address}</a>
       </small>
       <span onClick={()=> copyToClipboard(address)} style={iconStyle} data-tooltip={TOOLTIP_TEXT_2}>
         {!copiedToClipboard && <img className="icon" src="icons/content_copy.svg"/>}
