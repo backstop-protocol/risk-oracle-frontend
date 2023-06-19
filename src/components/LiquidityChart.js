@@ -40,10 +40,13 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 
 const LiquidityChart = observer(props => {
- const {span, handleChange, loading, quotes, displayData, selectedBaseSymbol} = props;
+ const {loading, quotes, displayData, selectedBaseSymbol} = props;
   return (
     <article className='box' style={{ width: '100%', height: '30vh', minHeight: '440px', marginTop: "0px", }}>
-      <TimeFrameButtons span={span} handleChange={handleChange} />
+      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+      <TimeFrameButtons/>
+      </div>
+      
       {!loading && <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={displayData}
@@ -59,7 +62,7 @@ const LiquidityChart = observer(props => {
           <YAxis unit={` ${selectedBaseSymbol}`} tickMargin={5} tickFormatter={largeNumberFormatter} />
           <Tooltip content={CustomTooltip}/>
           <Legend verticalAlign='top' />
-          {quotes.map(_ => <Line type="monotone" stroke={strokes[_]} dataKey={_} activeDot={{ r: 8 }} />)}
+          {quotes.map(_ => <Line key={_} type="monotone" stroke={strokes[_]} dataKey={_} activeDot={{ r: 8 }} />)}
         </LineChart>
       </ResponsiveContainer>}
       {loading && <div style={{ marginTop: '100px' }} aria-busy="true"></div>}

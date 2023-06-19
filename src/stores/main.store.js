@@ -1,4 +1,4 @@
-import { isDexAvailableForBase, normalize } from "../utils/utils";
+import { coingeckoMap, isDexAvailableForBase, normalize } from "../utils/utils";
 import { makeAutoObservable, runInAction } from "mobx";
 import { pythiaAddress, relayerAddress, rpcURL } from "../config";
 
@@ -11,23 +11,6 @@ import symbols from "../config";
 const defaultAsset = "ETH"
 const apiUrl = "https://api.dex-history.la-tribu.xyz/api";
 class MainStore {
-
-  searchedAsset = null;
-  selectedAsset = assets[defaultAsset]
-  selectedBaseSymbol = symbols[defaultAsset];
-  selectedDexes = [];
-  selectedQuotes = [];
-  web3Data = null;
-  searchFieldValue = ''
-  allDexes = true;
-  searchCounter = 0
-  graphData = null;
-  averageData = null;
-  loading = true;
-  timestamps = {};
-  spans = [1, 7, 30, 180, 365];
-  platforms = ['uniswapv2', 'curve', 'uniswapv3'];
-  quotes = ['USDC', 'WBTC', 'WETH']
   constructor() {
     this.assets = Object.entries(assets)
       .filter(([, asset]) => asset.display)
@@ -35,9 +18,28 @@ class MainStore {
         v.name = k
         return v
       })
+    this.searchedAsset = null;
+    this.selectedAsset = assets[defaultAsset]
+    this.selectedBaseSymbol = symbols[defaultAsset];
+    this.selectedDexes = [];
+    this.selectedQuotes = [];
+    this.selectedSlippage = 5;
+    this.selectedSpan = 1;
+    this.web3Data = null;
+    this.searchFieldValue = ''
+    this.allDexes = true;
+    this.searchCounter = 0
+    this.graphData = null;
+    this.loading = true;
+    this.timestamps = {};
+    this.spans = [1, 7, 30, 180, 365];
+    this.platforms = ['uniswapv2', 'curve', 'uniswapv3'];
+    this.quotes = ['USDC', 'WBTC', 'WETH']
     this.graphData = {};
     this.averageData = {};
     this.lastUpdate = {};
+    this.averages = {};
+    this.debtAssetPrices = {};
     this.loading = true;
     const urls = [];
     const averageUrls = [];
@@ -86,7 +88,7 @@ class MainStore {
       .catch(error => {
         console.error('error', error);
       });
-      this.getWeb3Data();
+    this.getWeb3Data();
     makeAutoObservable(this);
   }
   async sendParallelRequests(urls) {
@@ -103,7 +105,7 @@ class MainStore {
     const key = ethers.keccak256(ethers.toUtf8Bytes(`avg 30 days uni v3 liquidity`));
     const symbols = [];
     const toReturn = {};
-    
+
     for (const [tokenSymbol, value] of Object.entries(assets)) {
       if (value.pythia) {
         symbols.push(tokenSymbol);
@@ -115,7 +117,7 @@ class MainStore {
 
     const results = await pythiaContract.multiGet(relayers, assetsAddresses, keys);
 
-    for(let i = 0; i < symbols.length; i++){
+    for (let i = 0; i < symbols.length; i++) {
       const assetConf = assets[symbols[i]];
       toReturn[symbols[i]] = normalize(results[i], BigInt(assetConf.decimals));
     }
@@ -144,6 +146,22 @@ class MainStore {
     if (rect.top < 0 || rect.top > 1) {
       element.scrollIntoView();
     }
+  }
+
+  updateAverages = (averageArray) => {
+    for(let i = 0; i < averageArray.length; i++){
+      const tokenName = Object.keys(averageArray[i])[0];
+      this.averages[tokenName] = averageArray[i][tokenName];
+    }
+
+  }
+
+  async updateDebtAssetPrices(asset){
+      const id = coingeckoMap[asset.toLowerCase()];
+      const url = `https://api.coingecko.com/api/v3/coins/${id}`
+      const data = await axios.get(url);
+      const price = (data.data['market_data']['current_price']['usd']).toFixed(2); 
+      this.debtAssetPrices[asset] = price;
   }
 
   search = (assetName) => {
@@ -259,6 +277,13 @@ class MainStore {
 
   setSearchFieldValue = (value) => {
     this.searchFieldValue = value
+  }
+
+  handleSlippageChange = (value) => {
+    this.selectedSlippage = value;
+  }
+  handleSpanChange = (value) => {
+    this.selectedSpan = value;
   }
 }
 

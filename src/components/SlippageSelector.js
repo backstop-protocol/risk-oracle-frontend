@@ -1,16 +1,19 @@
+import mainStore from "../stores/main.store";
+import { observer } from "mobx-react";
+
 const options = [
   1, 5, 10, 15, 20
 ]
 
-const SlippageSelector = props => {
-  const currentValue = props.slippage;
+const SlippageSelector = observer(props => {
+  const currentValue = mainStore.selectedSlippage;
   return (
-    <div>
-      <select id="slippage-selector" defaultValue={currentValue} onChange={(event) => props.handleChange(event.target.value)}>
-        {options.map(option=> <option key={option} value={option}>{option}% slippage</option>)}
+    <div className="slippage-selector-container">
+      <select id="slippage-selector" value={currentValue} onChange={(event) => mainStore.handleSlippageChange(event.target.value)}>
+        {options.map((option) => <option key={option} value={option}>{option}% slippage</option>)}
       </select>
     </div>
   )
-}
+})
 
 export default SlippageSelector

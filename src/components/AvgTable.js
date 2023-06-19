@@ -14,7 +14,7 @@ function row(rowData) {
   const symbol = (Object.keys(rowData)[0])
   const data = rowData[symbol];
 
-  return <tr>
+  return <tr key={symbol}>
     <td>{symbol}</td>
     <td>{largeNumberFormatter(data.average.toFixed(2))}</td>
     <td>{(data.volatility * 100).toFixed(2)}%</td>
@@ -22,7 +22,8 @@ function row(rowData) {
 }
 
 const AvgTable = observer(props => {
-  const { selectedBaseSymbol, quotes, slippage, dexes, span, averageData } = props;
+  const { selectedBaseSymbol, quotes, slippage, dexes, averageData } = props;
+  const span = mainStore.selectedSpan;
   const rowDataArray = [];
   const sortedData = {};
   const loading = mainStore.loading;
@@ -67,6 +68,7 @@ const AvgTable = observer(props => {
       rowDataArray.push(toPush);
     }
     rowDataArray.sort((a, b) => Object.entries(b)[0][1].average - Object.entries(a)[0][1].average);
+    mainStore.updateAverages(rowDataArray);
   }
 
 

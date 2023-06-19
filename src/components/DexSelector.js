@@ -1,3 +1,4 @@
+import SlippageSelector from "./SlippageSelector";
 import { isDexAvailableForBase } from "../utils/utils";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
@@ -20,7 +21,9 @@ const DexSelector = observer(props => {
   const handleQuotesChanges = mainStore.handleQuotesChanges;
 
   return (
-    <div style={{fontSize: "0.875em"}}>
+    <div>
+      <article className="left-selector">
+      <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
       <fieldset className="dex-selector">
       <label htmlFor="switch">
           <input type="checkbox" id="switch" name="switch" role="switch" readOnly 
@@ -40,8 +43,11 @@ const DexSelector = observer(props => {
           {nameMap[quote] || quote}
         </label>)}
       </fieldset>
+      <hr></hr>
+      <SlippageSelector />
+      </div>
+      </article>
     </div>
   )
 })
-
 export default DexSelector
