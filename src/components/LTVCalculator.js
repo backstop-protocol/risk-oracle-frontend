@@ -96,7 +96,7 @@ function CLFInput(props) {
 }
 
 const LTVCalculator = observer(props => {
-    const quotes = props.quotes;
+    const quotes = mainStore.selectedQuotes;
     const [selectedQuote, setSelectedQuote] = useState(quotes[0]);
     const [recommendedLTV, setRecommendedLTV] = useState(0);
     const averages = mainStore.averages;
@@ -109,13 +109,17 @@ const LTVCalculator = observer(props => {
     const liquidity = averages[selectedQuote]['average'];
     const [clf, setCLF] = useState(10);
     const debtAssetPrice = mainStore.debtAssetPrices[selectedQuote] ? mainStore.debtAssetPrices[selectedQuote] : undefined;
-    console.log('mainStore.debtAssetPrices', mainStore.debtAssetPrices)
 
     useEffect(()=> {
         if(!mainStore.debtAssetPrices[selectedQuote]){
             mainStore.updateDebtAssetPrices(selectedQuote);
         }
     }, [selectedQuote]);
+
+    useEffect(()=> {
+        setSelectedQuote(quotes[0]);
+    }, [quotes]);
+
 
     useEffect(()=> {
         setBorrowCapInKind(borrowCap / debtAssetPrice);
