@@ -260,6 +260,7 @@ class MainStore {
         }
       }
     }
+    quotesHolder.sort();
     this.selectedQuotes = [...this.selectedQuotes, ...quotesHolder];
   }
 
