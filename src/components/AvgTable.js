@@ -13,10 +13,12 @@ const timeMap = {
 function row(rowData, selectedBaseSymbol) {
   const symbol = (Object.keys(rowData)[0])
   const data = rowData[symbol];
+  const price = mainStore.basePrice;
 
   return <tr key={symbol}>
     <td>{symbol}</td>
-    <td>{largeNumberFormatter(data.average.toFixed(2))} {selectedBaseSymbol}</td>
+    <td>{largeNumberFormatter(data.average.toFixed(2))} {selectedBaseSymbol}
+    <br/><small>${largeNumberFormatter(data.average*mainStore.basePrice)}</small></td>
     <td>{(data.volatility * 100).toFixed(2)}%</td>
   </tr>
 }

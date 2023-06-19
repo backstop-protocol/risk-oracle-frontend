@@ -40,6 +40,7 @@ class MainStore {
     this.lastUpdate = {};
     this.averages = {};
     this.debtAssetPrices = {};
+    this.basePrice = 0;
     this.loading = true;
     const urls = [];
     const averageUrls = [];
