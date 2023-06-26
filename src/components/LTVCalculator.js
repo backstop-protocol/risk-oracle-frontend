@@ -160,7 +160,7 @@ const LTVCalculator = observer(props => {
                     <div className="ltv-title-div">
                         <small>&#8467;<br />Liquidity</small>
                     </div>
-                    <div className="ltv-value-div">{largeNumberFormatter((liquidity).toFixed(2))}
+                    <div className="ltv-liquidity-value-div"><span>{largeNumberFormatter((liquidity).toFixed(2))}</span><span style={{fontSize: '0.7rem'}}>${largeNumberFormatter((liquidity*debtAssetPrice).toFixed(2))}</span>
                     </div>
                 </div>
                 <div className="ltv-asset" title="The price volatility between the collateral and debt asset (normalized to the base asset price).">

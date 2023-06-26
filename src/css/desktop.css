@@ -83,6 +83,15 @@ main {
   align-items: center;
   justify-content: center;
 }
+.ltv-liquidity-value-div {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  min-height: 50%;
+  align-items: center;
+  justify-content: center;
+}
 
 .clf-value-div {
   display: flex;
