@@ -1,5 +1,5 @@
-import Title from "../components/Title"
 import Subtitle from "../components/Subtitle"
+import Title from "../components/Title"
 
 const styles = {
   flex: {
@@ -23,10 +23,10 @@ const First = props => {
   return <div className="container-fluid" style={{marginTop: '102px'}}>
     <section  style={styles.flex}>
       <div style={styles.flexItem}>
-        <Title>Asset Tracker for On-Chain Liquidity and Volatility </Title>
-        <Subtitle>The Risk Oracle provides an on-chain feed of liquidity and volatility for specific assets.</Subtitle>
+        <Title>Removing the Human Factor from DeFi Risk Management</Title>
+        <Subtitle>Risk Oracle is an automated, decentralized, transparent, and self-executing DeFi risk engine.</Subtitle>
         <p>
-          Devs can add these feeds into their smart contracts to enable a new layer of transparency and security to their dapps.
+        The Risk Oracle provides on-chain risk parameter feeds that smart contracts can use to automate their economic risk management processes.
         </p>
         <div className="button-container">
           <a href="https://docs.bprotocol.org" role="button" >Read Docs</a>
