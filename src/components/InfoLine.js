@@ -48,6 +48,8 @@ const InfoLine = observer(props => {
     }
   }, [selectedBaseSymbol, priceInfo.lastPrice]);
 
+  mainStore.basePrice = priceInfo.lastPrice ? priceInfo.lastPrice : price;
+
   return (
     <div className="info-line">
       <div className="info">

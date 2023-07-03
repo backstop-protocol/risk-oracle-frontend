@@ -47,6 +47,7 @@ main {
 
 .ltv-container {
   min-height: 95%;
+  padding-top: 2vh;
 }
 
 .ltv-table {
@@ -71,11 +72,21 @@ main {
   justify-content: center;
   border-bottom: solid;
   border-color: #5a5a5a31;
+  padding-bottom: 1vh;
 }
 
 .ltv-value-div {
   margin-top: 10px;
   display: flex;
+  text-align: center;
+  min-height: 50%;
+  align-items: center;
+  justify-content: center;
+}
+.ltv-liquidity-value-div {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
   text-align: center;
   min-height: 50%;
   align-items: center;
@@ -103,7 +114,8 @@ main {
 .ltv-select {
   font-size: 0.8rem;
   margin-bottom: 0px !important;
-  height: 100%;
+  height: 2.6vh !important;
+  padding: 0vh 0vw 0vh 0.5vw !important;
 }
 
 .ltv-dropdown-content {
@@ -195,6 +207,7 @@ main {
   padding-left: 10px !important;
   padding-bottom: 5px !important;
   width: 50%;
+  height: 2.6vh !important;
 }
 
 .info-line .info {

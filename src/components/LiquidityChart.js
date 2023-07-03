@@ -27,6 +27,8 @@ const CustomTooltip = ({ active, payload, label }) => {
       displayValues.push(key);
     }
     }
+    displayValues.sort((a,b) => b[1] - a[1]);
+    console.log(displayValues);
 
     return (
       <div className="tooltip-container">

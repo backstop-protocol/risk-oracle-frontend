@@ -40,6 +40,7 @@ class MainStore {
     this.lastUpdate = {};
     this.averages = {};
     this.debtAssetPrices = {};
+    this.basePrice = 0;
     this.loading = true;
     const urls = [];
     const averageUrls = [];
@@ -260,6 +261,7 @@ class MainStore {
         }
       }
     }
+    quotesHolder.sort();
     this.selectedQuotes = [...this.selectedQuotes, ...quotesHolder];
   }
 

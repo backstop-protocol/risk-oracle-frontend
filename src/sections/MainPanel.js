@@ -97,7 +97,7 @@ const MainPanel = observer(props => {
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '', fontSize: "0.875em"}}>
               {/* <ComparisonAssetsSelector dataStore={dataStore}/> */}
               <DexSelector selectedBaseSymbol={selectedBaseSymbol} availableQuotesForBase={availableQuotesForBase}/>
-              <LTVCalculator slippage={slippage} quotes={quotes} averageData={averageData} />
+              <LTVCalculator />
             </div>
             
           </article>
