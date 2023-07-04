@@ -1,5 +1,6 @@
-import { observer } from "mobx-react"
+import mainStore from "../stores/main.store"
 import moment from "moment"
+import { observer } from "mobx-react"
 
 const TOOLTIP_TEXT = "time since last update was published on-chain"
 const iconStyle = {
@@ -8,9 +9,11 @@ const iconStyle = {
 }
 
 const LastUpdate = observer(props => {
-
-  const {date} = props
-  
+    const web3Data = mainStore.web3Data;
+    if (web3Data) {
+        const selectedBase = mainStore.selectedAsset.name;
+        if (web3Data[selectedBase]) {
+          const date = web3Data[selectedBase]['lastUpdate'] * 1000;
   return (
     <div >
       <div><small><b>Last update</b></small>       
@@ -21,7 +24,7 @@ const LastUpdate = observer(props => {
       <div style={{color: "var(--muted-color)"}}><small>{moment(date).format('LL')}</small></div>
       <div><small>{moment(date).fromNow()}</small></div>
     </div>
-  )
+  )}}
 })
 
 export default LastUpdate

@@ -1,11 +1,12 @@
 import { coingeckoMap, isDexAvailableForBase, normalize } from "../utils/utils";
+import { keyEncoderAddress, pythiaAddress, relayerAddress, rpcURL } from "../config";
 import { makeAutoObservable, runInAction } from "mobx";
-import { pythiaAddress, relayerAddress, rpcURL } from "../config";
 
 import PythiaABI from "../abi/pythia.abi.json";
 import { assets } from "./config.store";
 import axios from "axios";
 import { ethers } from "ethers";
+import keyEncoderABI from "../abi/keyEncoder.abi.json";
 import symbols from "../config";
 
 const defaultAsset = "ETH"
@@ -100,10 +101,10 @@ class MainStore {
   async getWeb3Data() {
     const provider = new ethers.JsonRpcProvider(rpcURL);
     const pythiaContract = new ethers.Contract(pythiaAddress, PythiaABI, provider);
+    const keyEncoderContract = new ethers.Contract(keyEncoderAddress, keyEncoderABI, provider);
     const relayers = [];
     const assetsAddresses = [];
     const keys = [];
-    const key = ethers.keccak256(ethers.toUtf8Bytes(`avg 30 days uni v3 liquidity`));
     const symbols = [];
     const toReturn = {};
 
@@ -111,18 +112,26 @@ class MainStore {
       if (value.pythia) {
         symbols.push(tokenSymbol);
         relayers.push(relayerAddress);
+        const key = await keyEncoderContract.encodeLiquidityKey(value.address, assets.USDC.address, 2, 5, 30);
         keys.push(key);
         assetsAddresses.push(value.address)
       }
     }
-
     const results = await pythiaContract.multiGet(relayers, assetsAddresses, keys);
-
+    console.log(JSON.stringify(results, (key, value) =>
+            typeof value === 'bigint'
+                ? value.toString()
+                : value // return everything else unchanged
+        )
+        )
     for (let i = 0; i < symbols.length; i++) {
       const assetConf = assets[symbols[i]];
-      toReturn[symbols[i]] = normalize(results[i], BigInt(assetConf.decimals));
+      toReturn[symbols[i]] = {};
+      toReturn[symbols[i]]['value'] = normalize(results[i][0], BigInt(assetConf.decimals));
+      toReturn[symbols[i]]['lastUpdate'] = Number(results[i][1]);
     }
     this.web3Data = toReturn;
+    console.log(toReturn);
   }
 
   get searchList() {

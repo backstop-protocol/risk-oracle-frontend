@@ -1,6 +1,6 @@
-import { observer } from "mobx-react"
-import mainStore from "../stores/main.store"
 import SideNavItem from "../components/SideNavItem"
+import mainStore from "../stores/main.store"
+import { observer } from "mobx-react"
 
 const SideNav = observer(props => {
   const {assets} = mainStore

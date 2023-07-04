@@ -22,14 +22,14 @@
 			{
 				"components": [
 					{
-						"internalType": "uint256",
+						"internalType": "uint224",
 						"name": "value",
-						"type": "uint256"
+						"type": "uint224"
 					},
 					{
-						"internalType": "uint256",
+						"internalType": "uint32",
 						"name": "lastUpdate",
-						"type": "uint256"
+						"type": "uint32"
 					}
 				],
 				"internalType": "struct Pythia.Data",
@@ -63,14 +63,14 @@
 			{
 				"components": [
 					{
-						"internalType": "uint256",
+						"internalType": "uint224",
 						"name": "value",
-						"type": "uint256"
+						"type": "uint224"
 					},
 					{
-						"internalType": "uint256",
+						"internalType": "uint32",
 						"name": "lastUpdate",
-						"type": "uint256"
+						"type": "uint32"
 					}
 				],
 				"internalType": "struct Pythia.Data[]",
@@ -94,20 +94,18 @@
 				"type": "bytes32[]"
 			},
 			{
-				"internalType": "uint256[]",
+				"internalType": "uint224[]",
 				"name": "values",
-				"type": "uint256[]"
+				"type": "uint224[]"
 			},
 			{
-				"internalType": "uint256[]",
+				"internalType": "uint32[]",
 				"name": "updateTimes",
-				"type": "uint256[]"
+				"type": "uint32[]"
 			}
 		],
 		"name": "multiSet",
-		"outputs": [
-
-		],
+		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
@@ -124,20 +122,18 @@
 				"type": "bytes32"
 			},
 			{
-				"internalType": "uint256",
+				"internalType": "uint224",
 				"name": "value",
-				"type": "uint256"
+				"type": "uint224"
 			},
 			{
-				"internalType": "uint256",
+				"internalType": "uint32",
 				"name": "updateTime",
-				"type": "uint256"
+				"type": "uint32"
 			}
 		],
 		"name": "set",
-		"outputs": [
-
-		],
+		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	}

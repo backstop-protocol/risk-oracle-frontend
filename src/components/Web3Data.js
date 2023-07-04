@@ -11,7 +11,7 @@ const Web3Data = observer(props => {
                 <div>
                     Avg 30 days uniV3 liquidity vs USDC
                     <br />
-                    {selectedBase}: {largeNumberFormatter(web3Data[selectedBase])} (${largeNumberFormatter(web3Data[selectedBase]*mainStore.basePrice)})
+                    {selectedBase}: {largeNumberFormatter(web3Data[selectedBase]['value'])} (${largeNumberFormatter(web3Data[selectedBase]['value']*mainStore.basePrice)})
                 </div>
             )
         }
