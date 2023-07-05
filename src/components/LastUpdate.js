@@ -1,3 +1,4 @@
+import { Skeleton } from "@mui/material"
 import mainStore from "../stores/main.store"
 import moment from "moment"
 import { observer } from "mobx-react"
@@ -10,7 +11,10 @@ const iconStyle = {
 
 const LastUpdate = observer(props => {
     const web3Data = mainStore.web3Data;
-    if (web3Data) {
+    if (!web3Data) {
+      return <Skeleton variant="rectangular" height={'5vh'} width={'5vw'} />
+    }
+    {
         const selectedBase = mainStore.selectedAsset.name;
         if (web3Data[selectedBase]) {
           const date = web3Data[selectedBase]['lastUpdate'] * 1000;
