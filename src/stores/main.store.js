@@ -118,12 +118,6 @@ class MainStore {
       }
     }
     const results = await pythiaContract.multiGet(relayers, assetsAddresses, keys);
-    console.log(JSON.stringify(results, (key, value) =>
-            typeof value === 'bigint'
-                ? value.toString()
-                : value // return everything else unchanged
-        )
-        )
     for (let i = 0; i < symbols.length; i++) {
       const assetConf = assets[symbols[i]];
       toReturn[symbols[i]] = {};
@@ -131,7 +125,6 @@ class MainStore {
       toReturn[symbols[i]]['lastUpdate'] = Number(results[i][1]);
     }
     this.web3Data = toReturn;
-    console.log(toReturn);
   }
 
   get searchList() {
