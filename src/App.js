@@ -1,13 +1,12 @@
 import '@picocss/pico';
 import './App.css';
 
-import { useEffect } from 'react';
-
 import First from './sections/First';
 import Header from './sections/Header';
 import MainPanel from './sections/MainPanel';
 import SideNav from './sections/SideNav';
 import mainStore from './stores/main.store';
+import { useEffect } from 'react';
 
 function App() {
   useEffect(()=> {
@@ -21,7 +20,7 @@ function App() {
     <div className="App">
         <Header/>
         <First/>
-        <main id="assets" style={{paddingTop: '102px'}} >
+        <main id="assets" style={{paddingTop: '8vh'}} >
           <SideNav/>
           <MainPanel/>
         </main>
