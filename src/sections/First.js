@@ -1,3 +1,4 @@
+import { Box } from "@mui/material"
 import Subtitle from "../components/Subtitle"
 import Title from "../components/Title"
 
@@ -19,14 +20,14 @@ const styles = {
 }
 
 const First = props => {
-  const {darkMode} = window
-  return <div className="container-fluid" style={{marginTop: '102px'}}>
-    <section  style={styles.flex}>
+  const { darkMode } = window
+  return <Box sx={{height:'92vh'}}>
+    <section style={styles.flex}>
       <div style={styles.flexItem}>
         <Title>Removing the Human Factor from DeFi Risk Management</Title>
         <Subtitle>Risk Oracle is an automated, decentralized, transparent, and self-executing DeFi risk engine.</Subtitle>
         <p>
-        The Risk Oracle provides on-chain risk parameter feeds that smart contracts can use to automate their economic risk management processes.
+          The Risk Oracle provides on-chain risk parameter feeds that smart contracts can use to automate their economic risk management processes.
         </p>
         <div className="button-container">
           <a href="https://docs.bprotocol.org" role="button" >Read Docs</a>
@@ -35,17 +36,17 @@ const First = props => {
       </div>
       <div style={styles.flexItem}>
         <div>
-          <img alt="pythia-code-example" src={darkMode ? 'images/pythia-code-dark.png' : 'images/pythia-code.png'}/>
-          <div> 
+          <img alt="pythia-code-example" src={darkMode ? 'images/pythia-code-dark.png' : 'images/pythia-code.png'} />
+          <div>
             <small>
-              Here’s an example of how to read the feed for 
-              ETH DEX liquidity of the last 30 days 
+              Here’s an example of how to read the feed for
+              ETH DEX liquidity of the last 30 days
             </small>
           </div>
         </div>
       </div>
     </section>
-  </div>
+  </Box >
 }
 
 export default First

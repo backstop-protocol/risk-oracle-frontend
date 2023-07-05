@@ -4,7 +4,6 @@ import AvgTable from "../components/AvgTable";
 import ContractAddress from "../components/ContractAddress";
 import DexSelector from "../components/DexSelector";
 import InfoLine from "../components/InfoLine";
-import LTVCalculator from "../components/LTVCalculator";
 import LastUpdate from "../components/LastUpdate";
 import LiquidityChart from "../components/LiquidityChart";
 import VolatilityTable from "../components/VolatilityTable";
@@ -97,7 +96,6 @@ const MainPanel = observer(props => {
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '', fontSize: "0.875em"}}>
               {/* <ComparisonAssetsSelector dataStore={dataStore}/> */}
               <DexSelector selectedBaseSymbol={selectedBaseSymbol} availableQuotesForBase={availableQuotesForBase}/>
-              <LTVCalculator />
             </div>
             
           </article>

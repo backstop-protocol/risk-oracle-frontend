@@ -42,12 +42,7 @@ main {
   box-shadow: var(--card-box-shadow);
   background-color: var(--background-color);
   clip-path: inset(0px -5px 0px 0px);
-  height: calc(100vh - 102px);
-}
-
-.ltv-container {
-  min-height: 95%;
-  padding-top: 2vh;
+  height: 92vh;
 }
 
 .ltv-table {
@@ -295,7 +290,7 @@ header {
   --main-bg-inverse: #fff;
   --background-color: #1F202F;
   --grey-bg: lightgrey;
-  --side-nav-width: 200px;
+  --side-nav-width: 7vw;
   --inverter: 1;
 }
 
