@@ -1,13 +1,9 @@
-import symbols, { pythiaAddress } from "../config";
+import symbols from "../config";
 
 import AvgTable from "../components/AvgTable";
-import ContractAddress from "../components/ContractAddress";
 import DexSelector from "../components/DexSelector";
-import InfoLine from "../components/InfoLine";
-import LastUpdate from "../components/LastUpdate";
 import LiquidityChart from "../components/LiquidityChart";
 import VolatilityTable from "../components/VolatilityTable";
-import Web3Data from "../components/Web3Data";
 // import ComparisonAssetsSelector from "../components/ComparisonAssetsSelector"
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
@@ -80,18 +76,6 @@ const MainPanel = observer(props => {
     <div className="main-content">
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--spacing)', width: '100%'}}>
         <div style={{ flexGrow: 1}}>
-          <article className="box" style={{display: 'flex', justifyContent:'space-between', alignItems: "start"}}>
-            <div >
-              <InfoLine/>
-              <ContractAddress address={pythiaAddress}/>
-            </div>
-            <div style={{display: 'flex', flexDirection:'column', minHeight:'100%', alignItems: "end", alignContent:'end', flexWrap:'wrap'}}>
-            <div style={{minHeight:'50%'}}><Web3Data/></div>
-            </div>
-            <div>
-            <LastUpdate date={mainStore.lastUpdate[span]}/>
-            </div>
-          </article>
           <article className="box">
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '', fontSize: "0.875em"}}>
               {/* <ComparisonAssetsSelector dataStore={dataStore}/> */}

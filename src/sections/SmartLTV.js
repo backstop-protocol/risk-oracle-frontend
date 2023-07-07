@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import LTVCalculator from "../components/LTVCalculator";
 import LTVCodeSection from "../components/LTVCodeSection";
 import LTVTextSection from "../components/LTVTextSection";
+import Web3Data from "../components/Web3Data";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 
@@ -27,7 +28,10 @@ const LTVSection = observer(props => {
     //resetting quote on quotes change
     useEffect(() => {
         setSelectedQuote(quotes[0]);
-        mainStore.updateDebtAssetPrices(quotes[0]);
+        for(const quote of quotes)
+        {
+            mainStore.updateDebtAssetPrices(quote);
+    }
     }, [quotes]);
 
     //updating price
@@ -37,7 +41,6 @@ const LTVSection = observer(props => {
         }
     }, [selectedQuote]);
     useEffect(() => {
-        console.log(borrowCap, mainStore.debtAssetPrices[selectedQuote])
         setBorrowInKind(borrowCap / mainStore.debtAssetPrices[selectedQuote]);
     }, [borrowCap, selectedQuote]);
 
@@ -51,8 +54,6 @@ const LTVSection = observer(props => {
 
     //computing recommended LTV
     useEffect(() => {
-        console.log('liquidity', liquidity)
-        console.log('borrowInKind', borrowInKind)
         //         1/ calc racine carré de l / d ==> on appelle ça (a)
         const sqrRoot = Math.sqrt(liquidity / borrowInKind);
         // const sqrRoot = Math.sqrt(liquidity / (borrowCap / debtAssetPrice));
@@ -69,6 +70,7 @@ const LTVSection = observer(props => {
 
     return (
         <div className="ltvSection">
+            <Web3Data />
             <LTVTextSection />
             <LTVCalculator
                 selectedBaseSymbol={selectedBaseName}
