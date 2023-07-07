@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, MenuItem, Paper, Select, Typography } from "@mui/material";
+import { Box, Divider, Grid, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
 
 import { largeNumberFormatter } from "../utils/utils";
 import mainStore from "../stores/main.store";
@@ -126,19 +126,19 @@ const LTVCalculator = observer(props => {
     if (!mainStore.averages) {
         return
     }
-    const {quotes, selectedQuote,setSelectedQuote, span, liquidity, volatility, slippage, borrowCap, clf, recommendedLTV} = props;
+    const {quotes, selectedQuote,setSelectedQuote, span, liquidity, volatility, slippage, borrowCap, setBorrowCap, CLF, setCLF, recommendedLTV} = props;
     const slippageOptions = [1, 5, 10, 15, 20];
     const debtAssetPrice = mainStore.debtAssetPrices[selectedQuote] ? mainStore.debtAssetPrices[selectedQuote] : undefined;
 
     return (
         <Grid className="ltvCalculator" container direction="row" flexWrap="wrap">
-            <CalculatorItem title="Debt Asset" mainContent={<Select value={selectedQuote} onChange={(event) => { setSelectedQuote(event.target.value) }}>{quotes.map((_) => <MenuItem key={_} value={_}>{_}</MenuItem>)}</Select>} />
+            <CalculatorItem title="Debt Asset" mainContent={<Select value={selectedQuote ? selectedQuote : "USDC"} onChange={(event) => { setSelectedQuote(event.target.value) }}>{quotes.map((_) => <MenuItem key={_} value={_}>{_}</MenuItem>)}</Select>} />
             <CalculatorItem title="Time Frame" mainContent={<Select value={span} onChange={(event) => { mainStore.handleSpanChange(event.target.value) }}>{Object.entries(timeWindows).map(([tw, v]) => <MenuItem key={tw} value={v}>{tw}</MenuItem>)}</Select>} />
             <CalculatorItem title="&#8467;" subtitle="Liquidity" mainContent={<Typography>{largeNumberFormatter((liquidity).toFixed(2))}</Typography>} otherContent={<Typography>${largeNumberFormatter((liquidity * debtAssetPrice).toFixed(2))}</Typography>} />
             <CalculatorItem title="&sigma;" subtitle="Volatility" mainContent={<Typography>{(volatility * 100).toFixed(2)}%</Typography>} />
             <CalculatorItem title="&beta;" subtitle="Liquidation bonus" mainContent={<Select value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <MenuItem key={_} value={_}>{_}%</MenuItem>)}</Select>} />
-            <CalculatorItem title="&#100;" subtitle="Borrow cap $" mainContent={<Select value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <MenuItem key={_} value={_}>{_}%</MenuItem>)}</Select>} />
-            <CalculatorItem title="CLF" subtitle="Confidence Level Factor" mainContent={<CLFInput setCLF={mainStore.setLTVCLF} clf={clf} />} />
+            <CalculatorItem title="&#100;" subtitle="Borrow cap $" mainContent={<TextField value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} />} />
+            <CalculatorItem title="CLF" subtitle="Confidence Level Factor" mainContent={<CLFInput setCLF={setCLF} CLF={CLF} />} />
             <CalculatorItem title="Recommended LTV" mainContent={<Typography style={{ color: isNaN(recommendedLTV) ? '#FF0000' : '' }}>{isNaN(recommendedLTV) ? 'CLF must be a number' : recommendedLTV < 0 ? 0 : recommendedLTV}</Typography>} />
         </Grid>
     )

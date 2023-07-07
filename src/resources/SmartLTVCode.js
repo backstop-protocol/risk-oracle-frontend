@@ -1,5 +1,6 @@
+import { assets } from "../stores/config.store";
 
-function updateCode(debtAsset){
+function updateCode(debtAsset='USDC', baseAsset="ETH", span=1, CLF=7, borrowCap=700000, slippage=5){
 return `// SPDX-License-Identifier: MIT
 pragma solidity >=0.8.2 <0.9.0;
 
@@ -12,16 +13,16 @@ contract SmartLTV is RiskyMath, KeyEncoder {
     address immutable TRUSTED_RELAYER = address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8);
 
     // fixed parameters, set according to risk preference
-    uint constant CLF = 7e15;
-    uint constant TIME_PERIOD = 1 days * 365;
+    uint constant CLF = ${CLF}e15;
+    uint constant TIME_PERIOD = ${span} days * 365;
     KeyEncoder.VolatilityMode VOLATILITY_MODE = KeyEncoder.VolatilityMode.Standard;
     KeyEncoder.LiquiditySource LIQUIDITY_SOURCE = KeyEncoder.LiquiditySource.All;
 
     // TODO - read from actual lending market
-    address constant COLLATERAL_ASSET = address(0xDAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5);
-    address constant DEBT_ASSET = ${debtAsset.address};
-    uint constant DEBT_CELING = 700_000 * 1e18;
-    uint constant LIQUIDATION_INCENTIVE = 5e16;
+    address constant COLLATERAL_ASSET = address(${assets[baseAsset].address});
+    address constant DEBT_ASSET = address(${assets[debtAsset].address});
+    uint constant DEBT_CELING = ${borrowCap} * 1e18;
+    uint constant LIQUIDATION_INCENTIVE = ${slippage}e16;
 
     function getVolatility(address collateralAsset, address debtAsset) public view returns(uint value) {
         bytes32 key = encodeVolatilityKey(collateralAsset, debtAsset, VOLATILITY_MODE, TIME_PERIOD);

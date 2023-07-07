@@ -87,12 +87,12 @@ class MainStore {
         this.initialDexes();
         this.initialQuotes();
         this.updateAverages();
-        
+
       })
       .catch(error => {
         console.error('error', error);
       });
-      this.loading = false;
+    this.loading = false;
     this.getWeb3Data();
     makeAutoObservable(this);
   }
@@ -190,8 +190,8 @@ class MainStore {
     for (const quote of Object.keys(sortedData)) {
       let quoteRatio = 0;
       const ratioMap = Object.entries(ratios);
-      for(let i = 0; i < ratioMap.length; i++){
-        if(ratioMap[i][1][quote] === 1){
+      for (let i = 0; i < ratioMap.length; i++) {
+        if (ratioMap[i][1][quote] === 1) {
           quoteRatio++
         }
       }
@@ -205,18 +205,18 @@ class MainStore {
     rowDataArray.sort((a, b) => Object.entries(b)[0][1].average - Object.entries(a)[0][1].average);
     this.averageTableDisplayArray = rowDataArray;
 
-    for(let i = 0; i < rowDataArray.length; i++){
+    for (let i = 0; i < rowDataArray.length; i++) {
       const tokenName = Object.keys(rowDataArray[i])[0];
       this.averages[tokenName] = rowDataArray[i][tokenName];
     }
   }
 
-  async updateDebtAssetPrices(asset){
-      const id = coingeckoMap[asset.toLowerCase()];
-      const url = `https://api.coingecko.com/api/v3/coins/${id}`
-      const data = await axios.get(url);
-      const price = (data.data['market_data']['current_price']['usd']).toFixed(2); 
-      this.debtAssetPrices[asset] = price;
+  async updateDebtAssetPrices(asset) {
+    const id = coingeckoMap[asset.toLowerCase()];
+    const url = `https://api.coingecko.com/api/v3/coins/${id}`
+    const data = await axios.get(url);
+    const price = (data.data['market_data']['current_price']['usd']).toFixed(2);
+    this.debtAssetPrices[asset] = price;
   }
 
   search = (assetName) => {
