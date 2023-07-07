@@ -4,7 +4,6 @@ import NavigationIcon from '@mui/icons-material/Navigation';
 
 export default function NavigationButton() {
     function goTo(e, id){
-        console.log('firing')
         let element = document.getElementById(id);
         element.scrollIntoView();
     }
