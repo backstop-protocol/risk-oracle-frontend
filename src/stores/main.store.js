@@ -87,11 +87,12 @@ class MainStore {
         this.initialDexes();
         this.initialQuotes();
         this.updateAverages();
+        
       })
       .catch(error => {
         console.error('error', error);
       });
-    this.loading = false;
+      this.loading = false;
     this.getWeb3Data();
     makeAutoObservable(this);
   }
@@ -235,6 +236,7 @@ class MainStore {
     this.initialQuotes();
     this.allDexes = true;
     this.searchFieldValue = ""
+    this.updateAverages();
     runInAction(() => {
       this.searchCounter++
     })

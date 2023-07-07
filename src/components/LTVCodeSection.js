@@ -1,9 +1,9 @@
 import { DiffEditor } from "@monaco-editor/react";
-import mainStore from "../stores/main.store";
+import { smartLTVCode } from "../resources/SmartLTVCode";
 
-function LTVCodeSection(){
+function LTVCodeSection(props){
     return <div className="ltvCodeEditor">
-        <DiffEditor original={mainStore.originalCode} modified={mainStore.updatedCode} language="sol" width="100%"  />
+        <DiffEditor original={smartLTVCode} modified={props.updatedCode} language="sol" width="100%"  />
     </div>
 }
 

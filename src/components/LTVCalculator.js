@@ -1,11 +1,11 @@
-import { Container, Divider, Grid, MenuItem, Paper, Select, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Divider, Grid, MenuItem, Paper, Select, Typography } from "@mui/material";
 
 import { largeNumberFormatter } from "../utils/utils";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { timeWindows } from "../stores/config.store";
 import { useCombobox } from "downshift";
+import { useState } from "react";
 
 const CLFValues = [
     {
@@ -104,85 +104,43 @@ function CalculatorItem(props) {
                 pt: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent:'start',
-                alignItems:'center',
-                minHeight: 180,
-                height:'1'
+                justifyContent: 'start',
+                alignItems: 'center',
+                height: '1'
             }}
         >
-            <Container minHeight="O.5">
+            <Box sx={{maxHeight:"0.5", minHeight:"0.5", alignItems:"center", justifyContent:"center"}}>
                 <Typography textAlign={'center'}>{props.title}{props.subtitle ? <br /> : ''}</Typography>
                 {props.subtitle ? <Typography textAlign={'center'} variant="subtitle2">{props.subtitle}</Typography> : ''}
-            </Container>
-            <Divider sx={{ marginTop: "5px", marginBottom: '10px' }} />
-            <Container sx={{ height: '0.5', textAlign: 'center', direction: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                </Box>
+            <Divider />
+            <Box sx={{display:"flex", flexDirection:"column", minHeight:"50%", alignItems:"center", justifyContent:"center"}}>
                 {props.mainContent}
                 {props.otherContent ? props.otherContent : ''}
-            </Container>
+                </Box>
         </Paper>
     </Grid>
 }
 
 const LTVCalculator = observer(props => {
-    if(!mainStore.averages){
+    if (!mainStore.averages) {
         return
     }
-    const quotes = mainStore.selectedQuotes;
-    const [selectedQuote, setSelectedQuote] = useState(quotes[0]);
-    const [recommendedLTV, setRecommendedLTV] = useState(0);
-    const averages = mainStore.averages;
-    const [borrowCap, setBorrowCap] = useState(0);
-    const [borrowCapInKind, setBorrowCapInKind] = useState(undefined);
-    const span = mainStore.selectedSpan;
-    const slippage = mainStore.selectedSlippage;
+    const {quotes, selectedQuote,setSelectedQuote, span, liquidity, volatility, slippage, borrowCap, clf, recommendedLTV} = props;
     const slippageOptions = [1, 5, 10, 15, 20];
-    const volatility = selectedQuote && averages[selectedQuote] ? averages[selectedQuote]['volatility'] : undefined;
-    const liquidity = averages[selectedQuote] ? averages[selectedQuote]['average'] : 0;
-    const [clf, setCLF] = useState(10);
     const debtAssetPrice = mainStore.debtAssetPrices[selectedQuote] ? mainStore.debtAssetPrices[selectedQuote] : undefined;
 
-    useEffect(()=> {
-        if(!mainStore.debtAssetPrices[selectedQuote] && selectedQuote){
-            mainStore.updateDebtAssetPrices(selectedQuote);
-        }
-    }, [selectedQuote]);
-
-    useEffect(() => {
-        setSelectedQuote(quotes[0]);
-    }, [quotes]);
-
-
-    useEffect(() => {
-        setBorrowCapInKind(borrowCap / debtAssetPrice);
-    }, [borrowCap, debtAssetPrice, setBorrowCapInKind]);
-
-    useEffect(() => {
-        //         1/ calc racine carré de l / d ==> on appelle ça (a)
-        const sqrRoot = Math.sqrt(liquidity / borrowCapInKind);
-        // const sqrRoot = Math.sqrt(liquidity / (borrowCap / debtAssetPrice));
-        //         2/ calc theta / (a) ==> on appelle ça (b)
-        const sigmaOverSqrRoot = volatility / sqrRoot;
-        //         3/ calc -c * (b) ==> on appelle ça (c)
-        const clfMinusSigmaOverSqrRoot = (-1 * clf) * sigmaOverSqrRoot;
-        //         4/ calc exponentielle de (c)  ==> on appelle ça (d)
-        const exponential = Math.exp(clfMinusSigmaOverSqrRoot);
-        //         5/ calc (d) - beta
-        const ltv = exponential - (slippage / 100);
-        setRecommendedLTV(ltv.toFixed(2));
-    }, [liquidity, slippage, volatility, clf, borrowCapInKind])
-
-    return (<Paper>
-        <Grid container direction="row" flexWrap="wrap">
-            <CalculatorItem title="Debt Asset" mainContent={<Select onChange={(event) => { setSelectedQuote(event.target.value) }}>{quotes.map((_) => <MenuItem key={_} value={_}>{_}</MenuItem>)}</Select>} />
+    return (
+        <Grid className="ltvCalculator" container direction="row" flexWrap="wrap">
+            <CalculatorItem title="Debt Asset" mainContent={<Select value={selectedQuote} onChange={(event) => { setSelectedQuote(event.target.value) }}>{quotes.map((_) => <MenuItem key={_} value={_}>{_}</MenuItem>)}</Select>} />
             <CalculatorItem title="Time Frame" mainContent={<Select value={span} onChange={(event) => { mainStore.handleSpanChange(event.target.value) }}>{Object.entries(timeWindows).map(([tw, v]) => <MenuItem key={tw} value={v}>{tw}</MenuItem>)}</Select>} />
             <CalculatorItem title="&#8467;" subtitle="Liquidity" mainContent={<Typography>{largeNumberFormatter((liquidity).toFixed(2))}</Typography>} otherContent={<Typography>${largeNumberFormatter((liquidity * debtAssetPrice).toFixed(2))}</Typography>} />
             <CalculatorItem title="&sigma;" subtitle="Volatility" mainContent={<Typography>{(volatility * 100).toFixed(2)}%</Typography>} />
             <CalculatorItem title="&beta;" subtitle="Liquidation bonus" mainContent={<Select value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <MenuItem key={_} value={_}>{_}%</MenuItem>)}</Select>} />
             <CalculatorItem title="&#100;" subtitle="Borrow cap $" mainContent={<Select value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <MenuItem key={_} value={_}>{_}%</MenuItem>)}</Select>} />
-            <CalculatorItem title="CLF" subtitle="Confidence Level Factor" mainContent={<CLFInput setCLF={setCLF} clf={clf} />} />
+            <CalculatorItem title="CLF" subtitle="Confidence Level Factor" mainContent={<CLFInput setCLF={mainStore.setLTVCLF} clf={clf} />} />
             <CalculatorItem title="Recommended LTV" mainContent={<Typography style={{ color: isNaN(recommendedLTV) ? '#FF0000' : '' }}>{isNaN(recommendedLTV) ? 'CLF must be a number' : recommendedLTV < 0 ? 0 : recommendedLTV}</Typography>} />
         </Grid>
-    </Paper>
     )
 
 })
