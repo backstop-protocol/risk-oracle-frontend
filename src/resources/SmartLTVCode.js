@@ -1,6 +1,6 @@
 import { assets } from "../stores/config.store";
 
-function updateCode(debtAsset='USDC', baseAsset="ETH", span=1, CLF=7, borrowCap=700000, slippage=5){
+function updateCode(debtAsset='USDC', baseAsset="ETH", span=1, CLF=7, borrowCap=0.7, slippage=5){
 return `// SPDX-License-Identifier: MIT
 pragma solidity >=0.8.2 <0.9.0;
 
@@ -21,7 +21,7 @@ contract SmartLTV is RiskyMath, KeyEncoder {
     // TODO - read from actual lending market
     address constant COLLATERAL_ASSET = address(${assets[baseAsset].address});
     address constant DEBT_ASSET = address(${assets[debtAsset].address});
-    uint constant DEBT_CELING = ${borrowCap} * 1e18;
+    uint constant DEBT_CELING = ${(borrowCap*1e6).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "_")} * 1e18;
     uint constant LIQUIDATION_INCENTIVE = ${slippage}e16;
 
     function getVolatility(address collateralAsset, address debtAsset) public view returns(uint value) {
@@ -82,8 +82,8 @@ contract SmartLTV is RiskyMath, KeyEncoder {
     KeyEncoder.LiquiditySource LIQUIDITY_SOURCE = KeyEncoder.LiquiditySource.All;
 
     // TODO - read from actual lending market
-    address constant COLLATERAL_ASSET = address(0xDAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5);
-    address constant DEBT_ASSET = address(0xe688b84b23f322a994A53dbF8E15FA82CDB71127);
+    address constant COLLATERAL_ASSET = address(0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2);
+    address constant DEBT_ASSET = address(0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48);
     uint constant DEBT_CELING = 700_000 * 1e18;
     uint constant LIQUIDATION_INCENTIVE = 5e16;
 

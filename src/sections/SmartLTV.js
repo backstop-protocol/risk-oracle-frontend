@@ -17,9 +17,9 @@ const LTVSection = observer(props => {
     const liquidity = averages[selectedQuote] ? averages[selectedQuote]['average'] : 0;
     const volatility = averages[selectedQuote] ? averages[selectedQuote]['volatility'] : 0;
     const slippage = mainStore.selectedSlippage;
-    const [borrowCap, setBorrowCap] = useState(100);
+    const [borrowCap, setBorrowCap] = useState(0.7);
     const [borrowInKind, setBorrowInKind] = useState(0);
-    const [CLF, setCLF] = useState(100);
+    const [CLF, setCLF] = useState(7);
     const [recommendedLTV, setRecommendedLTV] = useState(0)
     // code editor variables
     const [updatedCode, setUpdatedCode] = useState(smartLTVCode);
