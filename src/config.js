@@ -1,3 +1,4 @@
+
 const symbols = {
     SUSD: 'sUSD',
     ETH: 'WETH',
@@ -20,5 +21,20 @@ export const relayerAddress = "0xbad06297eb7878502e045319a7c4a8904b49beef";
 export const rpcURL = "https://rpc.sepolia.org/"
 
 
+
+export const themeOptions = {
+    palette: {
+        mode: 'light',
+        primary: {
+          main: '#ffffff',
+        },
+        secondary: {
+          main: '#23A455',
+        },
+      },
+      typography: {
+        fontFamily: 'Inter',
+      },
+    };
 
 export default symbols;

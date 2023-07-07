@@ -1,3 +1,4 @@
+import { Container, Divider, Grid, MenuItem, Paper, Select, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import { largeNumberFormatter } from "../utils/utils";
@@ -63,18 +64,18 @@ function CLFInput(props) {
                 <input
                     pattern="[0-9]+"
                     className="ltv-select"
-                    style={{borderColor: isNaN(clf) ? '#FF0000' : ''}}
+                    style={{ borderColor: isNaN(clf) ? '#FF0000' : '' }}
                     {...getInputProps()}
                 />
             </div>
             <ul
-            className="ltv-dropdown-content"
+                className="ltv-dropdown-content"
                 {...getMenuProps()}
             >
                 {isOpen &&
                     CLFOptions.map((item, index) => (
                         <li
-                        className="ltv-dropdown-item"
+                            className="ltv-dropdown-item"
                             style={{
                                 padding: '4px',
                                 backgroundColor: highlightedIndex === index ? '#bde4ff' : null,
@@ -95,6 +96,33 @@ function CLFInput(props) {
     )
 }
 
+function CalculatorItem(props) {
+    return <Grid item xs={12} sm={6} lg={4} xl={1.5}>
+        <Paper
+            sx={{
+                px: 2,
+                pt: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent:'start',
+                alignItems:'center',
+                minHeight: 180,
+                height:'1'
+            }}
+        >
+            <Container minHeight="O.5">
+                <Typography textAlign={'center'}>{props.title}{props.subtitle ? <br /> : ''}</Typography>
+                {props.subtitle ? <Typography textAlign={'center'} variant="subtitle2">{props.subtitle}</Typography> : ''}
+            </Container>
+            <Divider sx={{ marginTop: "5px", marginBottom: '10px' }} />
+            <Container sx={{ height: '0.5', textAlign: 'center', direction: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                {props.mainContent}
+                {props.otherContent ? props.otherContent : ''}
+            </Container>
+        </Paper>
+    </Grid>
+}
+
 const LTVCalculator = observer(props => {
     const quotes = mainStore.selectedQuotes;
     const [selectedQuote, setSelectedQuote] = useState(quotes[0]);
@@ -110,18 +138,18 @@ const LTVCalculator = observer(props => {
     const [clf, setCLF] = useState(10);
     const debtAssetPrice = mainStore.debtAssetPrices[selectedQuote] ? mainStore.debtAssetPrices[selectedQuote] : undefined;
 
-    useEffect(()=> {
-        if(!mainStore.debtAssetPrices[selectedQuote]){
+    useEffect(() => {
+        if (!mainStore.debtAssetPrices[selectedQuote]) {
             mainStore.updateDebtAssetPrices(selectedQuote);
         }
     }, [selectedQuote]);
 
-    useEffect(()=> {
+    useEffect(() => {
         setSelectedQuote(quotes[0]);
     }, [quotes]);
 
 
-    useEffect(()=> {
+    useEffect(() => {
         setBorrowCapInKind(borrowCap / debtAssetPrice);
     }, [borrowCap, debtAssetPrice, setBorrowCapInKind]);
 
@@ -140,68 +168,19 @@ const LTVCalculator = observer(props => {
         setRecommendedLTV(ltv.toFixed(2));
     }, [liquidity, slippage, volatility, clf, borrowCapInKind])
 
-    return (
-        <article style={{ marginTop: 0, marginBottom: 0 }} className="ltv-container">
-            <div className="ltv-table">
-                <div className="ltv-asset" title="The asset pair against which the data is being fetched.">
-                    <div className="ltv-title-div">
-                        <small >Debt Asset</small></div>
-                    <div className="ltv-value-div">
-                        <select className="ltv-select" onChange={(event) => { setSelectedQuote(event.target.value) }}>{quotes.map((_) => <option key={_} value={_}>{_}</option>)}</select>
-                    </div>
-                </div>
-                <div className="ltv-asset" title="The time frame that is used for fetching the data.">
-                    <div className="ltv-title-div">
-                        <small >Time Frame</small></div>
-                    <div className="ltv-value-div"><select className="ltv-select" value={span} onChange={(event) => { mainStore.handleSpanChange(event.target.value) }}>{Object.entries(timeWindows).map(([tw, v]) => <option key={tw} value={v}>{tw}</option>)}</select>
-                    </div>
-                </div>
-                <div className="ltv-asset" title="The available DEX liquidity with a slippage of β.">
-                    <div className="ltv-title-div">
-                        <small>&#8467;<br />Liquidity</small>
-                    </div>
-                    <div className="ltv-liquidity-value-div"><span>{largeNumberFormatter((liquidity).toFixed(2))}</span><span style={{fontSize: '0.7rem'}}>${largeNumberFormatter((liquidity*debtAssetPrice).toFixed(2))}</span>
-                    </div>
-                </div>
-                <div className="ltv-asset" title="The price volatility between the collateral and debt asset (normalized to the base asset price).">
-                    <div className="ltv-title-div">
-                        <small>&sigma;<br />Volatility</small>
-                    </div>
-                    <div className="ltv-value-div">{(volatility * 100).toFixed(2)}%
-                    </div>
-                </div>
-                <div className="ltv-asset" title="The bonus liquidators get as an incentive to liquidate a position.">
-                    <div className="ltv-title-div">
-                        <small>&beta;<br />Liquidation bonus</small>
-                    </div>
-                    <div className="ltv-value-div"><select className="ltv-select" value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <option key={_} value={_}>{_}%</option>)}</select>
-                    </div>
-                </div>
-                <div className="ltv-asset" title="The borrow cap of the debt asset in USD value.">
-                    <div className="ltv-title-div">
-                        <small><em>&#100;</em><br />Borrow cap $</small>
-                    </div>
-                    <div className="ltv-value-div"><input className="ltv-select" value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} />
-                    </div>
-                </div>
-                <div className="ltv-asset" title="Confidence Level Factor. The higher it is, the odds of insolvency are decreasing.">
-                    <div className="ltv-title-div">
-                        <small>CLF<br />Confidence Level Factor</small>
-                    </div>
-                    <div className="ltv-value-div"><CLFInput setCLF={setCLF} clf={clf} />
-                    </div>
-                </div>
-                <div className="ltv-asset" title="Loan To Value ratio.">
-                    <div className="ltv-title-div">
-                        <small>Recommended LTV</small>
-                    </div>
-                    <div className="ltv-value-div" style={{color: isNaN(recommendedLTV) ? '#FF0000' : ''}}>{isNaN(recommendedLTV) ? 'CLF must be a number' : recommendedLTV < 0 ? 0 : recommendedLTV}
-                    </div>
-                </div>
-            </div>
-        </article>
+    return (<Paper>
+        <Grid container direction="row" flexWrap="wrap">
+            <CalculatorItem title="Debt Asset" mainContent={<Select onChange={(event) => { setSelectedQuote(event.target.value) }}>{quotes.map((_) => <MenuItem key={_} value={_}>{_}</MenuItem>)}</Select>} />
+            <CalculatorItem title="Time Frame" mainContent={<Select value={span} onChange={(event) => { mainStore.handleSpanChange(event.target.value) }}>{Object.entries(timeWindows).map(([tw, v]) => <MenuItem key={tw} value={v}>{tw}</MenuItem>)}</Select>} />
+            <CalculatorItem title="&#8467;" subtitle="Liquidity" mainContent={<Typography>{largeNumberFormatter((liquidity).toFixed(2))}</Typography>} otherContent={<Typography>${largeNumberFormatter((liquidity * debtAssetPrice).toFixed(2))}</Typography>} />
+            <CalculatorItem title="&sigma;" subtitle="Volatility" mainContent={<Typography>{(volatility * 100).toFixed(2)}%</Typography>} />
+            <CalculatorItem title="&beta;" subtitle="Liquidation bonus" mainContent={<Select value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <MenuItem key={_} value={_}>{_}%</MenuItem>)}</Select>} />
+            <CalculatorItem title="&#100;" subtitle="Borrow cap $" mainContent={<Select value={slippage} onChange={(event) => { mainStore.handleSlippageChange(event.target.value) }}>{slippageOptions.map((_) => <MenuItem key={_} value={_}>{_}%</MenuItem>)}</Select>} />
+            <CalculatorItem title="CLF" subtitle="Confidence Level Factor" mainContent={<CLFInput setCLF={setCLF} clf={clf} />} />
+            <CalculatorItem title="Recommended LTV" mainContent={<Typography style={{ color: isNaN(recommendedLTV) ? '#FF0000' : '' }}>{isNaN(recommendedLTV) ? 'CLF must be a number' : recommendedLTV < 0 ? 0 : recommendedLTV}</Typography>} />
+        </Grid>
+    </Paper>
     )
 
 })
-
 export default LTVCalculator
