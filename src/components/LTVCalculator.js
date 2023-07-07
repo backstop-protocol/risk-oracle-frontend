@@ -108,7 +108,7 @@ const LTVCalculator = observer(props => {
     const span = mainStore.selectedSpan;
     const slippage = mainStore.selectedSlippage;
     const slippageOptions = [1, 5, 10, 15, 20];
-    const volatility = selectedQuote ? averages[selectedQuote]['volatility'] : undefined;
+    const volatility = selectedQuote && averages[selectedQuote] ? averages[selectedQuote]['volatility'] : undefined;
     const liquidity = averages[selectedQuote] ? averages[selectedQuote]['average'] : 0;
     const [clf, setCLF] = useState(10);
     const debtAssetPrice = mainStore.debtAssetPrices[selectedQuote] ? mainStore.debtAssetPrices[selectedQuote] : undefined;
