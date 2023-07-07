@@ -30,7 +30,7 @@ function App() {
         <Header />
         <First />
       </Box>
-      <Box sx={{ paddingTop: '8vh', display: 'flex', flexDirection: 'row', height: '100vh', width: '100%' }}>
+      <Box id="smartLTV" sx={{ paddingTop: '8vh', display: 'flex', flexDirection: 'row', height: '100vh', width: '100%' }}>
         <SideNav />
         <SmartLTV />
       </Box>

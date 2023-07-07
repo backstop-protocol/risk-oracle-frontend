@@ -1,4 +1,5 @@
 import { Box } from "@mui/material"
+import NavigationButton from "../components/NavigationButton"
 import Subtitle from "../components/Subtitle"
 import Title from "../components/Title"
 
@@ -45,6 +46,7 @@ const First = props => {
           </div>
         </div>
       </div>
+      <NavigationButton />
     </section>
   </Box >
 }
