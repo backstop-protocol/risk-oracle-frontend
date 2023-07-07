@@ -31,9 +31,7 @@ function App() {
       </Box>
       <Box sx={{ paddingTop: '8vh', display: 'flex', flexDirection: 'row', height: '100vh', width: '100%' }}>
         <SideNav />
-        <Box>
           <SmartLTV />
-        </Box>
       </Box>
     </div>
     </ThemeProvider>

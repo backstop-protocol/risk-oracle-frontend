@@ -1,11 +1,10 @@
-import { Box } from "@mui/material";
 import { DiffEditor } from "@monaco-editor/react";
-import smartLTVCode from "../resources/SmartLTVCode";
+import mainStore from "../stores/main.store";
 
 function LTVCodeSection(){
-    return <Box minHeight="50vh">
-        <DiffEditor original={smartLTVCode} modified={smartLTVCode} language="sol" width="100%"  />
-    </Box>
+    return <div className="ltvCodeEditor">
+        <DiffEditor original={mainStore.originalCode} modified={mainStore.updatedCode} language="sol" width="100%"  />
+    </div>
 }
 
 export default LTVCodeSection;

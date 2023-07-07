@@ -563,6 +563,31 @@ section {
   margin-bottom: var(--spacing);
 }
 
+.ltvSection{
+  display: flex;
+  height: 92vh;
+  width: 93vw;
+  flex-direction: column;
+}
+.ltvCodeEditor{
+  flex: 1;
+  flex-grow: 3;
+  padding-left: 2vw;
+  padding-top: 1vh; 
+}
+.ltvCodeEditor section{
+  margin-bottom: 0 !important;
+}
+.ltvText{
+  flex: 1;
+  text-align: left;
+  width: 70%;
+  padding-left: 1vw;
+}
+.ltvCalculator{
+  flex: 0.8;
+}
+
 .subtitle {
   font-family: 'Inter';
   font-style: normal;
