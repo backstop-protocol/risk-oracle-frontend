@@ -26,7 +26,7 @@ function row(rowData, selectedBaseSymbol) {
 const AvgTable = observer(props => {
   const { selectedBaseSymbol } = props;
   const span = mainStore.selectedSpan;
-  const rowDataArray = mainStore.averages;
+  const rowDataArray = mainStore.averageTableDisplayArray;
   if(rowDataArray.length > 0){
   return (
     <article style={{ marginTop: 0, }} className="box">

@@ -38,6 +38,7 @@ class MainStore {
     this.quotes = ['USDC', 'WBTC', 'WETH']
     this.graphData = {};
     this.averageData = {};
+    this.averageTableDisplayArray = [];
     this.lastUpdate = {};
     this.averages = {};
     this.debtAssetPrices = {};
@@ -200,6 +201,7 @@ class MainStore {
       rowDataArray.push(toPush);
     }
     rowDataArray.sort((a, b) => Object.entries(b)[0][1].average - Object.entries(a)[0][1].average);
+    this.averageTableDisplayArray = rowDataArray;
 
     for(let i = 0; i < rowDataArray.length; i++){
       const tokenName = Object.keys(rowDataArray[i])[0];
