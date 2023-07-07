@@ -96,6 +96,9 @@ function CLFInput(props) {
 }
 
 const LTVCalculator = observer(props => {
+    if(!mainStore.averages){
+        return
+    }
     const quotes = mainStore.selectedQuotes;
     const [selectedQuote, setSelectedQuote] = useState(quotes[0]);
     const [recommendedLTV, setRecommendedLTV] = useState(0);
@@ -106,12 +109,12 @@ const LTVCalculator = observer(props => {
     const slippage = mainStore.selectedSlippage;
     const slippageOptions = [1, 5, 10, 15, 20];
     const volatility = selectedQuote ? averages[selectedQuote]['volatility'] : undefined;
-    const liquidity = averages[selectedQuote]['average'];
+    const liquidity = averages[selectedQuote] ? averages[selectedQuote]['average'] : 0;
     const [clf, setCLF] = useState(10);
     const debtAssetPrice = mainStore.debtAssetPrices[selectedQuote] ? mainStore.debtAssetPrices[selectedQuote] : undefined;
 
     useEffect(()=> {
-        if(!mainStore.debtAssetPrices[selectedQuote]){
+        if(!mainStore.debtAssetPrices[selectedQuote] && selectedQuote){
             mainStore.updateDebtAssetPrices(selectedQuote);
         }
     }, [selectedQuote]);

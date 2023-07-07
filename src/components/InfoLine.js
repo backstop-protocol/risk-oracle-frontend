@@ -17,7 +17,7 @@ const InfoLine = observer(props => {
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseSymbol = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
   const graphData = mainStore.graphData;
-  const dataForPriceComputation = graphData['uniswapv2'][1];
+  const dataForPriceComputation = graphData['uniswapv2'] ? graphData['uniswapv2'][1] : 0;
   const priceInfo = {};
   const [price, setPrice] = useState(0);
   const [dayChange, setDayChange] = useState(0);
