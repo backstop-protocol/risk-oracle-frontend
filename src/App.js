@@ -4,6 +4,7 @@ import './App.css';
 import { Box, ThemeProvider, createTheme } from '@mui/material';
 
 import First from './sections/First';
+import Footer from './sections/Footer';
 import Header from './sections/Header';
 import MainPanel from './sections/MainPanel';
 import SideNav from './sections/SideNav';
@@ -35,6 +36,7 @@ function App() {
         <SmartLTV />
       </Box>
       <MainPanel />
+      <Footer />
     </div>
     </ThemeProvider>
   );

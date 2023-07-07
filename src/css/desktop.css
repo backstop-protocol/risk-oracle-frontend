@@ -174,7 +174,6 @@ main {
   padding: 10px calc(var(--spacing) * 2);
   width: 100%;
   height: calc(100vh - 102px);
-  overflow-y: scroll;
 }
 
 .info-line {
