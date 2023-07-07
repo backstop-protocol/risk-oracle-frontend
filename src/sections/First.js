@@ -46,8 +46,9 @@ const First = props => {
           </div>
         </div>
       </div>
-      <NavigationButton />
+      
     </section>
+    <NavigationButton />
   </Box >
 }
 

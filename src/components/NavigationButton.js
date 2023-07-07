@@ -9,9 +9,9 @@ export default function NavigationButton() {
         element.scrollIntoView();
     }
   return (
-    <Box sx={{ '& > :not(style)': { m: 1 } }}>
-      <Fab variant="extended" onClick={(e)=>{goTo(e,'smartLTV')}}>
-        <NavigationIcon sx={{ mr: 1, transform:"rotate(180deg)" }} />
+    <Box>
+      <Fab sx={{position:"absolute", marginLeft:"auto", marginRight:"auto", left:"0", right:"0", zIndex:"10", color:"secondary.main"}} variant="extended" onClick={(e)=>{goTo(e,'smartLTV')}}>
+        <NavigationIcon sx={{ mr: 1, transform:"rotate(180deg)", color:"secondary.main" }} />
         Try it!
       </Fab>
     </Box>
