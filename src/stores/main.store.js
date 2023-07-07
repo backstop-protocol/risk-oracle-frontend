@@ -282,6 +282,7 @@ class MainStore {
       }
     }
     this.selectedQuotes = newQuotes;
+    this.updateAverages();
   }
 
   toggleAllDexes = (selectedBaseSymbol) => {
@@ -328,6 +329,7 @@ class MainStore {
     else {
       this.selectedQuotes = [...this.selectedQuotes, quote];
     }
+    this.updateAverages();
   }
 
   setSearchFieldValue = (value) => {
@@ -336,9 +338,11 @@ class MainStore {
 
   handleSlippageChange = (value) => {
     this.selectedSlippage = value;
+    this.updateAverages();
   }
   handleSpanChange = (value) => {
     this.selectedSpan = value;
+    this.updateAverages();
   }
 }
 
