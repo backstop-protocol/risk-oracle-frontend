@@ -11,6 +11,7 @@ const nameMap = {
 
 
 const DexSelector = observer(props => {
+  if(!mainStore.loading){
   const selectedDexes = mainStore.selectedDexes;
   const {selectedBaseSymbol, availableQuotesForBase} = props;
   const handleDexChanges = mainStore.handleDexChanges;
@@ -19,7 +20,6 @@ const DexSelector = observer(props => {
   const selectedQuotes = mainStore.selectedQuotes;
   const availableQuotes = mainStore.quotes;
   const handleQuotesChanges = mainStore.handleQuotesChanges;
-
   return (
     <div>
       <article className="left-selector">
@@ -48,6 +48,6 @@ const DexSelector = observer(props => {
       </div>
       </article>
     </div>
-  )
+  )}
 })
 export default DexSelector
