@@ -1,12 +1,13 @@
 import { coingeckoMap, normalize } from "../utils/utils";
 import { makeAutoObservable, runInAction } from "mobx";
+import symbols, { keyEncoderAddress, pythiaAddress, relayerAddress, rpcURL } from "../config";
 
 import PythiaABI from "../abi/pythia.abi.json";
 import { assets } from "./config.store";
 import axios from "axios";
 import { ethers } from "ethers";
 import { isDexAvailableForBase } from "../utils/utils";
-import symbols from "../config";
+import keyEncoderABI from '../abi/keyEncoder.abi.json';
 
 const defaultAsset = "ETH"
 const apiUrl = "https://api.dex-history.la-tribu.xyz/api";
