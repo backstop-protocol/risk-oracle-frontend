@@ -6,9 +6,9 @@ import { Box, ThemeProvider, createTheme } from '@mui/material';
 import First from './sections/First';
 import Footer from './sections/Footer';
 import Header from './sections/Header';
-import MainPanel from './sections/MainPanel';
+import GraphPanel from './sections/GraphPanel';
 import SideNav from './sections/SideNav';
-import SmartLTV from './sections/SmartLTV';
+import SmartLTVPanel from './sections/SmartLTVPanel';
 import mainStore from './stores/main.store';
 import { themeOptions } from './config';
 import { useEffect } from 'react';
@@ -33,9 +33,9 @@ function App() {
       </Box>
       <Box id="smartLTV" sx={{ paddingTop: '8vh', display: 'flex', flexDirection: 'row', height: '100vh', width: '100%' }}>
         <SideNav />
-        <SmartLTV />
+        <SmartLTVPanel />
       </Box>
-      <MainPanel />
+      <GraphPanel />
       <Footer />
     </div>
     </ThemeProvider>
