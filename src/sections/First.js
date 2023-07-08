@@ -22,7 +22,7 @@ const styles = {
 
 const First = props => {
   const { darkMode } = window
-  return <Box sx={{height:'92vh'}}>
+  return <Box sx={{height:'100vh'}}>
     <section style={styles.flex}>
       <div style={styles.flexItem}>
         <Title>Removing the Human Factor from DeFi Risk Management</Title>

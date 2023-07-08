@@ -8,6 +8,7 @@ import VolatilityTable from "../components/VolatilityTable";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { roundTo } from "../utils/utils";
+import { Box } from "@mui/system";
 
 const MainPanel = observer(props => {
   const slippage = mainStore.selectedSlippage;
@@ -73,25 +74,12 @@ const MainPanel = observer(props => {
     </div>)
   }
   return (
-    <div className="main-content">
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--spacing)', width: '100%'}}>
-        <div style={{ flexGrow: 1}}>
-          <article className="box">
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '', fontSize: "0.875em"}}>
-              {/* <ComparisonAssetsSelector dataStore={dataStore}/> */}
-              <DexSelector selectedBaseSymbol={selectedBaseSymbol} availableQuotesForBase={availableQuotesForBase}/>
-            </div>
-            
-          </article>
-        </div>
-      </div>
-      <div style={{display: 'flex', gap: 'var(--spacing)'}}>
+    <div className="graphPanel">
+              {/* <DexSelector selectedBaseSymbol={selectedBaseSymbol} availableQuotesForBase={availableQuotesForBase}/> */}
         {loading? '': <LiquidityChart selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading} displayData={displayData} dataStore={dataStore} />}
         <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData}/>
-      </div>
       <VolatilityTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData}/>
-    </div>
+      </div>
   )
 })
-
 export default MainPanel

@@ -34,7 +34,6 @@ main {
   z-index: 100000;
   font-size: var(--data-font-size);
   max-height: 30vh;
-  overflow: hidden;
 }
 
 .side-nav {
@@ -43,6 +42,10 @@ main {
   background-color: var(--background-color);
   clip-path: inset(0px -5px 0px 0px);
   height: 92vh;
+  position: sticky;
+  position: -webkit-sticky;
+  top:0;
+  left:0;
 }
 
 .ltv-table {
@@ -170,10 +173,8 @@ main {
   line-height: 0.8rem;
 }
 
-.main-content {
-  padding: 10px calc(var(--spacing) * 2);
-  width: 100%;
-  height: calc(100vh - 102px);
+.graphPanel {
+  height: 92vh;
 }
 
 .info-line {
@@ -591,7 +592,7 @@ section {
 .ltvText{
   flex: 1;
   text-align: left;
-  width: 70%;
+  width: 100%;
   padding-left: 1vw;
 }
 .ltvCalculator{

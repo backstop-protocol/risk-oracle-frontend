@@ -26,18 +26,20 @@ function App() {
   const theme = createTheme(themeOptions);
   return (
     <ThemeProvider theme={theme}>
-    <div className="App">
-      <Box>
-        <Header />
-        <First />
-      </Box>
-      <Box id="smartLTV" sx={{ paddingTop: '8vh', display: 'flex', flexDirection: 'row', height: '100vh', width: '100%' }}>
-        <SideNav />
-        <SmartLTVPanel />
-      </Box>
-      <GraphPanel />
-      <Footer />
-    </div>
+      <div className="App">
+        <Box>
+          <Header />
+          <First />
+        </Box>
+        <div style={{height:"8vh"}}/>
+        <Box id="mainSection" sx={{display: 'flex', flexDirection: 'row', height: '200vh', width: '100vw'}}>
+          <SideNav />
+          <Box sx={{display: 'flex', flexDirection: 'column', height: '200vh', width: "93vw", paddingTop:"8vh"}}>
+            <SmartLTVPanel />
+            {/* <GraphPanel /> */}
+          </Box>
+        </Box>
+      </div>
     </ThemeProvider>
   );
 }
