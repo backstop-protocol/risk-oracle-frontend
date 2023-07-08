@@ -1,4 +1,4 @@
-import { smartLTVCode, updateCode } from "../resources/SmartLTVCode";
+import { updateCode } from "../components/LTVCodeGenerator";
 import { useEffect, useState } from "react";
 
 import LTVCalculator from "../components/LTVCalculator";
@@ -23,7 +23,8 @@ const LTVSection = observer(props => {
     const [CLF, setCLF] = useState(7);
     const [recommendedLTV, setRecommendedLTV] = useState(0)
     // code editor variables
-    const [updatedCode, setUpdatedCode] = useState(smartLTVCode);
+    const defaultCode = updateCode();
+    const [updatedCode, setUpdatedCode] = useState(defaultCode);
 
     //resetting quote on quotes change
     useEffect(() => {
@@ -87,7 +88,7 @@ const LTVSection = observer(props => {
                 setCLF={setCLF}
                 recommendedLTV={recommendedLTV}
                 setRecommendedLTV={setRecommendedLTV} />
-            <LTVCodeSection updatedCode={updatedCode} />
+            <LTVCodeSection defaultCode={defaultCode} updatedCode={updatedCode} />
         </div>
     )
 })
