@@ -23,7 +23,7 @@ const LTVSection = observer(props => {
     const [CLF, setCLF] = useState(7);
     const [recommendedLTV, setRecommendedLTV] = useState(0)
     // code editor variables
-    const defaultCode = updateCode();
+    const defaultCode = updateCode(selectedQuote, selectedBaseName, span, CLF, borrowCap, slippage);
     const [updatedCode, setUpdatedCode] = useState(defaultCode);
 
     //resetting quote on quotes change
