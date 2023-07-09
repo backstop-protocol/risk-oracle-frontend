@@ -1,4 +1,3 @@
-import { updateCode } from "../components/LTVCodeGenerator";
 import { useEffect, useState } from "react";
 
 import LTVCalculator from "../components/LTVCalculator";
@@ -7,6 +6,7 @@ import LTVTextSection from "../components/LTVTextSection";
 import Web3Data from "../components/Web3Data";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
+import { updateCode } from "../components/LTVCodeGenerator";
 
 const LTVSection = observer(props => {
     const quotes = mainStore.selectedQuotes;

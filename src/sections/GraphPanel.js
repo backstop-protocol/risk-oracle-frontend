@@ -1,14 +1,12 @@
-import symbols from "../config";
-
 import AvgTable from "../components/AvgTable";
-import DexSelector from "../components/DexSelector";
+import { Box } from "@mui/system";
 import LiquidityChart from "../components/LiquidityChart";
 import VolatilityTable from "../components/VolatilityTable";
 // import ComparisonAssetsSelector from "../components/ComparisonAssetsSelector"
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { roundTo } from "../utils/utils";
-import { Box } from "@mui/system";
+import symbols from "../config";
 
 const MainPanel = observer(props => {
   const slippage = mainStore.selectedSlippage;
@@ -75,11 +73,11 @@ const MainPanel = observer(props => {
   }
   return (
     <div className="graphPanel">
-      <Box sx={{display:'flex', flex:1, flexGrow:1, flexDirection:"row"}}>
+      <Box sx={{display:'flex', height:"45vh", width:"93vw", flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
         <LiquidityChart selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading} displayData={displayData} dataStore={dataStore} />
         <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData} />
       </Box>
-      <Box sx={{flex:1, flexGrow:1}}>
+      <Box sx={{height:"40vh", display:"flex", justifyContent:"center", alignItems:"center"}}>
         <VolatilityTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData} />
       </Box>
     </div>

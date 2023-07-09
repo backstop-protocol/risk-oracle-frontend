@@ -1,5 +1,6 @@
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
+import { Skeleton } from '@mui/material';
 import TimeFrameButtons from './TimeFrameButtons';
 import { largeNumberFormatter } from '../utils/utils';
 import mainStore from '../stores/main.store';
@@ -40,15 +41,16 @@ const CustomTooltip = ({ active, payload, label }) => {
 }
 
 
+
 const LiquidityChart = observer(props => {
- const {loading, quotes, displayData, selectedBaseSymbol} = props;
+ const {quotes, displayData, selectedBaseSymbol} = props;
   return (
-    <article className='box' style={{ width: '100%', maxHeight:"30vh", minHeight: '440px', marginTop: "0px", }}>
+    <article className='box' style={{display:"flex", flexDirection:"column", width: '100%', height:"90%", minHeight: '440px', marginRight: "1vw" }}>
       <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
       <TimeFrameButtons/>
       </div>
-      
-      {!loading && <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%">
+      {displayData ?
         <LineChart
           data={displayData}
           margin={{
@@ -65,8 +67,9 @@ const LiquidityChart = observer(props => {
           <Legend verticalAlign='top' />
           {quotes.map(_ => <Line key={_} type="monotone" stroke={strokes[_]} dataKey={_} activeDot={{ r: 8 }} />)}
         </LineChart>
-      </ResponsiveContainer>}
-      {loading && <div style={{ marginTop: '100px' }} aria-busy="true"></div>}
+      :
+      <Skeleton/>}
+      </ResponsiveContainer>
     </article>
   )
 })
