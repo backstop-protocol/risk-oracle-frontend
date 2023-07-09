@@ -34,7 +34,7 @@ function App() {
           <SideNav />
           <Box sx={{display: 'flex', flexDirection: 'column', height: '200vh', width:"93vw", paddingTop:"8vh"}}>
             <SmartLTVPanel />
-            {/* <GraphPanel /> */}
+            <GraphPanel />
           </Box>
         </Box>
       </div>

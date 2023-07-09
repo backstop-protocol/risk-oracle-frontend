@@ -174,7 +174,13 @@ main {
 }
 
 .graphPanel {
-  height: 92vh;
+  height: 100vh;
+  width: 93vw;
+  padding-top: 8vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .info-line {

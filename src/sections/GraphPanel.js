@@ -29,12 +29,12 @@ const MainPanel = observer(props => {
     for (const dex of dexes) {
       const dataForDex = graphData[dex][span];
       const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === selectedBaseSymbol.toLowerCase());
-    for (const slippageData of dataForDexForBase) {
+      for (const slippageData of dataForDexForBase) {
         const quote = slippageData.quote;
-        if(!availableQuotesForBase.includes(quote)){
-        availableQuotesForBase.push(quote);
-      }
-      availableQuotesForBase.sort();
+        if (!availableQuotesForBase.includes(quote)) {
+          availableQuotesForBase.push(quote);
+        }
+        availableQuotesForBase.sort();
         for (const volumeForSlippage of slippageData.volumeForSlippage) {
           const blockNumber = volumeForSlippage.blockNumber;
           const slippageValue = volumeForSlippage[slippage];
@@ -59,8 +59,8 @@ const MainPanel = observer(props => {
     }
   }
 
-  
-  const {searchedAsset, selectedAsset, dataStore} = mainStore
+
+  const { searchedAsset, selectedAsset, dataStore } = mainStore
 
   if (!selectedAsset && !searchedAsset) {
     return <div className="main-content">search or select an asset</div>
@@ -68,18 +68,21 @@ const MainPanel = observer(props => {
   if (!selectedAsset && searchedAsset) {
     return <div className="main-content">the searched asset {searchedAsset} is not yet supported</div>
   }
-  if(mainStore.loading){
+  if (mainStore.loading) {
     return (<div className="main-content">
-      <div style={{paddingTop: '30vh'}} aria-busy="true"></div>
+      <div style={{ paddingTop: '30vh' }} aria-busy="true"></div>
     </div>)
   }
   return (
     <div className="graphPanel">
-              {/* <DexSelector selectedBaseSymbol={selectedBaseSymbol} availableQuotesForBase={availableQuotesForBase}/> */}
-        {loading? '': <LiquidityChart selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading} displayData={displayData} dataStore={dataStore} />}
-        <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData}/>
-      <VolatilityTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData}/>
-      </div>
+      <Box sx={{display:'flex', flex:1, flexGrow:1, flexDirection:"row"}}>
+        <LiquidityChart selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading} displayData={displayData} dataStore={dataStore} />
+        <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData} />
+      </Box>
+      <Box sx={{flex:1, flexGrow:1}}>
+        <VolatilityTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData} />
+      </Box>
+    </div>
   )
 })
 export default MainPanel
