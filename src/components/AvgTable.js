@@ -1,3 +1,4 @@
+import { Paper } from "@mui/material";
 import { largeNumberFormatter } from "../utils/utils";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
@@ -29,7 +30,7 @@ const AvgTable = observer(props => {
   const rowDataArray = mainStore.averageTableDisplayArray;
   if(rowDataArray.length > 0){
   return (
-    <article style={{ marginTop: 0, }} className="box">
+    <Paper>
       <table>
         <thead>
           <tr>
@@ -42,7 +43,7 @@ const AvgTable = observer(props => {
           {rowDataArray.map(_ => row(_, selectedBaseSymbol))}
         </tbody>
       </table>
-    </article>
+      </Paper>
   )
 }
 })

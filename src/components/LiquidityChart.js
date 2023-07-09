@@ -1,7 +1,7 @@
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
+import DexSelector from './DexSelector';
 import { Skeleton } from '@mui/material';
-import TimeFrameButtons from './TimeFrameButtons';
 import { largeNumberFormatter } from '../utils/utils';
 import mainStore from '../stores/main.store';
 import { observer } from "mobx-react";
@@ -47,7 +47,7 @@ const LiquidityChart = observer(props => {
   return (
     <article className='box' style={{display:"flex", flexDirection:"column", width: '100%', height:"90%", minHeight: '440px', marginRight: "1vw" }}>
       <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-      <TimeFrameButtons/>
+      <DexSelector selectedBaseSymbol={props.selectedBaseSymbol} availableQuotesForBase={props.availableQuotesForBase} />
       </div>
       <ResponsiveContainer width="100%" height="100%">
       {displayData ?
