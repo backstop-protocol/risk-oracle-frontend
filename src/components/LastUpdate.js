@@ -10,25 +10,23 @@ const iconStyle = {
 }
 
 const LastUpdate = observer(props => {
-    const web3Data = mainStore.web3Data;
-    if (!web3Data) {
-      return <Skeleton variant="rectangular" height={'5vh'} width={'5vw'} />
-    }
-    {
-        const selectedBase = mainStore.selectedAsset.name;
-        if (web3Data[selectedBase]) {
-          const date = web3Data[selectedBase]['lastUpdate'] * 1000;
+  const web3Data = mainStore.web3Data;
+  const selectedBase = mainStore.selectedAsset.name;
+  const date = web3Data && web3Data[selectedBase] ? web3Data[selectedBase]['lastUpdate'] * 1000 : undefined;
   return (
     <div >
-      <div><small><b>Last update</b></small>       
+      <div><small><b>Last update</b></small>
         <span style={iconStyle} data-placement="left" data-tooltip={TOOLTIP_TEXT}>
-          <img className="icon" src="icons/info.svg"/>
+          <img className="icon" src="icons/info.svg" />
         </span>
       </div>
-      <div style={{color: "var(--muted-color)"}}><small>{moment(date).format('LL')}</small></div>
-      <div><small>{moment(date).fromNow()}</small></div>
-    </div>
-  )}}
-})
+      {date ? 
+      <div>
+      <div style={{ color: "var(--muted-color)" }}><small>{moment(date).format('LL')}</small></div>
+      <div><small>{moment(date).fromNow()}</small></div> </div>
+      : <Skeleton />}
+    </div>)
+    }
+  )
 
 export default LastUpdate

@@ -8,7 +8,7 @@ const styles = {
     display: "flex",
     justifyContent: "space-evenly",
     flexWrap: "wrap",
-    width: '100%',
+    width: 'auto',
     marginTop: 'calc(var(--spacing) * 2)',
     minHeight: "calc(100vh - 204px)",
     alignItems: "center",

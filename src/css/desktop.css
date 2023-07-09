@@ -41,7 +41,7 @@ main {
   box-shadow: var(--card-box-shadow);
   background-color: var(--background-color);
   clip-path: inset(0px -5px 0px 0px);
-  height: 92vh;
+  height: 100vh;
   position: sticky;
   position: -webkit-sticky;
   top:0;

@@ -11,7 +11,7 @@ import SideNav from './sections/SideNav';
 import SmartLTVPanel from './sections/SmartLTVPanel';
 import mainStore from './stores/main.store';
 import { themeOptions } from './config';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
   useEffect(() => {
@@ -22,19 +22,17 @@ function App() {
     }
   }, [])
 
-
   const theme = createTheme(themeOptions);
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <Box>
+        <Box id="heroZone">
           <Header />
           <First />
         </Box>
-        <div style={{height:"8vh"}}/>
-        <Box id="mainSection" sx={{display: 'flex', flexDirection: 'row', height: '200vh', width: '100vw'}}>
+        <Box id="mainSection" sx={{display: 'flex', flexDirection: 'row', height: '200vh'}}>
           <SideNav />
-          <Box sx={{display: 'flex', flexDirection: 'column', height: '200vh', width: "93vw", paddingTop:"8vh"}}>
+          <Box sx={{display: 'flex', flexDirection: 'column', height: '200vh', width:"93vw", paddingTop:"8vh"}}>
             <SmartLTVPanel />
             {/* <GraphPanel /> */}
           </Box>

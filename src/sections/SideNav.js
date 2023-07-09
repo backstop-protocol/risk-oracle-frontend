@@ -6,7 +6,7 @@ const SideNav = observer(props => {
   const {assets} = mainStore
   return (
     <aside className="side-nav">
-      <nav style={{paddingTop:"8vh"}}>
+      <nav style={{marginTop:"8vh"}}>
         <ul>
           {assets.map((asset, index) => <SideNavItem asset={asset} key={index}/>)}
         </ul>
