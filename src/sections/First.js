@@ -27,10 +27,10 @@ const First = props => {
         <Typography variant="h1">
           Removing the Human Factor from DeFi Risk Management
           </Typography>
-        <Typography variant="subtitle1" color="secondary">
+        <Typography marginTop="3vh" variant="subtitle1" color="secondary">
           Risk Oracle is an automated, decentralized, transparent, and self-executing DeFi risk engine.
           </Typography>
-        <Typography variant="subtitle2">
+        <Typography marginTop="3vh" variant="subtitle2">
           The Risk Oracle provides on-chain risk parameter feeds that smart contracts can use to automate their economic risk management processes.
           </Typography>
           
@@ -44,10 +44,6 @@ const First = props => {
         <div>
           <img alt="pythia-code-example" src={darkMode ? 'images/pythia-code-dark.png' : 'images/pythia-code.png'} />
           <div>
-            <small>
-              Here’s an example of how to read the feed for
-              ETH DEX liquidity of the last 30 days
-            </small>
           </div>
         </div>
       </div>
