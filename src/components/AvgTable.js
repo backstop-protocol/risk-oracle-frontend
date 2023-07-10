@@ -30,7 +30,7 @@ const AvgTable = observer(props => {
   const rowDataArray = mainStore.averageTableDisplayArray;
   if(rowDataArray.length > 0){
   return (
-    <Paper>
+    <Paper sx={{marginRight:"1vw"}}>
       <table>
         <thead>
           <tr>
