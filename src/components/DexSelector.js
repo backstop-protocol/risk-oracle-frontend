@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, FormControlLabel, FormGroup, MenuItem, Select, Switch, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select, Switch, ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 import { Box } from "@mui/system";
 import { isDexAvailableForBase } from "../utils/utils";
@@ -16,7 +16,7 @@ const options = [
   1, 5, 10, 15, 20
 ]
 
-const insideDivStyle = {display: "flex", flexDirection:"row", gap:"0.5vw", justifyContent:"center", alignItems:"center"}
+const insideDivStyle = {display: "flex", flexDirection:"row", justifyContent:"center", alignItems:"center"}
 
 
 const DexSelector = observer(props => {
@@ -36,10 +36,13 @@ const DexSelector = observer(props => {
     function handleAllDexes(){
       mainStore.toggleAllDexes(selectedBaseSymbol);
     }
+    function handleSlippageChange(e){
+      mainStore.handleSlippageChange(e.target.value);
+    }
 
     return (
-      <Box sx={{display: "flex", flexDirection:"row", justifyContent:"space-evenly", width:"100%"}}>
-        <Box sx={{flex:1, flexGrow:3, display: "flex", flexDirection:"row", gap:"0.5vw"}}>
+      <Box sx={{display: "flex", flexDirection:"row", justifyContent:"space-evenly", alignItems:"center", width:"100%"}}>
+        <Box>
           <ToggleButtonGroup
           value={span}
           size="small"
@@ -50,24 +53,29 @@ const DexSelector = observer(props => {
           </ToggleButtonGroup>
         </Box>
         <Box sx={{flex:1, flexGrow: 5}}>
-          <FormGroup sx={insideDivStyle}>
+          <FormGroup
+          sx={insideDivStyle}
+          >
             <FormControlLabel control={<Switch color="secondary" checked={mainStore.allDexes} onChange={handleAllDexes}/>} label="all dexs"  />
           {availableDexes.map(dex => <FormControlLabel key={dex} control={<Checkbox color="secondary" checked={selectedDexes.includes(dex)} disabled={!isDexAvailableForBase(dex, selectedBaseSymbol)} onChange={() => handleDexChanges(dex)} />} label={nameMap[dex] || dex} />)}
           </FormGroup>
         </Box>
         <Box sx={{flex:1, flexGrow:3}}>
-        <FormGroup sx={insideDivStyle}>
+        <FormGroup
+          sx={insideDivStyle}
+          >
           {availableQuotes.map(quote => <FormControlLabel key={quote} control={<Checkbox color="secondary" checked={selectedQuotes.includes(quote)} disabled={!availableQuotesForBase.includes(quote)} onChange={() => handleQuotesChanges(quote)} />} label={nameMap[quote] || quote} />)}
           </FormGroup>
         </Box>
-        <Box sx={{insideDivStyle, marginBottom:"var(--spacing)"}}>
+        <Box sx={{insideDivStyle, flex:1, flexGrow:1}}>
           <FormControl>
+            <InputLabel>Slippage</InputLabel>
             <Select
             value={currentSlippage}
             label="Slippage"
-            onChange={mainStore.handleSlippageChange}
+            onChange={(e)=>handleSlippageChange(e)}
             >
-              {options.map(_ => <MenuItem value={_}>{_}% slippage</MenuItem>)}
+              {options.map(_ => <MenuItem value={_}> &nbsp;&nbsp;{_}%&nbsp;&nbsp; </MenuItem>)}
             </Select>
           </FormControl>
         </Box>
