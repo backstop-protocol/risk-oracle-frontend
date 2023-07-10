@@ -1,7 +1,7 @@
 import '@picocss/pico';
 import './App.css';
 
-import { Box, ThemeProvider, createTheme } from '@mui/material';
+import { Box, ThemeProvider, createTheme, useMediaQuery } from '@mui/material';
 
 import First from './sections/First';
 import GraphPanel from './sections/GraphPanel';
@@ -9,7 +9,7 @@ import Header from './sections/Header';
 import SideNav from './sections/SideNav';
 import SmartLTVPanel from './sections/SmartLTVPanel';
 import mainStore from './stores/main.store';
-import { themeOptions } from './config';
+import { darkTheme, lightTheme } from './config';
 import { useEffect } from 'react';
 
 function App() {
@@ -20,8 +20,10 @@ function App() {
       mainStore.search(searchQs)
     }
   }, [])
+  const darkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-  const theme = createTheme(themeOptions);
+
+  const theme = darkMode ? createTheme(darkTheme) : createTheme(lightTheme);
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
