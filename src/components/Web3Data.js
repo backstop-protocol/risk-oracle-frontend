@@ -1,7 +1,8 @@
+import { Box, Paper, Skeleton, Typography } from "@mui/material";
+
 import ContractAddress from "./ContractAddress";
 import InfoLine from "./InfoLine";
 import LastUpdate from "./LastUpdate";
-import { Skeleton } from "@mui/material";
 import { largeNumberFormatter } from "../utils/utils";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
@@ -12,29 +13,30 @@ const Web3Data = observer(props => {
     const span = mainStore.selectedSpan;
     const selectedBase = mainStore.selectedAsset.name;
     return (
-        <article className="web3data" style={{ display: 'flex', justifyContent: 'space-between', alignItems: "start", margin: "0 !important" }}>
-            <div >
+        <Paper sx={{margin:"0 1vw 0 1vw", display:"flex", justifyContent:"space-between", alignItems:"start", padding:"1vh 1vw 1vh 1vw"}}>
+            <Box >
                 <InfoLine />
                 <ContractAddress address={pythiaAddress} />
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%', alignItems: "end", alignContent: 'end', flexWrap: 'wrap' }}>
-                <div style={{ minHeight: '50%' }}>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100%', alignItems: "end", alignContent: 'end', flexWrap: 'wrap' }}>
+                <Box sx={{ minHeight: '50%' }}>
+                    <Typography>
                     Avg 30 days uniV3 liquidity vs USDC
-                    <br />
+                    </Typography>
                     {web3Data && web3Data[selectedBase] ?
-                        <p>
+                    <Typography>
                             {selectedBase}: {largeNumberFormatter(web3Data[selectedBase]['value'])} (${largeNumberFormatter(web3Data[selectedBase]['value'] * mainStore.basePrice)})
-                        </p>
+                    </Typography>
                         : <Skeleton />}
-                </div>
-            </div>
+                </Box>
+            </Box>
             <div>
                 <LastUpdate date={mainStore.lastUpdate[span]} />
             </div>
-        </article>
+        </Paper>
 
     )
 })
 
-
+// className="web3data" style={{ display: 'flex', justifyContent: 'space-between', alignItems: "start", margin: "0 !important" }}
 export default Web3Data

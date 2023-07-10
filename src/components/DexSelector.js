@@ -62,7 +62,7 @@ const DexSelector = observer(props => {
         </Box>
         <Box sx={{flex:1, flexGrow:3}}>
         <FormGroup
-          sx={insideDivStyle}
+          sx={{insideDivStyle, all:"unset"}}
           >
           {availableQuotes.map(quote => <FormControlLabel key={quote} control={<Checkbox color="secondary" checked={selectedQuotes.includes(quote)} disabled={!availableQuotesForBase.includes(quote)} onChange={() => handleQuotesChanges(quote)} />} label={nameMap[quote] || quote} />)}
           </FormGroup>
