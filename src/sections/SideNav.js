@@ -8,7 +8,7 @@ const SideNav = observer(props => {
   function handleClick(e, v){
     search(v);
   }
-  return (<Paper sx={{ width: "7vw", marginTop: "8vh", height: "100vh", position: "sticky", position: "-webkit-sticky", top: 0, left: 0 }}>
+  return (<Paper sx={{ width: "7vw", paddingTop:"8vh", height: "100vh", position: "sticky", top: 0, left: 0 }}>
     <Tabs
       orientation="vertical"
       value={selectedBaseSymbol === "WETH" ? "ETH" : selectedBaseSymbol}
