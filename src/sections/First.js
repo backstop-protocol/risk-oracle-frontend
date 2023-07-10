@@ -1,7 +1,6 @@
-import { Box } from "@mui/material"
+import { Box, Typography } from "@mui/material"
+
 import NavigationButton from "../components/NavigationButton"
-import Subtitle from "../components/Subtitle"
-import Title from "../components/Title"
 
 const styles = {
   flex: {
@@ -25,11 +24,17 @@ const First = props => {
   return <Box sx={{height:'100vh'}}>
     <section style={styles.flex}>
       <div style={styles.flexItem}>
-        <Title>Removing the Human Factor from DeFi Risk Management</Title>
-        <Subtitle>Risk Oracle is an automated, decentralized, transparent, and self-executing DeFi risk engine.</Subtitle>
-        <p>
+        <Typography variant="h1">
+          Removing the Human Factor from DeFi Risk Management
+          </Typography>
+        <Typography variant="subtitle1" color="secondary">
+          Risk Oracle is an automated, decentralized, transparent, and self-executing DeFi risk engine.
+          </Typography>
+        <Typography variant="subtitle2">
           The Risk Oracle provides on-chain risk parameter feeds that smart contracts can use to automate their economic risk management processes.
-        </p>
+          </Typography>
+          
+        
         <div className="button-container">
           <a href="https://docs.bprotocol.org" role="button" >Read Docs</a>
           <a href="https://app.bprotocol.org" role="button" className="outline">Request an Asset</a>

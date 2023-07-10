@@ -23,18 +23,28 @@ export const rpcURL = "https://rpc.sepolia.org/"
 
 
 export const themeOptions = {
-    palette: {
-        mode: 'light',
-        primary: {
-          main: '#ffffff',
-        },
-        secondary: {
-          main: '#23A455',
-        },
-      },
-      typography: {
-        fontFamily: 'Inter',
-      },
-    };
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#ffffff',
+    },
+    secondary: {
+      main: '#23A455',
+    },
+  },
+  typography: {
+    fontFamily: 'Inter',
+    h1: {
+      fontSize: '2.5rem',
+      fontWeight: 600,
+      lineHeight: 1.33,
+    },
+    subtitle1: {
+      fontWeight: 600,
+      lineHeight: 1.6,
+      fontSize: '1.5rem',
+    },
+  },
+};
 
 export default symbols;
