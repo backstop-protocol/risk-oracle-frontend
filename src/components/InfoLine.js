@@ -1,3 +1,4 @@
+import { Box, Divider, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import axios from 'axios';
@@ -51,28 +52,22 @@ const InfoLine = observer(props => {
   mainStore.basePrice = priceInfo.lastPrice ? priceInfo.lastPrice : price;
 
   return (
-    <div className="info-line">
-      <div className="info">
-        <span>
-          <strong>{selectedBase.name}</strong>
-        </span>
-        <small>
-          <span>
-            price: <strong>${priceInfo.lastPrice ? priceInfo.lastPrice : price}</strong>
-          </span>
-        </small>
-        <small>
-          <span>
-            24H price change: <strong>{priceInfo.lastPrice ? ((Number(priceInfo.lastPrice) - Number(priceInfo.startPrice)) / Number(priceInfo.startPrice) * 100).toFixed(2) : dayChange}%</strong>
-          </span>
-        </small>
-        <small>
-          <span>
-            24H Liquidity change: <strong>{((Number(priceInfo.endLiquidity) - Number(priceInfo.startLiquidity)) / Number(priceInfo.endLiquidity) * 100).toFixed(2)}%</strong>
-          </span>
-        </small>
-      </div>
-    </div>
+    <Box sx={{display: "flex", justifyContent:"space-between", flexWrap:"wrap", alignItems:"center"}}>
+      <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
+        <Box>
+        <Typography><b>{selectedBase.name}</b></Typography>
+        </Box>
+        <Box>
+          <Typography>Price: $<b>{priceInfo.lastPrice ? priceInfo.lastPrice : price}</b></Typography>
+        </Box>
+        <Box>
+          <Typography>24H price change: <b>{priceInfo.lastPrice ? ((Number(priceInfo.lastPrice) - Number(priceInfo.startPrice)) / Number(priceInfo.startPrice) * 100).toFixed(2) : dayChange}%</b></Typography>
+        </Box>
+        <Box>
+          <Typography>24H Liquidity change: <b>{((Number(priceInfo.endLiquidity) - Number(priceInfo.startLiquidity)) / Number(priceInfo.endLiquidity) * 100).toFixed(2)}%</b></Typography>
+        </Box>
+      </Stack>
+    </Box>
   )
 })
 
