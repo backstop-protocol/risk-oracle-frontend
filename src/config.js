@@ -29,21 +29,31 @@ export const themeOptions = {
       main: '#ffffff',
     },
     secondary: {
-      main: '#23A455',
+      main: '#25c068',
+      contrastText: '#ffffff',
     },
   },
   typography: {
     fontFamily: 'Inter',
     h1: {
-      fontSize: '2.5rem',
-      fontWeight: 600,
+      fontWeight: 800,
       lineHeight: 1.33,
+      fontSize: '3rem',
+    },
+    h2: {
+      fontWeight: 600,
+      lineHeight: 1.5,
+      fontSize: '1.5rem',
+    },
+    h3: {
+      fontSize: '1.4rem',
     },
     subtitle1: {
       fontWeight: 600,
       lineHeight: 1.6,
       fontSize: '1.5rem',
     },
+    fontSize: 14,
   },
 };
 
