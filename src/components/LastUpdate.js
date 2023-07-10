@@ -27,18 +27,6 @@ const LastUpdate = observer(props => {
       :
       <Skeleton />}
     </Stack>
-    // <div >
-    //   <div><small><b>Last update</b></small>
-    //     <span style={iconStyle} data-placement="left" data-tooltip={TOOLTIP_TEXT}>
-    //       <img className="icon" src="icons/info.svg" />
-    //     </span>
-    //   </div>
-    //   {date ? 
-    //   <div>
-    //   <div style={{ color: "var(--muted-color)" }}><small>{moment(date).format('LL')}</small></div>
-    //   <div><small>{moment(date).fromNow()}</small></div> </div>
-    //   : <Skeleton />}
-    // </div>
     )
     }
   )
