@@ -1,6 +1,9 @@
 import { assets } from "../stores/config.store";
 
 function updateCode(debtAsset='USDC', baseAsset="ETH", span=30, CLF=7, borrowCap=0.7, slippage=5){
+    const base = baseAsset;
+    let debt = undefined;
+    debtAsset === "WETH" ? debt = "ETH" : debt = debtAsset;
 return `// SPDX-License-Identifier: MIT
 pragma solidity >=0.8.2 <0.9.0;
 
@@ -19,8 +22,8 @@ contract SmartLTV is RiskyMath, KeyEncoder {
     KeyEncoder.LiquiditySource LIQUIDITY_SOURCE = KeyEncoder.LiquiditySource.All;
 
     // TODO - read from actual lending market
-    address constant COLLATERAL_ASSET = address(${assets[baseAsset].address});
-    address constant DEBT_ASSET = address(${assets[debtAsset].address});
+    address constant COLLATERAL_ASSET = address(${assets[base].address});
+    address constant DEBT_ASSET = address(${assets[debt].address});
     uint constant DEBT_CELING = ${(borrowCap*1e6).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "_")} * 1e18;
     uint constant LIQUIDATION_INCENTIVE = ${slippage}e16;
 
