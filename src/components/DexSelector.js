@@ -47,6 +47,7 @@ const DexSelector = observer(props => {
           value={span}
           size="small"
           exclusive
+          color="secondary"
           onChange={handleSpan}>
           {Object.entries(timeWindows).map(([tw, v]) =>
             <ToggleButton key={tw} value={v}>{tw}</ToggleButton>)}
@@ -57,20 +58,21 @@ const DexSelector = observer(props => {
           sx={insideDivStyle}
           >
             <FormControlLabel control={<Switch color="secondary" checked={mainStore.allDexes} onChange={handleAllDexes}/>} label="all dexs"  />
-          {availableDexes.map(dex => <FormControlLabel key={dex} control={<Checkbox color="secondary" checked={selectedDexes.includes(dex)} disabled={!isDexAvailableForBase(dex, selectedBaseSymbol)} onChange={() => handleDexChanges(dex)} />} label={nameMap[dex] || dex} />)}
+          {availableDexes.map(dex => <FormControlLabel className="dexControls" key={dex} control={<Checkbox color="secondary" checked={selectedDexes.includes(dex)} disabled={!isDexAvailableForBase(dex, selectedBaseSymbol)} onChange={() => handleDexChanges(dex)} />} label={nameMap[dex] || dex} />)}
           </FormGroup>
         </Box>
         <Box sx={{flex:1, flexGrow:3}}>
         <FormGroup
           sx={{insideDivStyle, all:"unset"}}
           >
-          {availableQuotes.map(quote => <FormControlLabel key={quote} control={<Checkbox color="secondary" checked={selectedQuotes.includes(quote)} disabled={!availableQuotesForBase.includes(quote)} onChange={() => handleQuotesChanges(quote)} />} label={nameMap[quote] || quote} />)}
+          {availableQuotes.map(quote => <FormControlLabel className="dexControls" key={quote} control={<Checkbox color="secondary" checked={selectedQuotes.includes(quote)} disabled={!availableQuotesForBase.includes(quote)} onChange={() => handleQuotesChanges(quote)} />} label={nameMap[quote] || quote} />)}
           </FormGroup>
         </Box>
         <Box sx={{insideDivStyle, flex:1, flexGrow:1}}>
           <FormControl>
             <InputLabel>Slippage</InputLabel>
             <Select
+            color="secondary"
             value={currentSlippage}
             label="Slippage"
             onChange={(e)=>handleSlippageChange(e)}

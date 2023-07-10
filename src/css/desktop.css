@@ -35,6 +35,11 @@ main {
 
 }
 
+.dexControls input[type="checkbox"]{
+  --form-element-disabled-background-color:var(--background-color);
+  --form-element-disabled-border-color: none
+}
+
 .tooltip-container {
   border-radius: var(--border-radius);
   box-shadow: var(--card-box-shadow);
