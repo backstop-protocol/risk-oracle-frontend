@@ -1,7 +1,7 @@
+import { Box, Paper, Skeleton } from '@mui/material';
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import DexSelector from './DexSelector';
-import { Skeleton } from '@mui/material';
 import { largeNumberFormatter } from '../utils/utils';
 import mainStore from '../stores/main.store';
 import { observer } from "mobx-react";
@@ -45,10 +45,11 @@ const CustomTooltip = ({ active, payload, label }) => {
 const LiquidityChart = observer(props => {
  const {quotes, displayData, selectedBaseSymbol} = props;
   return (
-    <article className='box' style={{display:"flex", flexDirection:"column", width: '100%', height:"90%", minHeight: '440px', marginRight: "1vw" }}>
-      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+    <Paper sx={{display:"flex", flexDirection:"column", width: '100%', height:"90%", minHeight: '440px', marginRight: "1vw", marginLeft:"1vw" }}>
+      <Box sx={{padding:"1vh 1vw 0 1vw"}}>
       <DexSelector selectedBaseSymbol={props.selectedBaseSymbol} availableQuotesForBase={props.availableQuotesForBase} />
-      </div>
+      </Box>
+      <Box sx={{height:"100%", paddingRight:"1vw"}}>
       <ResponsiveContainer width="100%" height="100%">
       {displayData ?
         <LineChart
@@ -70,7 +71,8 @@ const LiquidityChart = observer(props => {
       :
       <Skeleton/>}
       </ResponsiveContainer>
-    </article>
+      </Box>
+    </Paper>
   )
 })
 
