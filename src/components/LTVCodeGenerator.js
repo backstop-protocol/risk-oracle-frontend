@@ -1,6 +1,6 @@
 import { assets } from "../stores/config.store";
 
-function updateCode(debtAsset='USDC', baseAsset="ETH", span=1, CLF=7, borrowCap=0.7, slippage=5){
+function updateCode(debtAsset='USDC', baseAsset="ETH", span=30, CLF=7, borrowCap=0.7, slippage=5){
 return `// SPDX-License-Identifier: MIT
 pragma solidity >=0.8.2 <0.9.0;
 

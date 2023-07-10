@@ -8,6 +8,7 @@ import axios from "axios";
 import { ethers } from "ethers";
 import { isDexAvailableForBase } from "../utils/utils";
 import keyEncoderABI from '../abi/keyEncoder.abi.json';
+import { updateCode } from "../components/LTVCodeGenerator";
 
 const defaultAsset = "ETH"
 const apiUrl = "https://api.dex-history.la-tribu.xyz/api";
@@ -25,7 +26,7 @@ class MainStore {
     this.selectedDexes = [];
     this.selectedQuotes = [];
     this.selectedSlippage = 5;
-    this.selectedSpan = 1;
+    this.selectedSpan = 30;
     this.web3Data = null;
     this.searchFieldValue = ''
     this.allDexes = true;
@@ -44,6 +45,7 @@ class MainStore {
     this.debtAssetPrices = {};
     this.basePrice = 0;
     this.loading = true;
+    this.defaultCode = updateCode();
     const urls = [];
     const averageUrls = [];
     for (let i = 0; i < this.platforms.length; i++) {
@@ -236,6 +238,7 @@ class MainStore {
     this.initialQuotes();
     this.allDexes = true;
     this.searchFieldValue = ""
+    this.defaultCode = updateCode(this.quotes[0], this.selectedAsset, 30, 100, 0.7, 5);
     this.updateAverages();
     runInAction(() => {
       this.searchCounter++

@@ -604,9 +604,9 @@ section {
   margin-right: 2vw;
   margin-top: 1vh; 
   margin-bottom: 2vh;
-  border: solid;
+  /* border: solid;
   border-color: #25c0687c;
-  border-radius: 1px;
+  border-radius: 1px; */
 }
 .ltvCodeEditor section{
   margin-bottom: 0 !important;

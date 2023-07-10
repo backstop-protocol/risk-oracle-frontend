@@ -23,7 +23,7 @@ const LTVSection = observer(props => {
     const [CLF, setCLF] = useState(7);
     const [recommendedLTV, setRecommendedLTV] = useState(0)
     // code editor variables
-    const defaultCode = updateCode(selectedQuote, selectedBaseName, span, CLF, borrowCap, slippage);
+    const defaultCode = mainStore.defaultCode;
     const [updatedCode, setUpdatedCode] = useState(defaultCode);
 
     //resetting quote on quotes change
@@ -44,8 +44,6 @@ const LTVSection = observer(props => {
     useEffect(() => {
         setBorrowInKind(borrowCap / mainStore.debtAssetPrices[selectedQuote]);
     }, [borrowCap, selectedQuote]);
-
-
 
     useEffect(() => {
         const up = updateCode(selectedQuote, selectedBaseName, span, CLF, borrowCap, slippage);
