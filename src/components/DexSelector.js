@@ -1,3 +1,5 @@
+import { Checkbox, FormControl, FormControlLabel, FormGroup, MenuItem, Select, Switch, ToggleButton, ToggleButtonGroup } from "@mui/material";
+
 import { Box } from "@mui/system";
 import { isDexAvailableForBase } from "../utils/utils";
 import mainStore from "../stores/main.store";
@@ -23,48 +25,56 @@ const DexSelector = observer(props => {
     const { selectedBaseSymbol, availableQuotesForBase } = props;
     const handleDexChanges = mainStore.handleDexChanges;
     const availableDexes = mainStore.platforms;
-    const toggleAllDexes = mainStore.toggleAllDexes;
     const selectedQuotes = mainStore.selectedQuotes;
-    const currentValue = mainStore.selectedSlippage;
+    const currentSlippage = mainStore.selectedSlippage;
     const availableQuotes = mainStore.quotes;
     const span = Number(mainStore.selectedSpan);
     const handleQuotesChanges = mainStore.handleQuotesChanges;
+    function handleSpan(event, value){
+      mainStore.handleSpanChange(value);
+    }
+    function handleAllDexes(){
+      mainStore.toggleAllDexes(selectedBaseSymbol);
+    }
+
     return (
       <Box sx={{display: "flex", flexDirection:"row", justifyContent:"space-evenly", width:"100%"}}>
         <Box sx={{flex:1, flexGrow:3, display: "flex", flexDirection:"row", gap:"0.5vw"}}>
+          <ToggleButtonGroup
+          value={span}
+          size="small"
+          exclusive
+          onChange={handleSpan}>
           {Object.entries(timeWindows).map(([tw, v]) =>
-            <button key={tw} onClick={() => mainStore.handleSpanChange(v)} className={`${span !== v ? 'outline' : ''} secondary small-btn`}>{tw}</button>)}
+            <ToggleButton key={tw} value={v}>{tw}</ToggleButton>)}
+          </ToggleButtonGroup>
         </Box>
-        <Box sx={{flex:1, flexGrow: 3}}>
-          <fieldset style={insideDivStyle}>
-            <label htmlFor="switch" style={{marginRight:"1vw"}}>
-              <input type="checkbox" id="switch" name="switch" role="switch" readOnly
-                onClick={() => toggleAllDexes(selectedBaseSymbol)}
-                checked={mainStore.allDexes} />
-              all dexs
-            </label>
-            {availableDexes.map(dex => <label key={dex} htmlFor={dex}>
-              <input type="checkbox" id={dex} name={dex} checked={selectedDexes.includes(dex)} disabled={!isDexAvailableForBase(dex, selectedBaseSymbol)} onChange={() => handleDexChanges(dex)} />
-              {nameMap[dex] || dex}
-            </label>)}
-          </fieldset>
+        <Box sx={{flex:1, flexGrow: 5}}>
+          <FormGroup sx={insideDivStyle}>
+            <FormControlLabel control={<Switch color="secondary" checked={mainStore.allDexes} onChange={handleAllDexes}/>} label="all dexs"  />
+          {availableDexes.map(dex => <FormControlLabel key={dex} control={<Checkbox color="secondary" checked={selectedDexes.includes(dex)} disabled={!isDexAvailableForBase(dex, selectedBaseSymbol)} onChange={() => handleDexChanges(dex)} />} label={nameMap[dex] || dex} />)}
+          </FormGroup>
         </Box>
         <Box sx={{flex:1, flexGrow:3}}>
-          <fieldset style={insideDivStyle}>
-            {availableQuotes.map(quote => <label key={quote} htmlFor={quote}>
-              <input type="checkbox" id={quote} name={quote} checked={selectedQuotes.includes(quote)} disabled={!availableQuotesForBase.includes(quote)} onChange={() => handleQuotesChanges(quote)} />
-              {nameMap[quote] || quote}
-            </label>)}
-          </fieldset>
+        <FormGroup sx={insideDivStyle}>
+          {availableQuotes.map(quote => <FormControlLabel key={quote} control={<Checkbox color="secondary" checked={selectedQuotes.includes(quote)} disabled={!availableQuotesForBase.includes(quote)} onChange={() => handleQuotesChanges(quote)} />} label={nameMap[quote] || quote} />)}
+          </FormGroup>
         </Box>
         <Box sx={{insideDivStyle, marginBottom:"var(--spacing)"}}>
-          <select style={{ width: "100%" }} id="slippage-selector" value={currentValue} onChange={(event) => mainStore.handleSlippageChange(event.target.value)}>
-            {options.map((option) => <option key={option} value={option}>{option}% slippage</option>)}
-          </select>
+          <FormControl>
+            <Select
+            value={currentSlippage}
+            label="Slippage"
+            onChange={mainStore.handleSlippageChange}
+            >
+              {options.map(_ => <MenuItem value={_}>{_}% slippage</MenuItem>)}
+            </Select>
+          </FormControl>
         </Box>
       </Box>
 
     )
   }
 })
+
 export default DexSelector
