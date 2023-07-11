@@ -11,7 +11,7 @@ const SideNav = observer(props => {
   return (<Paper sx={{ width: "7vw", paddingTop:"8vh", height: "100vh", position: "sticky", top: 0, left: 0 }}>
     <Tabs
       orientation="vertical"
-      value={selectedBaseSymbol === "WETH" ? "ETH" : selectedBaseSymbol}
+      value={selectedBaseSymbol === "WETH" ? "ETH" : selectedBaseSymbol ==="sUSD" ? "SUSD" : selectedBaseSymbol}
       onChange={handleClick}
       textColor="text.primary"
       indicatorColor="secondary"
