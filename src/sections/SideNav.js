@@ -16,7 +16,7 @@ const SideNav = observer(props => {
       textColor="text.primary"
       indicatorColor="secondary"
     >
-      {assets.map(_ => <Tab value={_.name} iconPosition="start"  icon={<Box component="img" sx={{height:"3vh"}} alt={`${_.name} icon`} src={`/asset-icons/${_.name}.webp`} />} label={_.name} />)}
+      {assets.map(_ => <Tab key={_.name} value={_.name} iconPosition="start"  icon={<Box component="img" sx={{height:"3vh"}} alt={`${_.name} icon`} src={`/asset-icons/${_.name}.webp`} />} label={_.name} />)}
     </Tabs>
   </Paper>
   )
