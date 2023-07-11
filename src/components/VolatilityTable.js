@@ -23,7 +23,7 @@ const timeMap = {
 
 const VolatilityTable = observer(props => {
   const { selectedBaseSymbol, dexes, averageData } = props;
-  const spans = mainStore.spans;
+  const spans = [7, 30, 180, 365];
   const sortedData = {};
   const displayData = [];
   const ratios = {};
