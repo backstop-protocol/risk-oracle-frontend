@@ -1,18 +1,12 @@
-import symbols, { pythiaAddress } from "../config";
-
 import AvgTable from "../components/AvgTable";
-import ContractAddress from "../components/ContractAddress";
-import DexSelector from "../components/DexSelector";
-import InfoLine from "../components/InfoLine";
-import LTVCalculator from "../components/LTVCalculator";
-import LastUpdate from "../components/LastUpdate";
+import { Box } from "@mui/system";
 import LiquidityChart from "../components/LiquidityChart";
 import VolatilityTable from "../components/VolatilityTable";
-import Web3Data from "../components/Web3Data";
 // import ComparisonAssetsSelector from "../components/ComparisonAssetsSelector"
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { roundTo } from "../utils/utils";
+import symbols from "../config";
 
 const MainPanel = observer(props => {
   const slippage = mainStore.selectedSlippage;
@@ -33,12 +27,12 @@ const MainPanel = observer(props => {
     for (const dex of dexes) {
       const dataForDex = graphData[dex][span];
       const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === selectedBaseSymbol.toLowerCase());
-    for (const slippageData of dataForDexForBase) {
+      for (const slippageData of dataForDexForBase) {
         const quote = slippageData.quote;
-        if(!availableQuotesForBase.includes(quote)){
-        availableQuotesForBase.push(quote);
-      }
-      availableQuotesForBase.sort();
+        if (!availableQuotesForBase.includes(quote)) {
+          availableQuotesForBase.push(quote);
+        }
+        availableQuotesForBase.sort();
         for (const volumeForSlippage of slippageData.volumeForSlippage) {
           const blockNumber = volumeForSlippage.blockNumber;
           const slippageValue = volumeForSlippage.aggregated[slippage];
@@ -63,8 +57,8 @@ const MainPanel = observer(props => {
     }
   }
 
-  
-  const {searchedAsset, selectedAsset, dataStore} = mainStore
+
+  const { searchedAsset, selectedAsset, dataStore } = mainStore
 
   if (!selectedAsset && !searchedAsset) {
     return <div className="main-content">search or select an asset</div>
@@ -72,44 +66,21 @@ const MainPanel = observer(props => {
   if (!selectedAsset && searchedAsset) {
     return <div className="main-content">the searched asset {searchedAsset} is not yet supported</div>
   }
-  if(mainStore.loading){
+  if (mainStore.loading) {
     return (<div className="main-content">
-      <div style={{paddingTop: '30vh'}} aria-busy="true"></div>
+      <div style={{ paddingTop: '30vh' }} aria-busy="true"></div>
     </div>)
   }
   return (
-    <div className="main-content">
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--spacing)', width: '100%'}}>
-        <div style={{ flexGrow: 1}}>
-          <article className="box" style={{display: 'flex', justifyContent:'space-between', alignItems: "start"}}>
-            <div >
-              <InfoLine/>
-              <ContractAddress address={pythiaAddress}/>
-            </div>
-            <div style={{display: 'flex', flexDirection:'column', minHeight:'100%', alignItems: "end", alignContent:'end', flexWrap:'wrap'}}>
-            <div style={{minHeight:'50%'}}><Web3Data/></div>
-            </div>
-            <div>
-            <LastUpdate date={mainStore.lastUpdate[span]}/>
-            </div>
-          </article>
-          <article className="box">
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '', fontSize: "0.875em"}}>
-              {/* <ComparisonAssetsSelector dataStore={dataStore}/> */}
-              <DexSelector selectedBaseSymbol={selectedBaseSymbol} availableQuotesForBase={availableQuotesForBase}/>
-              <LTVCalculator />
-            </div>
-            
-          </article>
-        </div>
-      </div>
-      <div style={{display: 'flex', gap: 'var(--spacing)'}}>
-        {loading? '': <LiquidityChart selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading} displayData={displayData} dataStore={dataStore} />}
-        <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData}/>
-      </div>
-      <VolatilityTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData}/>
+    <div className="graphPanel">
+      <Box sx={{display:'flex', height:"45vh", width:"93vw", flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
+        <LiquidityChart availableQuotesForBase={availableQuotesForBase} selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading} displayData={displayData} dataStore={dataStore} />
+        <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData} />
+      </Box>
+      <Box sx={{height:"40vh", display:"flex", justifyContent:"center", alignItems:"center"}}>
+        <VolatilityTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData} />
+      </Box>
     </div>
   )
 })
-
 export default MainPanel

@@ -59,6 +59,8 @@ export const coingeckoMap = {
     weth: 'weth'
 }
 export function isDexAvailableForBase(dexName, selectedBaseName) {
+    if(mainStore.graphData[dexName]){
     const availableBases = mainStore.graphData[dexName]['1'].map(_ => _.base);
-    return availableBases.includes(selectedBaseName);
+    return availableBases.includes(selectedBaseName);}
+    else{return false}
 }

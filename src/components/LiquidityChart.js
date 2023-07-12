@@ -1,6 +1,7 @@
+import { Box, Paper, Skeleton } from '@mui/material';
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-import TimeFrameButtons from './TimeFrameButtons';
+import DexSelector from './DexSelector';
 import { largeNumberFormatter } from '../utils/utils';
 import mainStore from '../stores/main.store';
 import { observer } from "mobx-react";
@@ -28,7 +29,6 @@ const CustomTooltip = ({ active, payload, label }) => {
     }
     }
     displayValues.sort((a,b) => b[1] - a[1]);
-    console.log(displayValues);
 
     return (
       <div className="tooltip-container">
@@ -41,15 +41,17 @@ const CustomTooltip = ({ active, payload, label }) => {
 }
 
 
+
 const LiquidityChart = observer(props => {
- const {loading, quotes, displayData, selectedBaseSymbol} = props;
+ const {quotes, displayData, selectedBaseSymbol} = props;
   return (
-    <article className='box' style={{ width: '100%', height: '30vh', minHeight: '440px', marginTop: "0px", }}>
-      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-      <TimeFrameButtons/>
-      </div>
-      
-      {!loading && <ResponsiveContainer width="100%" height="100%">
+    <Paper sx={{display:"flex", flexDirection:"column", width:"80%", height:"90%", minHeight: '440px', marginRight: "1vw", marginLeft:"1vw" }}>
+      <Box sx={{padding:"1vh 1vw 0 1vw"}}>
+      <DexSelector selectedBaseSymbol={props.selectedBaseSymbol} availableQuotesForBase={props.availableQuotesForBase} />
+      </Box>
+      <Box sx={{height:"100%", padding:"0 1vw 0 0"}}>
+      <ResponsiveContainer width="100%" height="100%">
+      {displayData ?
         <LineChart
           data={displayData}
           margin={{
@@ -66,9 +68,11 @@ const LiquidityChart = observer(props => {
           <Legend verticalAlign='top' />
           {quotes.map(_ => <Line key={_} type="monotone" stroke={strokes[_]} dataKey={_} activeDot={{ r: 8 }} />)}
         </LineChart>
-      </ResponsiveContainer>}
-      {loading && <div style={{ marginTop: '100px' }} aria-busy="true"></div>}
-    </article>
+      :
+      <Skeleton/>}
+      </ResponsiveContainer>
+      </Box>
+    </Paper>
   )
 })
 

@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 
 import { largeNumberFormatter } from "../utils/utils";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { timeWindows } from "../stores/config.store";
 import { useCombobox } from "downshift";
+import { useState } from "react";
 
 const CLFValues = [
     {
@@ -63,18 +64,18 @@ function CLFInput(props) {
                 <input
                     pattern="[0-9]+"
                     className="ltv-select"
-                    style={{borderColor: isNaN(clf) ? '#FF0000' : ''}}
+                    style={{ borderColor: isNaN(clf) ? '#FF0000' : '' }}
                     {...getInputProps()}
                 />
             </div>
             <ul
-            className="ltv-dropdown-content"
+                className="ltv-dropdown-content"
                 {...getMenuProps()}
             >
                 {isOpen &&
                     CLFOptions.map((item, index) => (
                         <li
-                        className="ltv-dropdown-item"
+                            className="ltv-dropdown-item"
                             style={{
                                 padding: '4px',
                                 backgroundColor: highlightedIndex === index ? '#bde4ff' : null,
@@ -95,50 +96,39 @@ function CLFInput(props) {
     )
 }
 
+function CalculatorItem(props) {
+    return <Grid item xs={12} sm={6} lg={4} xl={1.5}>
+        <Paper
+            sx={{
+                px: 2,
+                pt: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'start',
+                alignItems: 'center',
+                height: '1'
+            }}
+        >
+            <Box sx={{maxHeight:"0.5", minHeight:"0.5", alignItems:"center", justifyContent:"center"}}>
+                <Typography textAlign={'center'}>{props.title}{props.subtitle ? <br /> : ''}</Typography>
+                {props.subtitle ? <Typography textAlign={'center'} variant="subtitle2">{props.subtitle}</Typography> : ''}
+                </Box>
+            <Divider />
+            <Box sx={{display:"flex", flexDirection:"column", minHeight:"50%", alignItems:"center", justifyContent:"center"}}>
+                {props.mainContent}
+                {props.otherContent ? props.otherContent : ''}
+                </Box>
+        </Paper>
+    </Grid>
+}
+
 const LTVCalculator = observer(props => {
-    const quotes = mainStore.selectedQuotes;
-    const [selectedQuote, setSelectedQuote] = useState(quotes[0]);
-    const [recommendedLTV, setRecommendedLTV] = useState(0);
-    const averages = mainStore.averages;
-    const [borrowCap, setBorrowCap] = useState(0);
-    const [borrowCapInKind, setBorrowCapInKind] = useState(undefined);
-    const span = mainStore.selectedSpan;
-    const slippage = mainStore.selectedSlippage;
+    if (!mainStore.averages) {
+        return
+    }
+    const {quotes, selectedQuote,setSelectedQuote, span, liquidity, volatility, slippage, borrowCap, setBorrowCap, CLF, setCLF, recommendedLTV} = props;
     const slippageOptions = [1, 5, 10, 15, 20];
-    const volatility = selectedQuote ? averages[selectedQuote]['volatility'] : undefined;
-    const liquidity = averages[selectedQuote]['average'];
-    const [clf, setCLF] = useState(10);
     const debtAssetPrice = mainStore.debtAssetPrices[selectedQuote] ? mainStore.debtAssetPrices[selectedQuote] : undefined;
-
-    useEffect(()=> {
-        if(!mainStore.debtAssetPrices[selectedQuote]){
-            mainStore.updateDebtAssetPrices(selectedQuote);
-        }
-    }, [selectedQuote]);
-
-    useEffect(()=> {
-        setSelectedQuote(quotes[0]);
-    }, [quotes]);
-
-
-    useEffect(()=> {
-        setBorrowCapInKind(borrowCap / debtAssetPrice);
-    }, [borrowCap, debtAssetPrice, setBorrowCapInKind]);
-
-    useEffect(() => {
-        //         1/ calc racine carré de l / d ==> on appelle ça (a)
-        const sqrRoot = Math.sqrt(liquidity / borrowCapInKind);
-        // const sqrRoot = Math.sqrt(liquidity / (borrowCap / debtAssetPrice));
-        //         2/ calc theta / (a) ==> on appelle ça (b)
-        const sigmaOverSqrRoot = volatility / sqrRoot;
-        //         3/ calc -c * (b) ==> on appelle ça (c)
-        const clfMinusSigmaOverSqrRoot = (-1 * clf) * sigmaOverSqrRoot;
-        //         4/ calc exponentielle de (c)  ==> on appelle ça (d)
-        const exponential = Math.exp(clfMinusSigmaOverSqrRoot);
-        //         5/ calc (d) - beta
-        const ltv = exponential - (slippage / 100);
-        setRecommendedLTV(ltv.toFixed(2));
-    }, [liquidity, slippage, volatility, clf, borrowCapInKind])
 
     return (
         <article style={{ marginTop: 0, marginBottom: 0 }} className="ltv-container">
@@ -188,7 +178,7 @@ const LTVCalculator = observer(props => {
                     <div className="ltv-title-div">
                         <small>CLF<br />Confidence Level Factor</small>
                     </div>
-                    <div className="ltv-value-div"><CLFInput setCLF={setCLF} clf={clf} />
+                    <div className="ltv-value-div"><CLFInput setCLF={setCLF} clf={CLF} />
                     </div>
                 </div>
                 <div className="ltv-asset" title="Loan To Value ratio.">
@@ -203,5 +193,4 @@ const LTVCalculator = observer(props => {
     )
 
 })
-
 export default LTVCalculator

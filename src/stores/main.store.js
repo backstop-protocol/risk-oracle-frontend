@@ -1,12 +1,14 @@
-import { coingeckoMap, isDexAvailableForBase, normalize } from "../utils/utils";
+import { coingeckoMap, normalize } from "../utils/utils";
 import { makeAutoObservable, runInAction } from "mobx";
-import { pythiaAddress, relayerAddress, rpcURL } from "../config";
+import symbols, { keyEncoderAddress, pythiaAddress, relayerAddress, rpcURL } from "../config";
 
 import PythiaABI from "../abi/pythia.abi.json";
 import { assets } from "./config.store";
 import axios from "axios";
 import { ethers } from "ethers";
-import symbols from "../config";
+import { isDexAvailableForBase } from "../utils/utils";
+import keyEncoderABI from '../abi/keyEncoder.abi.json';
+import { updateCode } from "../components/LTVCodeGenerator";
 
 const defaultAsset = "ETH"
 const apiUrl = "https://api.dex-history.la-tribu.xyz/api";
@@ -24,7 +26,7 @@ class MainStore {
     this.selectedDexes = [];
     this.selectedQuotes = [];
     this.selectedSlippage = 5;
-    this.selectedSpan = 1;
+    this.selectedSpan = 30;
     this.web3Data = null;
     this.searchFieldValue = ''
     this.allDexes = true;
@@ -37,11 +39,13 @@ class MainStore {
     this.quotes = ['USDC', 'WBTC', 'WETH']
     this.graphData = {};
     this.averageData = {};
+    this.averageTableDisplayArray = [];
     this.lastUpdate = {};
     this.averages = {};
     this.debtAssetPrices = {};
     this.basePrice = 0;
     this.loading = true;
+    this.defaultCode = updateCode();
     const urls = [];
     const averageUrls = [];
     for (let i = 0; i < this.platforms.length; i++) {
@@ -54,6 +58,21 @@ class MainStore {
         averageUrls.push(`${apiUrl}/getaveragedata?platform=${this.platforms[i]}&span=${this.spans[j]}`);
       }
     }
+    this.sendParallelRequests(averageUrls)
+      .then(data => {
+        for (let i = 0; i < data.length; i++) {
+          const url = new URL(data[i].request.responseURL);
+          const span = url.searchParams.get('span');
+          const platform = url.searchParams.get('platform');
+          if (!this.averageData[platform]) {
+            this.averageData[platform] = {}
+          };
+          this.averageData[platform][span] = data[i].data;
+        }
+      })
+      .catch(error => {
+        console.error('error', error);
+      });
     this.sendParallelRequests(urls)
       .then(data => {
         for (let i = 0; i < data.length; i++) {
@@ -69,26 +88,13 @@ class MainStore {
         }
         this.initialDexes();
         this.initialQuotes();
+        this.updateAverages();
+
       })
       .catch(error => {
         console.error('error', error);
       });
-    this.sendParallelRequests(averageUrls)
-      .then(data => {
-        for (let i = 0; i < data.length; i++) {
-          const url = new URL(data[i].request.responseURL);
-          const span = url.searchParams.get('span');
-          const platform = url.searchParams.get('platform');
-          if (!this.averageData[platform]) {
-            this.averageData[platform] = {}
-          };
-          this.averageData[platform][span] = data[i].data;
-        }
-        this.loading = false;
-      })
-      .catch(error => {
-        console.error('error', error);
-      });
+    this.loading = false;
     this.getWeb3Data();
     makeAutoObservable(this);
   }
@@ -100,10 +106,10 @@ class MainStore {
   async getWeb3Data() {
     const provider = new ethers.JsonRpcProvider(rpcURL);
     const pythiaContract = new ethers.Contract(pythiaAddress, PythiaABI, provider);
+    const keyEncoderContract = new ethers.Contract(keyEncoderAddress, keyEncoderABI, provider);
     const relayers = [];
     const assetsAddresses = [];
     const keys = [];
-    const key = ethers.keccak256(ethers.toUtf8Bytes(`avg 30 days uni v3 liquidity`));
     const symbols = [];
     const toReturn = {};
 
@@ -111,16 +117,17 @@ class MainStore {
       if (value.pythia) {
         symbols.push(tokenSymbol);
         relayers.push(relayerAddress);
+        const key = await keyEncoderContract.encodeLiquidityKey(value.address, assets.USDC.address, 2, 5, 30);
         keys.push(key);
         assetsAddresses.push(value.address)
       }
     }
-
     const results = await pythiaContract.multiGet(relayers, assetsAddresses, keys);
-
     for (let i = 0; i < symbols.length; i++) {
       const assetConf = assets[symbols[i]];
-      toReturn[symbols[i]] = normalize(results[i], BigInt(assetConf.decimals));
+      toReturn[symbols[i]] = {};
+      toReturn[symbols[i]]['value'] = normalize(results[i][0], BigInt(assetConf.decimals));
+      toReturn[symbols[i]]['lastUpdate'] = Number(results[i][1]);
     }
     this.web3Data = toReturn;
   }
@@ -149,20 +156,69 @@ class MainStore {
     }
   }
 
-  updateAverages = (averageArray) => {
-    for(let i = 0; i < averageArray.length; i++){
-      const tokenName = Object.keys(averageArray[i])[0];
-      this.averages[tokenName] = averageArray[i][tokenName];
+  updateAverages = () => {
+    const span = this.selectedSpan;
+    const slippage = this.selectedSlippage;
+    const dexes = this.selectedDexes;
+    const averageData = this.averageData;
+    const selectedBaseSymbol = symbols[this.selectedAsset.name];
+    const quotes = this.selectedQuotes;
+    const rowDataArray = [];
+    const sortedData = {};
+    const ratios = {};
+    for (const dex of dexes) {
+      ratios[dex] = {};
+      const dataForDexForSpanForBase = averageData[dex][span][selectedBaseSymbol];
+      for (const quote of quotes) {
+        ratios[dex][quote] = 0;
+        if (!sortedData[quote]) {
+          sortedData[quote] = {}
+        }
+        if (!sortedData[quote]['average']) {
+          sortedData[quote]['average'] = 0;
+        }
+        if (dataForDexForSpanForBase[quote]) {
+          sortedData[quote]['average'] += (dataForDexForSpanForBase[quote]['avgLiquidity'][slippage]);
+        }
+        if (!sortedData[quote]['volatility']) {
+          sortedData[quote]['volatility'] = 0
+        }
+        if (dataForDexForSpanForBase[quote]) {
+          sortedData[quote]['volatility'] += dataForDexForSpanForBase[quote].volatility;
+          ratios[dex][quote]++;
+        }
+      }
     }
+    for (const quote of Object.keys(sortedData)) {
+      let quoteRatio = 0;
+      const ratioMap = Object.entries(ratios);
+      for (let i = 0; i < ratioMap.length; i++) {
+        if (ratioMap[i][1][quote] === 1) {
+          quoteRatio++
+        }
+      }
+      sortedData[quote].volatility = sortedData[quote].volatility / quoteRatio;
+    }
+    for (const [key, value] of Object.entries(sortedData)) {
+      const toPush = {}
+      toPush[key] = value;
+      rowDataArray.push(toPush);
+    }
+    rowDataArray.sort((a, b) => Object.entries(b)[0][1].average - Object.entries(a)[0][1].average);
+    this.averageTableDisplayArray = rowDataArray;
 
+    for (let i = 0; i < rowDataArray.length; i++) {
+      const tokenName = Object.keys(rowDataArray[i])[0];
+      this.averages[tokenName] = rowDataArray[i][tokenName];
+    }
   }
 
-  async updateDebtAssetPrices(asset){
-      const id = coingeckoMap[asset.toLowerCase()];
-      const url = `https://api.coingecko.com/api/v3/coins/${id}`
-      const data = await axios.get(url);
-      const price = (data.data['market_data']['current_price']['usd']).toFixed(2); 
-      this.debtAssetPrices[asset] = price;
+  async updateDebtAssetPrices(asset) {
+    const id = coingeckoMap[asset.toLowerCase()];
+    const url = `https://api.coingecko.com/api/v3/coins/${id}`
+    const data = await axios.get(url);
+    const price = (data.data['market_data']['current_price']['usd']).toFixed(2);
+    this.debtAssetPrices[asset] = price;
   }
 
   search = (assetName) => {
@@ -182,6 +238,8 @@ class MainStore {
     this.initialQuotes();
     this.allDexes = true;
     this.searchFieldValue = ""
+    this.defaultCode = updateCode(this.quotes[0], this.selectedAsset.name, 30, 7, 0.7, 5);
+    this.updateAverages();
     runInAction(() => {
       this.searchCounter++
     })
@@ -230,6 +288,7 @@ class MainStore {
       }
     }
     this.selectedQuotes = newQuotes;
+    this.updateAverages();
   }
 
   toggleAllDexes = (selectedBaseSymbol) => {
@@ -248,6 +307,7 @@ class MainStore {
       this.allDexes = false;
     }
   }
+
 
   initialQuotes = () => {
     this.selectedQuotes = [];
@@ -275,6 +335,7 @@ class MainStore {
     else {
       this.selectedQuotes = [...this.selectedQuotes, quote];
     }
+    this.updateAverages();
   }
 
   setSearchFieldValue = (value) => {
@@ -283,9 +344,11 @@ class MainStore {
 
   handleSlippageChange = (value) => {
     this.selectedSlippage = value;
+    this.updateAverages();
   }
   handleSpanChange = (value) => {
     this.selectedSpan = value;
+    this.updateAverages();
   }
 }
 
