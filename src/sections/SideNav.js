@@ -5,20 +5,24 @@ import { observer } from "mobx-react";
 
 const SideNav = observer(props => {
   const { assets, search, selectedBaseSymbol } = mainStore
-  function handleClick(e, v){
+  function handleClick(e, v) {
     search(v);
   }
-  return (<Paper sx={{ width: "7vw", paddingTop:"8vh", height: "100vh", position: "sticky", top: 0, left: 0 }}>
-    <Tabs
-      orientation="vertical"
-      value={selectedBaseSymbol === "WETH" ? "ETH" : selectedBaseSymbol ==="sUSD" ? "SUSD" : selectedBaseSymbol}
-      onChange={handleClick}
-      textColor="text.primary"
-      indicatorColor="secondary"
-    >
-      {assets.map(_ => <Tab key={_.name} value={_.name} iconPosition="start"  icon={<Box component="img" sx={{height:"3vh"}} alt={`${_.name} icon`} src={`/asset-icons/${_.name}.webp`} />} label={_.name} />)}
-    </Tabs>
-  </Paper>
+  return (
+    <Box sx={{ width: "7vw", height: "100vh", position: "sticky", top: 0, left: 0 }}>
+      <Box height="8vh" />
+      <Paper sx={{height:"92vh"}}>
+        <Tabs
+          orientation="vertical"
+          value={selectedBaseSymbol === "WETH" ? "ETH" : selectedBaseSymbol === "sUSD" ? "SUSD" : selectedBaseSymbol}
+          onChange={handleClick}
+          textColor="text.primary"
+          indicatorColor="secondary"
+        >
+          {assets.map(_ => <Tab key={_.name} value={_.name} iconPosition="start" icon={<Box component="img" sx={{ height: "3vh" }} alt={`${_.name} icon`} src={`/asset-icons/${_.name}.webp`} />} label={_.name} />)}
+        </Tabs>
+      </Paper>
+    </Box>
   )
 })
 
