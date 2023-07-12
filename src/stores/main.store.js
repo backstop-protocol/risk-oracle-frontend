@@ -178,7 +178,7 @@ class MainStore {
           sortedData[quote]['average'] = 0;
         }
         if (dataForDexForSpanForBase[quote]) {
-          sortedData[quote]['average'] += (dataForDexForSpanForBase[quote]['avgLiquidity'][slippage]);
+          sortedData[quote]['average'] += (dataForDexForSpanForBase[quote]['avgLiquidityAggreg'][slippage]);
         }
         if (!sortedData[quote]['volatility']) {
           sortedData[quote]['volatility'] = 0
