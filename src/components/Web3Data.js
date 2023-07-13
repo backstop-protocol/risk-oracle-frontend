@@ -1,4 +1,4 @@
-import { Box, Paper, Skeleton, Typography } from "@mui/material";
+import { Box, Container, Paper, Skeleton, Typography } from "@mui/material";
 
 import ContractAddress from "./ContractAddress";
 import InfoLine from "./InfoLine";
@@ -12,7 +12,7 @@ const Web3Data = observer(props => {
     const web3Data = mainStore.web3Data;
     const span = mainStore.selectedSpan;
     const selectedBase = mainStore.selectedAsset.name;
-    if(web3Data) {
+    if(web3Data && web3Data[selectedBase]) {
         console.log('volatilityValue', web3Data[selectedBase]['volatilityValue'])
     }
     return (
@@ -21,21 +21,22 @@ const Web3Data = observer(props => {
                 <InfoLine />
                 <ContractAddress address={pythiaAddress} />
             </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100%', alignItems: "end", alignContent: 'end', flexWrap: 'wrap' }}>
+            {web3Data && web3Data[selectedBase] ? <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100%', alignItems: "end", alignContent: 'end', flexWrap: 'wrap' }}>
                 <Box sx={{ minHeight: '50%' }}>
                     <Typography>
                     Avg 30 days uniV3 liquidity vs USDC
                     </Typography>
-                    {web3Data && web3Data[selectedBase] ?
+                    
                     <Typography>
                             {selectedBase}: {largeNumberFormatter(web3Data[selectedBase]['value'])} (${largeNumberFormatter(web3Data[selectedBase]['value'] * mainStore.basePrice)})
                     </Typography>
-                        : <Skeleton />}
+                        
                 </Box>
-            </Box>
-            <div>
-                <LastUpdate date={mainStore.lastUpdate[span]} />
-            </div>
+            </Box>: <Box></Box>}
+            {web3Data && web3Data[selectedBase] ? 
+                <div>
+                    <LastUpdate date={mainStore.lastUpdate[span]} />
+                </div>: <Box></Box>}
         </Paper>
 
     )
