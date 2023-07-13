@@ -20,7 +20,7 @@ const CLFValues = [
     },
 ]
 
-const controlledWidth = {flex:"1", flexGrow:"1"}
+const controlledWidth = { flex: "1", flexGrow: "1" }
 
 const LTVCalculator = observer(props => {
     if (!mainStore.averages) {
@@ -32,14 +32,14 @@ const LTVCalculator = observer(props => {
     console.log(selectedQuote)
 
     return (
-        <Paper className="dexControls" sx={{padding:"1vh 1vw", width:"90vw"}}>
-            <Stack 
-            direction="horizontal" 
-            justifyContent="center"
-            gap={2}>
+        <Paper className="dexControls" sx={{ padding: "1vh 1vw", width: "90vw" }}>
+            <Stack
+                direction="horizontal"
+                justifyContent="center"
+                gap={2}>
                 <FormControl
                     sx={controlledWidth}
-                    >
+                >
                     <TextField
                         select
                         color="secondary"
@@ -61,7 +61,7 @@ const LTVCalculator = observer(props => {
                 </FormControl>
                 <FormControl
                     sx={controlledWidth}
-                    >
+                >
                     <TextField
                         select
                         color="secondary"
@@ -85,7 +85,7 @@ const LTVCalculator = observer(props => {
                 </FormControl>
                 <FormControl
                     sx={controlledWidth}
-                    >
+                >
                     <TextField
                         disabled
                         color="secondary"
@@ -108,13 +108,13 @@ const LTVCalculator = observer(props => {
                 </FormControl>
                 <FormControl
                     sx={controlledWidth}
-                    >
+                >
                     <TextField
                         disabled
                         color="secondary"
                         value={largeNumberFormatter((liquidity).toFixed(2))}
                         label="&#8467; - Liquidity"
-                        helperText={`$${largeNumberFormatter((liquidity*debtAssetPrice).toFixed(2))}`}
+                        helperText={`$${largeNumberFormatter((liquidity * debtAssetPrice).toFixed(2))}`}
                         onChange={(event) => { mainStore.handleSpanChange(event.target.value) }}
                         InputProps={{
                             startAdornment: (
@@ -131,7 +131,7 @@ const LTVCalculator = observer(props => {
                 </FormControl>
                 <FormControl
                     sx={controlledWidth}
-                    >
+                >
                     <TextField
                         select
                         color="secondary"
@@ -154,7 +154,7 @@ const LTVCalculator = observer(props => {
                 </FormControl>
                 <FormControl
                     sx={controlledWidth}
-                    >
+                >
                     <TextField
                         color="secondary"
                         value={borrowCap}
@@ -174,41 +174,42 @@ const LTVCalculator = observer(props => {
                     </TextField>
                 </FormControl>
                 <FormControl
-                sx={controlledWidth}
-                                    >
+                    sx={controlledWidth}
+                >
                     <Autocomplete
                         freeSolo
                         options={CLFValues.map((option) => option.value)}
                         value={CLF}
                         onChange={(event, newValue) => {
                             setCLF(newValue);
-                          }}
+                        }}
                         inputValue={CLF}
                         onInputChange={(event, newValue) => {
                             setCLF((newValue.match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '');
-                          }}
+                        }}
                         renderInput={(params) => (
                             <TextField
-                                {...params}
+                        color="secondary"
+                        {...params}
                                 label="CLF"
-                        InputProps={{
-                                    ...params.InputProps,
+                                InputProps={{
                                     startAdornment: (
-                                        <InputAdornment position="start">
-                                            <Tooltip placement="top" title="Confidence Level Factor. The higher it is, the odds of insolvency are decreasing.">
-                                                <QuestionMark fontSize="small" />
-                                            </Tooltip>
-                                        </InputAdornment>
-                                    ),
-                            endAdornment: (<InputAdornment position="end"></InputAdornment>)
-                        }}
+                                    <InputAdornment position="start">
+                                        <Tooltip placement="top" title="Confidence Level Factor. The higher it is, the odds of insolvency are decreasing.">
+                                            <QuestionMark fontSize="small" />
+                                        </Tooltip>
+                                    </InputAdornment>
+                                ),
+                                endAdornment: (<InputAdornment position="end"></InputAdornment>)
+                            }}
+                                    
                             />
                         )}
                     />
                 </FormControl>
                 <FormControl
                     sx={controlledWidth}
-                    >
+                >
                     <TextField
                         sx={controlledWidth}
                         color="secondary"
