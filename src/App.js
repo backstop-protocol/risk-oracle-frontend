@@ -36,7 +36,7 @@ function App() {
     init() {
       this.scheme = this.schemeFromLocalStorage;
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-        this.scheme = !!e.matches ? this._scheme = 'dark' : this._scheme = 'light';
+        this.scheme = !!e.matches ? this._scheme = 'dark' : this._scheme = 'dark';
       });
       this.initSwitchers();
     },
