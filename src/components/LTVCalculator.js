@@ -20,6 +20,8 @@ const CLFValues = [
     },
 ]
 
+const controlledWidth = {width:"auto"}
+
 const LTVCalculator = observer(props => {
     if (!mainStore.averages) {
         return
@@ -30,14 +32,17 @@ const LTVCalculator = observer(props => {
     console.log(selectedQuote)
 
     return (
-        <Paper className="dexControls" sx={{padding:"1vh 1vw"}}>
-            <Stack direction="horizontal" gap={3}>
+        <Paper className="dexControls" sx={{padding:"1vh 1vw", width:"90vw"}}>
+            <Stack 
+            direction="horizontal" 
+            justifyContent="center"
+            gap={2}>
                 <FormControl>
                     <TextField
                     sx={{width:"10vw"}}
                         select
                         color="secondary"
-                        value={selectedQuote}
+                        value={selectedQuote ? selectedQuote : ''}
                         label="Debt Asset"
                         onChange={(event) => { setSelectedQuote(event.target.value) }}
                         InputProps={{
@@ -55,7 +60,6 @@ const LTVCalculator = observer(props => {
                 </FormControl>
                 <FormControl>
                     <TextField
-                    sx={{width:"10vw"}}
                         select
                         color="secondary"
                         value={span}
@@ -69,6 +73,8 @@ const LTVCalculator = observer(props => {
                                     </Tooltip>
                                 </InputAdornment>
                             ),
+                            endAdornment: (<InputAdornment position="end"></InputAdornment>)
+
                         }}
                     >
                         {Object.entries(timeWindows).map(([tw, v]) => <MenuItem key={tw} value={v}>{tw}</MenuItem>)}
@@ -76,7 +82,7 @@ const LTVCalculator = observer(props => {
                 </FormControl>
                 <FormControl>
                     <TextField
-                    sx={{width:"10vw"}}
+                        sx={controlledWidth}
                         disabled
                         color="secondary"
                         value={(volatility * 100).toFixed(2)}
@@ -98,7 +104,7 @@ const LTVCalculator = observer(props => {
                 </FormControl>
                 <FormControl>
                     <TextField
-                    sx={{width:"10vw"}}
+                        sx={controlledWidth}
                         disabled
                         color="secondary"
                         value={largeNumberFormatter((liquidity).toFixed(2))}
@@ -120,7 +126,6 @@ const LTVCalculator = observer(props => {
                 </FormControl>
                 <FormControl>
                     <TextField
-                    sx={{width:"10vw"}}
                         select
                         color="secondary"
                         value={slippage}
@@ -134,6 +139,7 @@ const LTVCalculator = observer(props => {
                                     </Tooltip>
                                 </InputAdornment>
                             ),
+                            endAdornment: (<InputAdornment position="end"></InputAdornment>)
                         }}
                     >
                         {slippageOptions.map((_) => <MenuItem key={_} value={_}>{_}%</MenuItem>)}
@@ -141,7 +147,7 @@ const LTVCalculator = observer(props => {
                 </FormControl>
                 <FormControl>
                     <TextField
-                    sx={{width:"10vw"}}
+                        sx={controlledWidth}
                         color="secondary"
                         value={borrowCap}
                         label="&#100; - Borrow cap m$"
@@ -161,7 +167,6 @@ const LTVCalculator = observer(props => {
                 </FormControl>
                 <FormControl>
                     <Autocomplete
-                    sx={{width:"10vw"}}
                         freeSolo
                         disableClearable
                         options={CLFValues.map((option) => option.value)}
@@ -186,14 +191,15 @@ const LTVCalculator = observer(props => {
                                             </Tooltip>
                                         </InputAdornment>
                                     ),
-                                }}
+                            endAdornment: (<InputAdornment position="end"></InputAdornment>)
+                        }}
                             />
                         )}
                     />
                 </FormControl>
                 <FormControl>
                     <TextField
-                    sx={{width:"7vw"}}
+                        sx={controlledWidth}
                         color="secondary"
                         value={recommendedLTV}
                         label="LTV"
@@ -207,6 +213,7 @@ const LTVCalculator = observer(props => {
                                     </Tooltip>
                                 </InputAdornment>
                             ),
+                            endAdornment: (<InputAdornment position="end"></InputAdornment>)
                         }}
                     >
                     </TextField>

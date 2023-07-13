@@ -44,10 +44,12 @@ margin-bottom: 0;
 height:revert;
 background-image: none !important;
 text-align: right !important;
+width: none !important;
 }
 :where(input, select, textarea):not([type="checkbox"], [type="radio"], [type="date"], [type="datetime-local"], [type="month"], [type="time"], [type="week"])[aria-invalid]{
   padding-inline: 0 !important;
 }
+
 
 .tooltip-container {
   border-radius: var(--border-radius);
