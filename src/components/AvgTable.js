@@ -20,7 +20,7 @@ function row(rowData, selectedBaseSymbol) {
     <td>{symbol}</td>
     <td>{largeNumberFormatter(data.average.toFixed(2))} {selectedBaseSymbol}
     <br/><small>${largeNumberFormatter(data.average*mainStore.basePrice)}</small></td>
-    <td>{(data.volatility * 100).toFixed(2)}%</td>
+    <td>{(data.parkinsonVolatility * 100).toFixed(2)}%</td>
   </tr>
 }
 

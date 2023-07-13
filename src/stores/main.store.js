@@ -185,11 +185,11 @@ class MainStore {
         if (dataForDexForSpanForBase[quote]) {
           sortedData[quote]['average'] += (dataForDexForSpanForBase[quote]['avgLiquidityAggreg'][slippage]);
         }
-        if (!sortedData[quote]['volatility']) {
-          sortedData[quote]['volatility'] = 0
+        if (!sortedData[quote]['parkinsonVolatility']) {
+          sortedData[quote]['parkinsonVolatility'] = 0
         }
         if (dataForDexForSpanForBase[quote]) {
-          sortedData[quote]['volatility'] += dataForDexForSpanForBase[quote].volatility;
+          sortedData[quote]['parkinsonVolatility'] += dataForDexForSpanForBase[quote].parkinsonVolatility;
           ratios[dex][quote]++;
         }
       }
@@ -202,7 +202,7 @@ class MainStore {
           quoteRatio++
         }
       }
-      sortedData[quote].volatility = sortedData[quote].volatility / quoteRatio;
+      sortedData[quote].parkinsonVolatility = sortedData[quote].parkinsonVolatility / quoteRatio;
     }
     for (const [key, value] of Object.entries(sortedData)) {
       const toPush = {}

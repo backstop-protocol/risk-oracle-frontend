@@ -17,7 +17,7 @@ const LTVSection = observer(props => {
     const [selectedQuote, setSelectedQuote] = useState(quotes[0]);
     const span = mainStore.selectedSpan;
     const liquidity = averages[selectedQuote] ? averages[selectedQuote]['average'] : 0;
-    const volatility = averages[selectedQuote] ? averages[selectedQuote]['volatility'] : 0;
+    const volatility = averages[selectedQuote] ? averages[selectedQuote]['parkinsonVolatility'] : 0;
     const slippage = mainStore.selectedSlippage;
     const [borrowCap, setBorrowCap] = useState(0.7);
     const [borrowInKind, setBorrowInKind] = useState(0);
