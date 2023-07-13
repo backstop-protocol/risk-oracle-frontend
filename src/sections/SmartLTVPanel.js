@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import LTVCalculator from "../components/LTVCalculator";
 import LTVCodeSection from "../components/LTVCodeSection";
 import LTVTextSection from "../components/LTVTextSection";
@@ -30,10 +30,9 @@ const LTVSection = observer(props => {
 
     useEffect(() => {
         setSelectedQuote(quotes[0]);
-        for(const quote of quotes)
-        {
+        for (const quote of quotes) {
             mainStore.updateDebtAssetPrices(quote);
-    }
+        }
     }, [quotes]);
 
     //updating price
@@ -68,8 +67,14 @@ const LTVSection = observer(props => {
         setRecommendedLTV(ltv.toFixed(2));
     }, [liquidity, slippage, volatility, borrowInKind, CLF])
 
+    //computing recommended CLF
+    useEffect(() => {
+        console.log('firing')
+    }, [])
+
+
     return (
-        <Box sx={{display:"flex", height:"100vh", width:"93vw", flexDirection:"column", alignItems:"center", scrollSnapAlign:"center", paddingTop:"8vh"}}>
+        <Box sx={{ display: "flex", height: "100vh", width: "93vw", flexDirection: "column", alignItems: "center", scrollSnapAlign: "center", paddingTop: "8vh" }}>
             <Web3Data />
             <LTVTextSection />
             <LTVCalculator
@@ -88,7 +93,6 @@ const LTVSection = observer(props => {
                 recommendedLTV={recommendedLTV}
                 setRecommendedLTV={setRecommendedLTV} />
             <LTVCodeSection defaultCode={defaultCode} updatedCode={updatedCode} />
-            <Container sx={{height:"8vh"}}/>
         </Box>
     )
 })
