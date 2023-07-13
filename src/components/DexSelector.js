@@ -31,6 +31,10 @@ const DexSelector = observer(props => {
     const span = Number(mainStore.selectedSpan);
     const handleQuotesChanges = mainStore.handleQuotesChanges;
     function handleSpan(event, value){
+      if(value === null){
+        event.preventDefault()
+        return
+      }
       mainStore.handleSpanChange(value);
     }
     function handleAllDexes(){

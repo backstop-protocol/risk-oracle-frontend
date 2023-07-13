@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import LTVCalculator from "../components/LTVCalculator";
 import LTVCodeSection from "../components/LTVCodeSection";
 import LTVTextSection from "../components/LTVTextSection";
@@ -27,7 +27,7 @@ const LTVSection = observer(props => {
     const defaultCode = mainStore.defaultCode;
     const [updatedCode, setUpdatedCode] = useState(defaultCode);
 
-    //resetting quote on quotes change
+
     useEffect(() => {
         setSelectedQuote(quotes[0]);
         for(const quote of quotes)
@@ -88,6 +88,7 @@ const LTVSection = observer(props => {
                 recommendedLTV={recommendedLTV}
                 setRecommendedLTV={setRecommendedLTV} />
             <LTVCodeSection defaultCode={defaultCode} updatedCode={updatedCode} />
+            <Container sx={{height:"8vh"}}/>
         </Box>
     )
 })

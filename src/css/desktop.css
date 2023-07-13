@@ -29,7 +29,7 @@ main {
   position: relative;
   overflow-y: auto;
   overscroll-behavior-y: contain;
-  scroll-snap-type: y mandatory;
+  /* scroll-snap-type: y mandatory; */
   height: 100vh;
   width: 100%;
 
@@ -39,6 +39,19 @@ main {
   --form-element-disabled-background-color:var(--background-color);
   --form-element-disabled-border-color: none
 }
+.dexControls input{
+margin-bottom: 0;
+height:revert;
+background-image: none !important;
+text-align: right !important;
+/* width: auto !important; */
+}
+:where(input, select, textarea):not([type="checkbox"], [type="radio"], [type="date"], [type="datetime-local"], [type="month"], [type="time"], [type="week"])[aria-invalid]{
+  padding-inline: 0 !important;
+  appearance: none !important;
+  width: unset !important;
+}
+
 
 .tooltip-container {
   border-radius: var(--border-radius);
@@ -244,6 +257,7 @@ article.box {
 }
 
 .web3data {
+  height:"10%";
   padding: var(--spacing);
   margin: 0 1vw 0 1vw !important;
   min-width: max(350px, 30%);
@@ -507,10 +521,6 @@ header {
   align-items: center;
 }
 
-section {
-  width: 100%;
-}
-
 .section-header {
   display: flex;
   justify-content: flex-start;
@@ -607,16 +617,7 @@ section {
 .ltvCodeEditor section{
   margin-bottom: 0 !important;
 }
-.ltvText{
-  flex: 1;
-  text-align: left;
-  width: 100%;
-  padding-left: 1vw;
-  margin-top: 1vh;
-}
-.ltvCalculator{
-  flex: 0.8;
-}
+
 
 .subtitle {
   font-family: 'Inter';

@@ -110,6 +110,7 @@ class MainStore {
     const relayers = [];
     const assetsAddresses = [];
     const keys = [];
+    const volatilityKeys = [];
     const symbols = [];
     const toReturn = {};
 
@@ -118,15 +119,19 @@ class MainStore {
         symbols.push(tokenSymbol);
         relayers.push(relayerAddress);
         const key = await keyEncoderContract.encodeLiquidityKey(value.address, assets.USDC.address, 2, 5, 30);
+        const volatilityKey = await keyEncoderContract.encodeVolatilityKey(value.address, assets.USDC.address, 0, 30);
         keys.push(key);
+        volatilityKeys.push(volatilityKey);
         assetsAddresses.push(value.address)
       }
     }
     const results = await pythiaContract.multiGet(relayers, assetsAddresses, keys);
+    const volatilityResults = await pythiaContract.multiGet(relayers, assetsAddresses, volatilityKeys);
     for (let i = 0; i < symbols.length; i++) {
       const assetConf = assets[symbols[i]];
       toReturn[symbols[i]] = {};
       toReturn[symbols[i]]['value'] = normalize(results[i][0], BigInt(assetConf.decimals));
+      toReturn[symbols[i]]['volatilityValue'] = normalize(volatilityResults[i][0], 18n);
       toReturn[symbols[i]]['lastUpdate'] = Number(results[i][1]);
     }
     this.web3Data = toReturn;

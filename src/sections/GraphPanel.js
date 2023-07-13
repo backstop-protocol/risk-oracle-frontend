@@ -7,6 +7,7 @@ import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { roundTo } from "../utils/utils";
 import symbols from "../config";
+import Footer from "../sections/Footer";
 
 const MainPanel = observer(props => {
   const slippage = mainStore.selectedSlippage;
@@ -80,6 +81,7 @@ const MainPanel = observer(props => {
       <Box sx={{height:"40vh", display:"flex", justifyContent:"center", alignItems:"center"}}>
         <VolatilityTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData} />
       </Box>
+      <Footer />
     </div>
   )
 })
