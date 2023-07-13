@@ -194,8 +194,15 @@ const LTVCalculator = observer(props => {
                         {...params}
                                 label="CLF"
                                 InputProps={{
+                                    ...params.InputProps,
+                                    type: 'search',
                                     startAdornment: (
-                                    <InputAdornment position="start">
+                                    <InputAdornment position="start" sx={{
+                                        position: 'absolute',
+                                        p: 0,
+                                        left: "5%",
+                                        top: '45%',
+                                      }}>
                                         <Tooltip placement="top" title="Confidence Level Factor. The higher it is, the odds of insolvency are decreasing.">
                                             <QuestionMark fontSize="small" />
                                         </Tooltip>
