@@ -178,6 +178,7 @@ const LTVCalculator = observer(props => {
                 >
                     <Autocomplete
                         freeSolo
+                        disableClearable
                         options={CLFValues.map((option) => option.value)}
                         value={CLF}
                         onChange={(event, newValue) => {
