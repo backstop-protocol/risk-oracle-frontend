@@ -32,7 +32,7 @@ const LTVCalculator = observer(props => {
     console.log(selectedQuote)
 
     return (
-        <Paper className="dexControls" sx={{ padding: "1vh 1vw", width: "90vw" }}>
+        <Paper className="dexControls" sx={{padding: "1vh 1vw", width: "90vw"}}>
             <Stack
                 direction="horizontal"
                 justifyContent="center"
