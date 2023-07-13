@@ -38,12 +38,6 @@ const First = props => {
       <div style={styles.flexItem}>
         <div>
           <img alt="pythia-code-example" src={darkMode ? 'images/pythia-code-dark.png' : 'images/pythia-code.png'}/>
-          <div> 
-            <small>
-              Here’s an example of how to read the feed for 
-              ETH DEX liquidity of the last 30 days 
-            </small>
-          </div>
         </div>
       </div>
       <Fab sx={{position:"absolute", marginLeft:"auto", marginRight:"auto", left:"0", right:"0", bottom:"0", zIndex:"10", color:"secondary.main"}} variant="extended" onClick={(e)=>{goTo(e,'mainSection')}}>
