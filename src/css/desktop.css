@@ -39,6 +39,15 @@ main {
   --form-element-disabled-background-color:var(--background-color);
   --form-element-disabled-border-color: none
 }
+.dexControls input{
+margin-bottom: 0;
+height:revert;
+background-image: none !important;
+text-align: right !important;
+}
+:where(input, select, textarea):not([type="checkbox"], [type="radio"], [type="date"], [type="datetime-local"], [type="month"], [type="time"], [type="week"])[aria-invalid]{
+  padding-inline: 0 !important;
+}
 
 .tooltip-container {
   border-radius: var(--border-radius);

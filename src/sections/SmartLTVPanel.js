@@ -27,7 +27,7 @@ const LTVSection = observer(props => {
     const defaultCode = mainStore.defaultCode;
     const [updatedCode, setUpdatedCode] = useState(defaultCode);
 
-    //resetting quote on quotes change
+
     useEffect(() => {
         setSelectedQuote(quotes[0]);
         for(const quote of quotes)
