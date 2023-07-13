@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import LTVCalculator from "../components/LTVCalculator";
 import LTVCodeSection from "../components/LTVCodeSection";
 import LTVTextSection from "../components/LTVTextSection";
@@ -69,7 +69,7 @@ const LTVSection = observer(props => {
     }, [liquidity, slippage, volatility, borrowInKind, CLF])
 
     return (
-        <Box sx={{display:"flex", height:"92vh", width:"93vw", flexDirection:"column", alignItems:"center", scrollSnapAlign:"center", paddingTop:"8vh"}}>
+        <Box sx={{display:"flex", height:"100vh", width:"93vw", flexDirection:"column", alignItems:"center", scrollSnapAlign:"center", paddingTop:"8vh"}}>
             <Web3Data />
             <LTVTextSection />
             <LTVCalculator
@@ -88,6 +88,7 @@ const LTVSection = observer(props => {
                 recommendedLTV={recommendedLTV}
                 setRecommendedLTV={setRecommendedLTV} />
             <LTVCodeSection defaultCode={defaultCode} updatedCode={updatedCode} />
+            <Container sx={{height:"8vh"}}/>
         </Box>
     )
 })
