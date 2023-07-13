@@ -19,22 +19,17 @@ const CLFValues = [
         value: '10'
     },
 ]
-const CLFLabels = {
-    100: '100 - High confidence',
-    50: '50 - Medium confidence',
-    10: '10 - Low confidence'
-}
-
 const controlledWidth = { flex: "1", flexGrow: "1" }
+
+
 
 const LTVCalculator = observer(props => {
     if (!mainStore.averages) {
         return
     }
-    const { quotes, selectedQuote, setSelectedQuote, span, liquidity, volatility, slippage, borrowCap, setBorrowCap, CLF, setCLF, recommendedLTV, changeLTV } = props;
+    const {debtAssetPrices, quotes, selectedQuote, handleCLFandLTVChanges, setSelectedQuote, span, liquidity, volatility, slippage, borrowCap, setBorrowCap, CLF, setCLF, recommendedLTV, setRecommendedLTV } = props;
     const slippageOptions = [1, 5, 10, 15, 20];
-    const debtAssetPrice = mainStore.debtAssetPrices[selectedQuote] ? mainStore.debtAssetPrices[selectedQuote] : undefined;
-    console.log(selectedQuote)
+    const debtAssetPrice = debtAssetPrices[selectedQuote] ? debtAssetPrices[selectedQuote] : undefined;
 
     return (
         <Paper className="dexControls" sx={{padding: "1vh 1vw", width: "90vw"}}>
@@ -185,14 +180,13 @@ const LTVCalculator = observer(props => {
                         freeSolo
                         disableClearable
                         options={CLFValues.map((option) => option.value)}
-                        getOptionLabel={(option) => CLFLabels[option]}
                         value={CLF}
                         onChange={(event, newValue) => {
-                            setCLF(newValue);
+                            handleCLFandLTVChanges('clf', newValue);
                         }}
                         inputValue={CLF}
                         onInputChange={(event, newValue) => {
-                            setCLF((newValue.match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '');
+                            handleCLFandLTVChanges('clf', newValue);
                         }}
                         renderInput={(params) => (
                             <TextField
@@ -230,7 +224,9 @@ const LTVCalculator = observer(props => {
                         value={recommendedLTV}
                         label="LTV"
                         helperText="Recommended LTV"
-                        onChange={(event) => { changeLTV(event.target.value) }}
+                        onChange={(event) => {
+                            handleCLFandLTVChanges('ltv', event.target.value);
+                        }}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">

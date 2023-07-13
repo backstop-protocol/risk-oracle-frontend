@@ -8,7 +8,7 @@ import Web3Data from "../components/Web3Data";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { updateCode } from "../components/LTVCodeGenerator";
-import { findLTVFromParameters } from "../utils/utils";
+import { findCLFFromParameters, findLTVFromParameters } from "../utils/utils";
 
 const LTVSection = observer(props => {
     const quotes = mainStore.selectedQuotes;
@@ -24,11 +24,31 @@ const LTVSection = observer(props => {
     const [borrowCap, setBorrowCap] = useState(0.7);
     const [CLF, setCLF] = useState(7);
     const [recommendedLTV, setRecommendedLTV] = useState(0)
+    const [WhatAmIComputing, setWhatAmIComputing] = useState('ltv');
     // code editor variables
     const defaultCode = mainStore.defaultCode;
     const [updatedCode, setUpdatedCode] = useState(defaultCode);
 
+    function handleCLFandLTVChanges(type, value){
 
+        if(type === "clf"){
+            setCLF(value);
+            setWhatAmIComputing("ltv");
+        }
+        if(type === "ltv"){
+            setRecommendedLTV(value);
+            setWhatAmIComputing("clf");
+        }
+
+    }
+
+    useEffect(() => {
+        setSelectedQuote(quotes[0]);
+        for (const quote of quotes) {
+            mainStore.updateDebtAssetPrices(quote);
+        }
+    }, [quotes]);
+    
     useEffect(() => {
         const up = updateCode(selectedQuote, selectedBaseName, span, CLF, borrowCap, slippage);
         setUpdatedCode(up)
@@ -37,9 +57,9 @@ const LTVSection = observer(props => {
 
     //computing recommended LTV
     useEffect(() => {
+        if(WhatAmIComputing === 'ltv'){
         if(debtAssetPrices[selectedQuote]){
             const borrowInKind = borrowCap * 1e6 / debtAssetPrices[selectedQuote];
-
             const ltv = findLTVFromParameters(liquidity, borrowInKind, volatility, slippage / 100, CLF);
         setRecommendedLTV(ltv.toFixed(2));
         }
@@ -50,14 +70,23 @@ const LTVSection = observer(props => {
         setRecommendedLTV(ltv.toFixed(2));
             })
         }
+    }
+    if(WhatAmIComputing === 'clf'){
+        if(debtAssetPrices[selectedQuote]){
+            const borrowInKind = borrowCap * 1e6 / debtAssetPrices[selectedQuote];
+            const clf = findCLFFromParameters(recommendedLTV, slippage / 100, liquidity, borrowInKind, volatility);
+        setCLF(clf.toFixed(2));
+        }
+        else{
+           mainStore.updateDebtAssetPrices(selectedQuote).then(()=>{
+            const borrowInKind = borrowCap * 1e6 / debtAssetPrices[selectedQuote];
+            const clf = findCLFFromParameters(recommendedLTV, slippage / 100, liquidity, borrowInKind, volatility);
+            setCLF(clf.toFixed(2));
+            })
+        }}
+    }, [liquidity, slippage, volatility, borrowCap, CLF, debtAssetPrices, selectedQuote, WhatAmIComputing, recommendedLTV])
 
-        
-    }, [liquidity, slippage, volatility, borrowCap, CLF, debtAssetPrices, selectedQuote])
 
-    //computing recommended CLF
-    useEffect(() => {
-        console.log('firing')
-    }, [])
 
 
     return (
@@ -66,9 +95,11 @@ const LTVSection = observer(props => {
             <LTVTextSection />
             <LTVCalculator
                 selectedBaseSymbol={selectedBaseName}
+                debtAssetPrices = {debtAssetPrices}
                 quotes={quotes}
                 selectedQuote={selectedQuote}
                 setSelectedQuote={setSelectedQuote}
+                handleCLFandLTVChanges = {handleCLFandLTVChanges}
                 span={span}
                 liquidity={liquidity}
                 volatility={volatility}

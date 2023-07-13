@@ -37,7 +37,7 @@ export function encodeLiquidityKey(collateralAsset, debtAsset, source, slippage,
 export function findCLFFromParameters(ltv, beta, l, d, sigma) {
     const sqrtResult = Math.sqrt(l/d);
     const sqrtBySigma = sqrtResult / sigma;
-    const ltvPlusBeta = ltv + beta;
+    const ltvPlusBeta = Number(ltv) + Number(beta);
     const lnLtvPlusBeta = Math.log(ltvPlusBeta);
     const c = -1 * lnLtvPlusBeta * sqrtBySigma;
     return c;

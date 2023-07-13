@@ -1,4 +1,4 @@
-import { Box, Container, Paper, Skeleton, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 
 import ContractAddress from "./ContractAddress";
 import InfoLine from "./InfoLine";
@@ -12,9 +12,6 @@ const Web3Data = observer(props => {
     const web3Data = mainStore.web3Data;
     const span = mainStore.selectedSpan;
     const selectedBase = mainStore.selectedAsset.name;
-    if(web3Data && web3Data[selectedBase]) {
-        console.log('volatilityValue', web3Data[selectedBase]['volatilityValue'])
-    }
     return (
         <Paper sx={{width:"95%",margin:"0 1vw 0 1vw", display:"flex", justifyContent:"space-between", alignItems:"start", padding:"1vh 1vw 1vh 1vw"}}>
             <Box >
