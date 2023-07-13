@@ -117,7 +117,7 @@ class MainStore {
       if (value.pythia) {
         symbols.push(tokenSymbol);
         relayers.push(relayerAddress);
-        const key = encodeLiquidityKey(value.address, assets.USDC.address, 2, 5, 30);
+        const key = encodeLiquidityKey(value.address, assets.USDC.address, 0, 5, 30);
         const volatilityKey = encodeVolatilityKey(value.address, assets.USDC.address, 0, 30);
         keys.push(key);
         volatilityKeys.push(volatilityKey);
