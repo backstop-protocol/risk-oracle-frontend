@@ -26,7 +26,7 @@ const LTVCalculator = observer(props => {
     if (!mainStore.averages) {
         return
     }
-    const { quotes, selectedQuote, setSelectedQuote, span, liquidity, volatility, slippage, borrowCap, setBorrowCap, CLF, setCLF, recommendedLTV } = props;
+    const { quotes, selectedQuote, setSelectedQuote, span, liquidity, volatility, slippage, borrowCap, setBorrowCap, CLF, setCLF, recommendedLTV, changeLTV } = props;
     const slippageOptions = [1, 5, 10, 15, 20];
     const debtAssetPrice = mainStore.debtAssetPrices[selectedQuote] ? mainStore.debtAssetPrices[selectedQuote] : undefined;
     console.log(selectedQuote)
@@ -217,7 +217,7 @@ const LTVCalculator = observer(props => {
                         value={recommendedLTV}
                         label="LTV"
                         helperText="Recommended LTV"
-                        onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }}
+                        onChange={(event) => { changeLTV(event.target.value) }}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
