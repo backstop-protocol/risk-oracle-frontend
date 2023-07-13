@@ -8,6 +8,7 @@ import Web3Data from "../components/Web3Data";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { updateCode } from "../components/LTVCodeGenerator";
+import { findLTVFromParameters } from "../utils/utils";
 
 const LTVSection = observer(props => {
     const quotes = mainStore.selectedQuotes;
@@ -53,17 +54,7 @@ const LTVSection = observer(props => {
 
     //computing recommended LTV
     useEffect(() => {
-        //         1/ calc racine carré de l / d ==> on appelle ça (a)
-        const sqrRoot = Math.sqrt(liquidity / borrowInKind);
-        // const sqrRoot = Math.sqrt(liquidity / (borrowCap / debtAssetPrice));
-        //         2/ calc theta / (a) ==> on appelle ça (b)
-        const sigmaOverSqrRoot = volatility / sqrRoot;
-        //         3/ calc -c * (b) ==> on appelle ça (c)
-        const clfMinusSigmaOverSqrRoot = (-1 * CLF) * sigmaOverSqrRoot;
-        //         4/ calc exponentielle de (c)  ==> on appelle ça (d)
-        const exponential = Math.exp(clfMinusSigmaOverSqrRoot);
-        //         5/ calc (d) - beta
-        const ltv = exponential - (slippage / 100);
+        const ltv = findLTVFromParameters(liquidity, borrowInKind, volatility, slippage / 100, CLF);
         setRecommendedLTV(ltv.toFixed(2));
     }, [liquidity, slippage, volatility, borrowInKind, CLF])
 

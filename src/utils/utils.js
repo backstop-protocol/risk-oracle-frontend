@@ -34,6 +34,24 @@ export function encodeLiquidityKey(collateralAsset, debtAsset, source, slippage,
     return ethers.keccak256(ethers.AbiCoder.defaultAbiCoder().encode(['string', 'address', 'uint8', 'uint256', 'uint256'], ['liquidity', debtAsset, source, slippage, period]))
 }
 
+export function findCLFFromParameters(ltv, beta, l, d, sigma) {
+    const sqrtResult = Math.sqrt(l/d);
+    const sqrtBySigma = sqrtResult / sigma;
+    const ltvPlusBeta = ltv + beta;
+    const lnLtvPlusBeta = Math.log(ltvPlusBeta);
+    const c = -1 * lnLtvPlusBeta * sqrtBySigma;
+    return c;
+}
+
+export function findLTVFromParameters(l, d, sigma, beta, CLF) {
+    const sqrRoot = Math.sqrt(l / d);
+    const sigmaOverSqrRoot = sigma / sqrRoot;
+    const clfMinusSigmaOverSqrRoot = (-1 * CLF) * sigmaOverSqrRoot;
+    const exponential = Math.exp(clfMinusSigmaOverSqrRoot);
+    const ltv = exponential - beta;
+    return ltv;
+}
+
 /**
  * Normalize a integer value to a number
  * @param {string | BigNumber} amount 
