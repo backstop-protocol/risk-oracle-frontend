@@ -19,6 +19,11 @@ const CLFValues = [
         value: '10'
     },
 ]
+const CLFLabels = {
+    100: '100 - High confidence',
+    50: '50 - Medium confidence',
+    10: '10 - Low confidence'
+}
 
 const controlledWidth = { flex: "1", flexGrow: "1" }
 
@@ -180,6 +185,7 @@ const LTVCalculator = observer(props => {
                         freeSolo
                         disableClearable
                         options={CLFValues.map((option) => option.value)}
+                        getOptionLabel={(option) => CLFLabels[option]}
                         value={CLF}
                         onChange={(event, newValue) => {
                             setCLF(newValue);
