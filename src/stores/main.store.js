@@ -1,13 +1,12 @@
 import { coingeckoMap, encodeLiquidityKey, encodeVolatilityKey, normalize } from "../utils/utils";
 import { makeAutoObservable, runInAction } from "mobx";
-import symbols, { keyEncoderAddress, pythiaAddress, relayerAddress, rpcURL } from "../config";
+import symbols, { pythiaAddress, relayerAddress, rpcURL } from "../config";
 
 import PythiaABI from "../abi/pythia.abi.json";
 import { assets } from "./config.store";
 import axios from "axios";
 import { ethers } from "ethers";
 import { isDexAvailableForBase } from "../utils/utils";
-import keyEncoderABI from '../abi/keyEncoder.abi.json';
 import { updateCode } from "../components/LTVCodeGenerator";
 
 const defaultAsset = "ETH"
@@ -42,6 +41,7 @@ class MainStore {
     this.averageTableDisplayArray = [];
     this.lastUpdate = {};
     this.averages = {};
+    this.darkTheme = true;
     this.debtAssetPrices = {};
     this.basePrice = 0;
     this.loading = true;
