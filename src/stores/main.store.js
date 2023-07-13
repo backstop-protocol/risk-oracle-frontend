@@ -1,4 +1,4 @@
-import { coingeckoMap, normalize } from "../utils/utils";
+import { coingeckoMap, encodeLiquidityKey, encodeVolatilityKey, normalize } from "../utils/utils";
 import { makeAutoObservable, runInAction } from "mobx";
 import symbols, { keyEncoderAddress, pythiaAddress, relayerAddress, rpcURL } from "../config";
 
@@ -106,20 +106,19 @@ class MainStore {
   async getWeb3Data() {
     const provider = new ethers.JsonRpcProvider(rpcURL);
     const pythiaContract = new ethers.Contract(pythiaAddress, PythiaABI, provider);
-    const keyEncoderContract = new ethers.Contract(keyEncoderAddress, keyEncoderABI, provider);
     const relayers = [];
     const assetsAddresses = [];
     const keys = [];
     const volatilityKeys = [];
     const symbols = [];
     const toReturn = {};
-
+    // console.log('test');
     for (const [tokenSymbol, value] of Object.entries(assets)) {
       if (value.pythia) {
         symbols.push(tokenSymbol);
         relayers.push(relayerAddress);
-        const key = await keyEncoderContract.encodeLiquidityKey(value.address, assets.USDC.address, 2, 5, 30);
-        const volatilityKey = await keyEncoderContract.encodeVolatilityKey(value.address, assets.USDC.address, 0, 30);
+        const key = encodeLiquidityKey(value.address, assets.USDC.address, 2, 5, 30);
+        const volatilityKey = encodeVolatilityKey(value.address, assets.USDC.address, 0, 30);
         keys.push(key);
         volatilityKeys.push(volatilityKey);
         assetsAddresses.push(value.address)

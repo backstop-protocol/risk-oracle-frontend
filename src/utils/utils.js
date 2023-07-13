@@ -25,6 +25,15 @@ export function largeNumberFormatter(number) {
     return `${(Number(number).toFixed(2))}`
 }
 
+
+export function encodeVolatilityKey(collateralAsset, debtAsset, mode, period) {
+    return ethers.keccak256(ethers.AbiCoder.defaultAbiCoder().encode(['string', 'address', 'uint8', 'uint256'], ['volatility', debtAsset, mode, period]))
+}
+
+export function encodeLiquidityKey(collateralAsset, debtAsset, source, slippage, period) {
+    return ethers.keccak256(ethers.AbiCoder.defaultAbiCoder().encode(['string', 'address', 'uint8', 'uint256', 'uint256'], ['liquidity', debtAsset, source, slippage, period]))
+}
+
 /**
  * Normalize a integer value to a number
  * @param {string | BigNumber} amount 
