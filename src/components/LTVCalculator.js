@@ -131,7 +131,7 @@ const LTVCalculator = observer(props => {
     const debtAssetPrice = mainStore.debtAssetPrices[selectedQuote] ? mainStore.debtAssetPrices[selectedQuote] : undefined;
 
     return (
-        <article style={{ marginTop: 0, marginBottom: 0 }} className="ltv-container">
+        <article style={{ marginTop: 0, marginBottom: 0, width:"90%" }} className="ltv-container">
             <div className="ltv-table">
                 <div className="ltv-asset" title="The asset pair against which the data is being fetched.">
                     <div className="ltv-title-div">
