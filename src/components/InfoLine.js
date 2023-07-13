@@ -29,14 +29,14 @@ const InfoLine = observer(props => {
       if (dataForBase[i].quote === 'USDC') {
         priceInfo['startPrice'] = dataForBase[i].startPrice.toFixed(2);
         priceInfo['lastPrice'] = dataForBase[i].endPrice.toFixed(2);
-        priceInfo['startLiquidity'] = dataForBase[i].volumeForSlippage[0][1].toFixed(2);
-        priceInfo['endLiquidity'] = dataForBase[i].volumeForSlippage.slice(-1)[0][1].toFixed(2);
+        priceInfo['startLiquidity'] = dataForBase[i].volumeForSlippage[0].aggregated[1].toFixed(2);
+        priceInfo['endLiquidity'] = dataForBase[i].volumeForSlippage.slice(-1)[0].aggregated[1].toFixed(2);
       }
     }
     if (Object.keys(priceInfo).length === 0) {
       const dataForBase = dataForPriceComputation.filter(_ => _.base.toLowerCase() === selectedBaseSymbol.toLowerCase());
-      priceInfo['startLiquidity'] = dataForBase[0].volumeForSlippage[0][1].toFixed(2);
-      priceInfo['endLiquidity'] = dataForBase[0].volumeForSlippage.slice(-1)[0][1].toFixed(2);
+      priceInfo['startLiquidity'] = dataForBase[0].volumeForSlippage[0].aggregated[1].toFixed(2);
+      priceInfo['endLiquidity'] = dataForBase[0].volumeForSlippage.slice(-1)[0].aggregated[1].toFixed(2);
     }
   }
   useEffect(() => {

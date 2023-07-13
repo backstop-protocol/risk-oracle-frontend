@@ -36,7 +36,7 @@ const MainPanel = observer(props => {
         availableQuotesForBase.sort();
         for (const volumeForSlippage of slippageData.volumeForSlippage) {
           const blockNumber = volumeForSlippage.blockNumber;
-          const slippageValue = volumeForSlippage[slippage];
+          const slippageValue = volumeForSlippage.aggregated[slippage];
           if (!volumeData[blockNumber]) {
             volumeData[blockNumber] = {};
           }
