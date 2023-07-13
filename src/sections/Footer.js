@@ -1,7 +1,7 @@
 import { Box, Link, Stack, Typography } from "@mui/material"
 
 const Footer = props => {
-  return <Box sx={{height:"10vh",display: 'flex', flexDirection: 'column', alignItems:"center", justifyContent:"center", width: '100%' }}>
+  return <Box sx={{height:"15vh",display: 'flex', flexDirection: 'column', alignItems:"center", justifyContent:"center", width: '100%' }}>
     <Box sx={{display: 'flex', flexDirection: 'row'}}>
       <img className="footer-logo" alt="" src="logo.svg" />
     </Box>
