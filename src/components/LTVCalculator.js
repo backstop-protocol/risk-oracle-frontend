@@ -20,7 +20,7 @@ const CLFValues = [
     },
 ]
 
-const controlledWidth = {width:"auto"}
+const controlledWidth = {flex:"1", flexGrow:"1"}
 
 const LTVCalculator = observer(props => {
     if (!mainStore.averages) {
@@ -37,9 +37,10 @@ const LTVCalculator = observer(props => {
             direction="horizontal" 
             justifyContent="center"
             gap={2}>
-                <FormControl>
+                <FormControl
+                    sx={controlledWidth}
+                    >
                     <TextField
-                    sx={{width:"10vw"}}
                         select
                         color="secondary"
                         value={selectedQuote ? selectedQuote : ''}
@@ -58,7 +59,9 @@ const LTVCalculator = observer(props => {
                         {quotes.map((_) => <MenuItem key={_} value={_}>{_}</MenuItem>)}
                     </TextField>
                 </FormControl>
-                <FormControl>
+                <FormControl
+                    sx={controlledWidth}
+                    >
                     <TextField
                         select
                         color="secondary"
@@ -80,9 +83,10 @@ const LTVCalculator = observer(props => {
                         {Object.entries(timeWindows).map(([tw, v]) => <MenuItem key={tw} value={v}>{tw}</MenuItem>)}
                     </TextField>
                 </FormControl>
-                <FormControl>
+                <FormControl
+                    sx={controlledWidth}
+                    >
                     <TextField
-                        sx={controlledWidth}
                         disabled
                         color="secondary"
                         value={(volatility * 100).toFixed(2)}
@@ -102,9 +106,10 @@ const LTVCalculator = observer(props => {
                         <MenuItem key={volatility} value={(volatility * 100).toFixed(2)}>{(volatility * 100).toFixed(2)}</MenuItem>
                     </TextField>
                 </FormControl>
-                <FormControl>
+                <FormControl
+                    sx={controlledWidth}
+                    >
                     <TextField
-                        sx={controlledWidth}
                         disabled
                         color="secondary"
                         value={largeNumberFormatter((liquidity).toFixed(2))}
@@ -124,7 +129,9 @@ const LTVCalculator = observer(props => {
                     >
                     </TextField>
                 </FormControl>
-                <FormControl>
+                <FormControl
+                    sx={controlledWidth}
+                    >
                     <TextField
                         select
                         color="secondary"
@@ -145,9 +152,10 @@ const LTVCalculator = observer(props => {
                         {slippageOptions.map((_) => <MenuItem key={_} value={_}>{_}%</MenuItem>)}
                     </TextField>
                 </FormControl>
-                <FormControl>
+                <FormControl
+                    sx={controlledWidth}
+                    >
                     <TextField
-                        sx={controlledWidth}
                         color="secondary"
                         value={borrowCap}
                         label="&#100; - Borrow cap m$"
@@ -165,10 +173,11 @@ const LTVCalculator = observer(props => {
                     >
                     </TextField>
                 </FormControl>
-                <FormControl>
+                <FormControl
+                sx={controlledWidth}
+                                    >
                     <Autocomplete
                         freeSolo
-                        disableClearable
                         options={CLFValues.map((option) => option.value)}
                         value={CLF}
                         onChange={(event, newValue) => {
@@ -197,7 +206,9 @@ const LTVCalculator = observer(props => {
                         )}
                     />
                 </FormControl>
-                <FormControl>
+                <FormControl
+                    sx={controlledWidth}
+                    >
                     <TextField
                         sx={controlledWidth}
                         color="secondary"
