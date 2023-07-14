@@ -117,7 +117,6 @@ class MainStore {
     const volatilityKeys = [];
     const symbols = [];
     const toReturn = {};
-    // console.log('test');
     for (const [tokenSymbol, value] of Object.entries(assets)) {
       if (value.pythia) {
         symbols.push(tokenSymbol);
@@ -224,7 +223,6 @@ class MainStore {
 
   async updateDebtAssetPrices(asset) {
     if(!this.debtAssetPrices[asset]){
-      console.log('firing')
     const id = coingeckoMap[asset.toLowerCase()];
     const url = `https://api.coingecko.com/api/v3/coins/${id}`
     const data = await axios.get(url);

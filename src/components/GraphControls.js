@@ -19,7 +19,7 @@ const options = [
 const insideDivStyle = {display: "flex", flexDirection:"row", justifyContent:"center", alignItems:"center"}
 
 
-const DexSelector = observer(props => {
+const GraphControls = observer(props => {
   if (!mainStore.loading) {
     const selectedDexes = mainStore.selectedDexes;
     const { selectedBaseSymbol, availableQuotesForBase } = props;
@@ -91,4 +91,4 @@ const DexSelector = observer(props => {
   }
 })
 
-export default DexSelector
+export default GraphControls
