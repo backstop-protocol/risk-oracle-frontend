@@ -122,8 +122,10 @@ function App() {
     class: 'contrast switcher theme-switcher',
     target: 'body',
   });
+  if(!mainStore.switchLoaded){
   themeSwitcher.init();
-
+  mainStore.switchLoadedTrue();
+}
 
   const theme = mainStore.darkTheme ? createTheme(darkTheme) : createTheme(lightTheme);
   return (

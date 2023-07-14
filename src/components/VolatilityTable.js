@@ -1,3 +1,4 @@
+import { Paper } from "@mui/material";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 
@@ -69,7 +70,7 @@ const VolatilityTable = observer(props => {
     }
   }
   return (
-    <article style={{ marginTop: 0 }} className="box">
+    <Paper style={{ marginTop: 0 }} className="box">
       <table style={{marginBottom :0}}>
         <thead>
           <tr>
@@ -85,7 +86,7 @@ const VolatilityTable = observer(props => {
           </tr>
         </tfoot>
       </table>
-    </article>
+    </Paper>
   )
 })
 

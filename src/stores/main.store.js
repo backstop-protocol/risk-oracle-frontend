@@ -45,6 +45,7 @@ class MainStore {
     this.averageData = {};
     this.averageTableDisplayArray = [];
     this.lastUpdate = {};
+    this.switchLoaded = false;
     this.averages = {};
     this.darkTheme = true;
     this.debtAssetPrices = {};
@@ -162,6 +163,10 @@ class MainStore {
     if (rect.top < 0 || rect.top > 1) {
       element.scrollIntoView();
     }
+  }
+
+  switchLoadedTrue(){
+    this.switchLoaded = true;
   }
 
   updateAverages = () => {
