@@ -9,7 +9,7 @@ const SideNav = observer(props => {
     search(v);
   }
   return (
-    <Box sx={{ width: "7vw", height: "100vh", position: "sticky", top: 0, left: 0 }}>
+    <Box sx={{ width: "7%", height: "100vh", position: "sticky", top: 0, left: 0 }}>
       <Box height="8vh" />
       <Paper sx={{height:"92vh"}}>
         <Tabs
