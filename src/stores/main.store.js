@@ -11,6 +11,9 @@ import { updateCode } from "../components/LTVCodeGenerator";
 
 const defaultAsset = "ETH"
 const apiUrl = "https://api.dex-history.la-tribu.xyz/api";
+const urlParams = new URLSearchParams(window.location.search);
+const USE_PARKINSON = urlParams.get('parkinson') && urlParams.get('parkinson') === 'true';
+
 class MainStore {
   constructor() {
     this.assets = Object.entries(assets)
@@ -19,6 +22,7 @@ class MainStore {
         v.name = k
         return v
       })
+    this.useParkinsonVolatility = USE_PARKINSON;
     this.searchedAsset = null;
     this.selectedAsset = assets[defaultAsset]
     this.selectedBaseSymbol = symbols[defaultAsset];
@@ -188,7 +192,7 @@ class MainStore {
           sortedData[quote]['parkinsonVolatility'] = 0
         }
         if (dataForDexForSpanForBase[quote]) {
-          sortedData[quote]['parkinsonVolatility'] += dataForDexForSpanForBase[quote].parkinsonVolatility;
+          sortedData[quote]['parkinsonVolatility'] += this.useParkinsonVolatility ?  dataForDexForSpanForBase[quote].parkinsonVolatility :  dataForDexForSpanForBase[quote].volatility;
           ratios[dex][quote]++;
         }
       }
