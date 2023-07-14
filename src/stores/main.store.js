@@ -338,7 +338,7 @@ class MainStore {
     }
     quotesHolder.sort();
     this.selectedQuotes = [...this.selectedQuotes, ...quotesHolder];
-    this.ltvQuotes = [...this.ltvQuotes, ...quotesHolder];
+    this.ltvQuotes = quotesHolder;
   }
 
   handleQuotesChanges = (quote) => {
