@@ -57,7 +57,8 @@ const LTVSection = observer(props => {
 
     //computing recommended LTV
     useEffect(() => {
-        if(WhatAmIComputing === 'ltv'){
+        console.log('selectedQuote', selectedQuote)
+        if(WhatAmIComputing === 'ltv' && selectedQuote){
         if(debtAssetPrices[selectedQuote]){
             const borrowInKind = borrowCap * 1e6 / debtAssetPrices[selectedQuote];
             const ltv = findLTVFromParameters(liquidity, borrowInKind, volatility, slippage / 100, CLF);
@@ -71,7 +72,7 @@ const LTVSection = observer(props => {
             })
         }
     }
-    if(WhatAmIComputing === 'clf'){
+    if(WhatAmIComputing === 'clf' && selectedQuote){
         if(debtAssetPrices[selectedQuote]){
             const borrowInKind = borrowCap * 1e6 / debtAssetPrices[selectedQuote];
             const clf = findCLFFromParameters(recommendedLTV, slippage / 100, liquidity, borrowInKind, volatility);

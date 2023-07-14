@@ -34,7 +34,7 @@ const LTVCalculator = observer(props => {
     return (
         <Paper className="dexControls" sx={{padding: "1vh 1vw", width: "90vw"}}>
             <Stack
-                direction="horizontal"
+                direction="row"
                 justifyContent="center"
                 gap={2}>
                 <FormControl

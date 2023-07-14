@@ -81,7 +81,7 @@ const DexSelector = observer(props => {
             label="Slippage"
             onChange={(e)=>handleSlippageChange(e)}
             >
-              {options.map(_ => <MenuItem value={_}> &nbsp;&nbsp;{_}%&nbsp;&nbsp; </MenuItem>)}
+              {options.map(_ => <MenuItem key={_} value={_}> &nbsp;&nbsp;{_}%&nbsp;&nbsp; </MenuItem>)}
             </Select>
           </FormControl>
         </Box>
