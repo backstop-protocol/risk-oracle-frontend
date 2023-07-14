@@ -27,9 +27,10 @@ const LTVCalculator = observer(props => {
     if (!mainStore.averages) {
         return
     }
-    const {debtAssetPrices, quotes, selectedQuote, handleCLFandLTVChanges, setSelectedQuote, span, liquidity, volatility, slippage, borrowCap, setBorrowCap, CLF, recommendedLTV } = props;
+    const {quotes, selectedQuote, handleCLFandLTVChanges, setSelectedQuote, span, liquidity, volatility, slippage, borrowCap, setBorrowCap, CLF, recommendedLTV } = props;
     const slippageOptions = [1, 5, 10, 15, 20];
-    const debtAssetPrice = debtAssetPrices[selectedQuote] ? debtAssetPrices[selectedQuote] : undefined;
+    const selectedBase = mainStore.selectedBaseSymbol;
+    const basePrice = mainStore.basePrice;
 
     return (
         <Paper className="dexControls" sx={{padding: "1vh 1vw", width: "90vw"}}>
@@ -114,7 +115,7 @@ const LTVCalculator = observer(props => {
                         color="secondary"
                         value={largeNumberFormatter((liquidity).toFixed(2))}
                         label="&#8467; - Liquidity"
-                        helperText={`$${largeNumberFormatter((liquidity * debtAssetPrice).toFixed(2))}`}
+                        helperText={`$${largeNumberFormatter((liquidity * basePrice).toFixed(2))}`}
                         onChange={(event) => { mainStore.handleSpanChange(event.target.value) }}
                         InputProps={{
                             startAdornment: (
@@ -124,7 +125,7 @@ const LTVCalculator = observer(props => {
                                     </Tooltip>
                                 </InputAdornment>
                             ),
-                            endAdornment: (<InputAdornment position="end">{selectedQuote}</InputAdornment>)
+                            endAdornment: (<InputAdornment position="end">{selectedBase}</InputAdornment>)
                         }}
                     >
                     </TextField>
