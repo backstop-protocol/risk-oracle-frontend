@@ -2,7 +2,6 @@ import AvgTable from "../components/AvgTable";
 import { Box } from "@mui/system";
 import LiquidityChart from "../components/LiquidityChart";
 import VolatilityTable from "../components/VolatilityTable";
-// import ComparisonAssetsSelector from "../components/ComparisonAssetsSelector"
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { roundTo } from "../utils/utils";

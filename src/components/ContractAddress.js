@@ -23,10 +23,7 @@ const localStore = new LocalStore ()
 
 const TOOLTIP_TEXT_1 = "This contract reads the on-chain risk feeds."
 const TOOLTIP_TEXT_2 = "Copy address to clipboard"
-const iconStyle = {
-  marginLeft: "10px",
-  border: "none"
-}
+
 
 const ContractAddress = observer(props => {
   const {address} = props
