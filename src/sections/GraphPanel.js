@@ -7,6 +7,7 @@ import { observer } from "mobx-react";
 import { roundTo } from "../utils/utils";
 import symbols from "../config";
 import Footer from "./Footer";
+import { Grid } from "@mui/material";
 
 const MainPanel = observer(props => {
   const slippage = mainStore.selectedSlippage;
@@ -74,10 +75,19 @@ const MainPanel = observer(props => {
   return (
     <div className="graphPanel">
       <Box sx={{height:"92%", width:"100%", display:'flex', flexDirection:"column", justifyContent:"space-between", alignItems:"center"}}>
-      <Box sx={{display:'flex', height:"45%", width:"100%", flexDirection:"row", justifyContent:"space-around", alignItems:"center"}}>
+      <Grid container
+      direction="row"
+      justifyContent="space-around"
+      alignItems="center"
+      spacing={{ xs: 1, md: 0.5 }}
+      >
+        <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
         <LiquidityChart availableQuotesForBase={availableQuotesForBase} selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading} displayData={displayData} dataStore={dataStore} />
+        </Grid>
+        <Grid item xs={3} sm={3} md={3} lg={3} xl={3}>
         <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData} />
-      </Box>
+        </Grid>
+      </Grid>
       <Box sx={{maxHeight:"40%", display:"flex", justifyContent:"center", alignItems:"center"}}>
         <VolatilityTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData} />
       </Box>
