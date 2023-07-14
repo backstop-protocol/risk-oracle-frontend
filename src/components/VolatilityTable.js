@@ -44,7 +44,7 @@ const VolatilityTable = observer(props => {
             sortedData[quote][span] = 0
           }
           if(dataForDexForSpanForBase[quote]){
-            sortedData[quote][span] += dataForDexForSpanForBase[quote].parkinsonVolatility
+            sortedData[quote][span] += mainStore.useParkinsonVolatility ?  dataForDexForSpanForBase[quote].parkinsonVolatility : dataForDexForSpanForBase[quote].volatility
             ratios[dex][span][quote]++
           }
         }
