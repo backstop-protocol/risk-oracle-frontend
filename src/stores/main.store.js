@@ -40,6 +40,7 @@ class MainStore {
     this.spans = [1, 7, 30, 180, 365];
     this.platforms = ['uniswapv2', 'curve', 'uniswapv3'];
     this.quotes = ['USDC', 'WBTC', 'WETH']
+    this.ltvQuotes = []
     this.graphData = {};
     this.averageData = {};
     this.averageTableDisplayArray = [];
@@ -331,6 +332,7 @@ class MainStore {
     }
     quotesHolder.sort();
     this.selectedQuotes = [...this.selectedQuotes, ...quotesHolder];
+    this.ltvQuotes = [...this.ltvQuotes, ...quotesHolder];
   }
 
   handleQuotesChanges = (quote) => {

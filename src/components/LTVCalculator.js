@@ -27,7 +27,7 @@ const LTVCalculator = observer(props => {
     if (!mainStore.averages) {
         return
     }
-    const {debtAssetPrices, quotes, selectedQuote, handleCLFandLTVChanges, setSelectedQuote, span, liquidity, volatility, slippage, borrowCap, setBorrowCap, CLF, setCLF, recommendedLTV, setRecommendedLTV } = props;
+    const {debtAssetPrices, quotes, selectedQuote, handleCLFandLTVChanges, setSelectedQuote, span, liquidity, volatility, slippage, borrowCap, setBorrowCap, CLF, recommendedLTV } = props;
     const slippageOptions = [1, 5, 10, 15, 20];
     const debtAssetPrice = debtAssetPrices[selectedQuote] ? debtAssetPrices[selectedQuote] : undefined;
 

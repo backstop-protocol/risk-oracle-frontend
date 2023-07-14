@@ -11,7 +11,7 @@ import { updateCode } from "../components/LTVCodeGenerator";
 import { findCLFFromParameters, findLTVFromParameters } from "../utils/utils";
 
 const LTVSection = observer(props => {
-    const quotes = mainStore.selectedQuotes;
+    const quotes = mainStore.ltvQuotes;
     const averages = mainStore.averages;
     const selectedBaseName = mainStore.selectedAsset.name;
     const debtAssetPrices = mainStore.debtAssetPrices;
@@ -57,7 +57,6 @@ const LTVSection = observer(props => {
 
     //computing recommended LTV
     useEffect(() => {
-        console.log('selectedQuote', selectedQuote)
         if(WhatAmIComputing === 'ltv' && selectedQuote){
         if(debtAssetPrices[selectedQuote]){
             const borrowInKind = borrowCap * 1e6 / debtAssetPrices[selectedQuote];
