@@ -22,7 +22,7 @@ function App() {
   }, [])
 
   const themeSwitcher = {
-  
+
     // Config
     _scheme: 'auto',
     change: {
@@ -31,7 +31,7 @@ function App() {
     },
     buttonsTarget: '.theme-switcher',
     localStorageKey: 'picoPreferedColorScheme',
-  
+
     // Init
     init() {
       this.scheme = this.schemeFromLocalStorage;
@@ -40,7 +40,7 @@ function App() {
       });
       this.initSwitchers();
     },
-  
+
     // Get color scheme from local storage
     get schemeFromLocalStorage() {
       if (typeof window.localStorage !== 'undefined') {
@@ -50,12 +50,12 @@ function App() {
       }
       return this._scheme;
     },
-  
+
     // Prefered color scheme
     get preferedColorScheme() {
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     },
-  
+
     // Init switchers
     initSwitchers() {
       const buttons = document.querySelectorAll(this.buttonsTarget);
@@ -68,14 +68,18 @@ function App() {
         }, false);
       });
     },
-  
+
     // Add new button
     addButton(config) {
-      let button = document.createElement(config.tag);
-      button.className = config.class;
-      document.querySelector(config.target).appendChild(button);
+      if (!mainStore.switchLoaded) {
+        let button = document.createElement(config.tag);
+        button.className = config.class;
+        document.querySelector(config.target).appendChild(button);
+        mainStore.switchLoadedTrue();
+      }
+
     },
-  
+
     // Set scheme
     set scheme(scheme) {
       if (scheme == 'auto') {
@@ -88,12 +92,12 @@ function App() {
       mainStore.darkTheme = scheme === "light" ? false : true;
       this.schemeToLocalStorage();
     },
-  
+
     // Get scheme
     get scheme() {
       return this._scheme;
     },
-  
+
     // Apply scheme
     applyScheme() {
       window.darkMode = this.scheme === 'dark'
@@ -107,7 +111,7 @@ function App() {
         }
       );
     },
-  
+
     // Store scheme to local storage
     schemeToLocalStorage() {
       if (typeof window.localStorage !== 'undefined') {
@@ -115,29 +119,27 @@ function App() {
       }
     },
   };
-  
+
   // Theme switcher
   themeSwitcher.addButton({
     tag: 'BUTTON',
     class: 'contrast switcher theme-switcher',
     target: 'body',
   });
-  if(!mainStore.switchLoaded){
   themeSwitcher.init();
-  mainStore.switchLoadedTrue();
-}
+
 
   const theme = mainStore.darkTheme ? createTheme(darkTheme) : createTheme(lightTheme);
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <Box id="heroZone" sx={{scrollSnapAlign:"center"}}>
+        <Box id="heroZone" sx={{ scrollSnapAlign: "center" }}>
           <Header />
           <First />
         </Box>
-        <Box id="mainSection" sx={{display: 'flex', flexDirection: 'row', height: '200vh'}}>
+        <Box id="mainSection" sx={{ display: 'flex', flexDirection: 'row', height: '200vh' }}>
           <SideNav />
-          <Box sx={{display: 'flex', flexDirection: 'column', height: '200vh', width:"93vw"}}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', height: '200vh', width: "93vw" }}>
             <SmartLTVPanel />
             <GraphPanel />
           </Box>
