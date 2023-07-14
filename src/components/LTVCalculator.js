@@ -180,7 +180,7 @@ const LTVCalculator = observer(props => {
                         freeSolo
                         disableClearable
                         options={CLFValues.map((option) => option.value)}
-                        value={CLF}
+                        value={String(CLF)}
                         onChange={(event, newValue) => {
                             handleCLFandLTVChanges('clf', newValue);
                         }}
