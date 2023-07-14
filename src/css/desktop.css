@@ -424,9 +424,6 @@ header {
   align-items: center;
 }
 
-.footer-logo {
-  margin: 70px 0 20px 0;
-}
 
 .footer-link-row {
   display: flex;
@@ -450,6 +447,11 @@ header {
 
 .footer-social-link {
   margin: 15px
+}
+
+.footer-social-link img{
+  height: 2vh;
+  width: 1.5vw;
 }
 
 .footer-white-circle {
