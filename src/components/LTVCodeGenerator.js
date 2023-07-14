@@ -17,7 +17,7 @@ contract SmartLTV is RiskyMath, KeyEncoder {
 
     // fixed parameters, set according to risk preference
     uint constant CLF = ${CLF}e15;
-    uint constant TIME_PERIOD = ${span} days * 365;
+    uint constant TIME_PERIOD = ${span};
     KeyEncoder.VolatilityMode VOLATILITY_MODE = KeyEncoder.VolatilityMode.Standard;
     KeyEncoder.LiquiditySource LIQUIDITY_SOURCE = KeyEncoder.LiquiditySource.All;
 
@@ -80,7 +80,7 @@ contract SmartLTV is RiskyMath, KeyEncoder {
 
     // fixed parameters, set according to risk preference
     uint constant CLF = 7e15;
-    uint constant TIME_PERIOD = 1 days * 365;
+    uint constant TIME_PERIOD = 7;
     KeyEncoder.VolatilityMode VOLATILITY_MODE = KeyEncoder.VolatilityMode.Standard;
     KeyEncoder.LiquiditySource LIQUIDITY_SOURCE = KeyEncoder.LiquiditySource.All;
 
