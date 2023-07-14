@@ -1,7 +1,7 @@
 import { Box, Paper, Skeleton } from '@mui/material';
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-import DexSelector from './DexSelector';
+import GraphControls from './GraphControls';
 import { largeNumberFormatter } from '../utils/utils';
 import mainStore from '../stores/main.store';
 import { observer } from "mobx-react";
@@ -47,7 +47,7 @@ const LiquidityChart = observer(props => {
   return (
     <Paper sx={{display:"flex", flexDirection:"column", width:"80%", height:"90%", minHeight: '440px', marginRight: "1vw", marginLeft:"1vw" }}>
       <Box sx={{padding:"1vh 1vw 0 1vw"}}>
-      <DexSelector selectedBaseSymbol={props.selectedBaseSymbol} availableQuotesForBase={props.availableQuotesForBase} />
+      <GraphControls selectedBaseSymbol={props.selectedBaseSymbol} availableQuotesForBase={props.availableQuotesForBase} />
       </Box>
       <Box sx={{height:"100%", padding:"0 1vw 0 0"}}>
       <ResponsiveContainer width="100%" height="100%">
