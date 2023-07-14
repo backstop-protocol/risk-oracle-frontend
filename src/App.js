@@ -53,7 +53,7 @@ function App() {
 
     // Prefered color scheme
     get preferedColorScheme() {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      return 'dark';
     },
 
     // Init switchers
