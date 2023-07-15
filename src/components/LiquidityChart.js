@@ -45,7 +45,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 const LiquidityChart = observer(props => {
  const {quotes, displayData, selectedBaseSymbol} = props;
   return (
-    <Paper sx={{display:"flex", flexDirection:"column", height:"90%", minHeight: '410px', marginRight: "1vw", marginLeft:"1vw" }}>
+    <Paper sx={{display:"flex", flexDirection:"column", maxWidth:"80%", height:"90%", minHeight: '410px', marginRight: "1vw", marginLeft:"1vw" }}>
       <Box sx={{padding:"1vh 1vw 0 1vw"}}>
       <GraphControls selectedBaseSymbol={props.selectedBaseSymbol} availableQuotesForBase={props.availableQuotesForBase} />
       </Box>
