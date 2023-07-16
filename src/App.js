@@ -11,6 +11,7 @@ import SmartLTVPanel from './sections/SmartLTVPanel';
 import mainStore from './stores/main.store';
 import { darkTheme, lightTheme } from './config';
 import { useEffect } from 'react';
+import Footer from "./sections/Footer";
 
 function App() {
   useEffect(() => {
@@ -142,6 +143,7 @@ function App() {
           <Box sx={{ display: 'flex', flexDirection: 'column', width: "93vw" }}>
             <SmartLTVPanel />
             <GraphPanel />
+            <Footer />
           </Box>
         </Box>
       </div>

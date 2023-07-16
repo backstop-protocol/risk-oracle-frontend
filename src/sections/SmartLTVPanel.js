@@ -9,6 +9,7 @@ import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { updateCode } from "../components/LTVCodeGenerator";
 import { findCLFFromParameters, findLTVFromParameters } from "../utils/utils";
+import Disclaimer from "../components/Disclaimer";
 
 const LTVSection = observer(props => {
     const quotes = mainStore.ltvQuotes;
@@ -89,7 +90,7 @@ const LTVSection = observer(props => {
 
 
     return (
-        <Box sx={{ display: "-webkit-flex", minHeight:"92vh", width: "93vw", flexDirection: "column", alignItems: "center", scrollSnapAlign: "center", paddingTop: "8vh" }}>
+        <Box sx={{ display: "flex", minHeight:"100vh", width: "93vw", flexDirection: "column", alignItems: "center", scrollSnapAlign: "center", paddingTop: "8vh" }}>
             <Web3Data />
             <LTVTextSection />
             <LTVCalculator
@@ -110,6 +111,7 @@ const LTVSection = observer(props => {
                 recommendedLTV={recommendedLTV}
                 setRecommendedLTV={setRecommendedLTV} />
             <LTVCodeSection defaultCode={defaultCode} updatedCode={updatedCode} />
+            <Disclaimer />
         </Box>
     )
 })

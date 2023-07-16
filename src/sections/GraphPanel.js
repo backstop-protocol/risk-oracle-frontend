@@ -6,7 +6,6 @@ import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { roundTo } from "../utils/utils";
 import symbols from "../config";
-import Footer from "./Footer";
 
 const MainPanel = observer(props => {
   const slippage = mainStore.selectedSlippage;
@@ -72,8 +71,7 @@ const MainPanel = observer(props => {
     </div>)
   }
   return (
-    <div className="graphPanel">
-      <Box sx={{height:"92%", width:"100%", display:'flex', flexDirection:"column", justifyContent:"space-between", alignItems:"center"}}>
+      <Box sx={{height:"100%", flex:"0 2 auto", width:"100%", display:'flex', flexDirection:"column", justifyContent:"space-between", alignItems:"center"}}>
       <Box sx={{display:'flex', width:"100%", flexDirection:"row", justifyContent:"space-around", alignItems:"center", rowGap:"2%",flexWrap:"wrap"}}>
         <LiquidityChart availableQuotesForBase={availableQuotesForBase} selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading} displayData={displayData} dataStore={dataStore} />
         <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData} />
@@ -81,9 +79,7 @@ const MainPanel = observer(props => {
       <Box sx={{maxHeight:"40%", display:"flex", justifyContent:"center", alignItems:"center"}}>
         <VolatilityTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData} />
       </Box>
-      <Footer />
       </Box>
-    </div>
   )
 })
 export default MainPanel

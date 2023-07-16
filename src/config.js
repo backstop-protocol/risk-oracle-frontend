@@ -53,7 +53,7 @@ export const lightTheme = {
       lineHeight: 1.6,
       fontSize: '1.5rem',
     },
-    fontSize: 14,
+    fontSize: 10,
   },
 };
 

@@ -3,8 +3,8 @@ import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 
 const Footer = observer(props => {
-  return <Box sx={{height:"2.5rem", display: 'flex', flexDirection: 'column', alignItems:"center", justifyContent:"center"}}>
-    <Box sx={{display: 'flex', flexDirection: 'row', marginBottom:"1vh"}}>
+  return <Box sx={{height:"100%", display: 'flex', flexDirection: 'column', paddingTop:"1%", alignItems:"center", justifyContent:"center"}}>
+    <Box sx={{display: 'flex', flexDirection: 'row'}}>
       <img className="footer-logo" alt="" src="logo.svg" />
     </Box>
     <Stack  gap={4} direction="row">
