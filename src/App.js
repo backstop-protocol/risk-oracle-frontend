@@ -135,9 +135,9 @@ function App() {
           <Header />
           <First />
         </Box>
-        <Box id="mainSection" sx={{display: 'flex', flexDirection: 'row', height: '200vh'}}>
+        <Box id="mainSection" sx={{ display: 'flex', flexDirection: 'row'}}>
           <SideNav />
-          <Box sx={{display: 'flex', flexDirection: 'column', height: '200vh', width:"93vw"}}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', width: "93vw" }}>
             <SmartLTVPanel />
             <GraphPanel />
           </Box>
