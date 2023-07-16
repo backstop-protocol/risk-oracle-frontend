@@ -13,7 +13,7 @@ const Web3Data = observer(props => {
     const span = mainStore.selectedSpan;
     const selectedBase = mainStore.selectedAsset.name;
     return (
-        <Paper sx={{width:"95%",margin:"0 1vw 0 1vw", display:"flex", justifyContent:"space-between", alignItems:"start", padding:"1vh 1vw 1vh 1vw"}}>
+        <Paper sx={{width:"95%",margin:"0 1vw 0 1vw", display:"flex", flex:"0 2 auto", justifyContent:"space-between", alignItems:"start", padding:"1vh 1vw 1vh 1vw"}}>
             <Box >
                 <InfoLine />
                 <ContractAddress address={pythiaAddress} />

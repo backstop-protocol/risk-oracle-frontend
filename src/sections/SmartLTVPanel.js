@@ -87,10 +87,8 @@ const LTVSection = observer(props => {
     }, [liquidity, slippage, volatility, borrowCap, CLF, debtAssetPrices, selectedQuote, WhatAmIComputing, recommendedLTV])
 
 
-
-
     return (
-        <Box sx={{ display: "flex", height: "100vh", width: "93vw", flexDirection: "column", alignItems: "center", scrollSnapAlign: "center", paddingTop: "8vh" }}>
+        <Box sx={{ display: "-webkit-flex", minHeight:"92vh", width: "93vw", flexDirection: "column", alignItems: "center", scrollSnapAlign: "center", paddingTop: "8vh" }}>
             <Web3Data />
             <LTVTextSection />
             <LTVCalculator

@@ -202,7 +202,8 @@ text-align: right !important;
 }
 
 .graphPanel {
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   width: 93vw;
   padding-top: 8vh;
   display: flex;
@@ -604,6 +605,9 @@ header {
 .ltv-container{
   padding: 1vh 1vw !important;
   margin: 1vh 1vw 1vh 1vw !important;
+  flex-basis: 1;
+  flex-grow: 0;
+  flex-shrink: 2;
 }
 .ltvCodeEditor{
   flex: 1;
