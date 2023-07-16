@@ -40,7 +40,7 @@ const InfoLine = observer(props => {
     }
   }
   useEffect(() => {
-    if (priceInfo.lastPrice === undefined) {
+    if (priceInfo.lastPrice === undefined && mainStore.debtAssetPrices[selectedBaseSymbol]) {
       getPrice(selectedBaseSymbol, setPrice, setDayChange);
     }
     else{
