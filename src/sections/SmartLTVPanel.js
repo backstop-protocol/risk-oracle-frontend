@@ -30,7 +30,6 @@ const LTVSection = observer(props => {
     const [updatedCode, setUpdatedCode] = useState(defaultCode);
 
     function handleCLFandLTVChanges(type, value){
-
         if(type === "clf"){
             setCLF(value);
             setWhatAmIComputing("ltv");

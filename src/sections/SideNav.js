@@ -5,8 +5,6 @@ import { observer } from "mobx-react";
 
 const SideNav = observer(props => {
   const { assets, search, selectedBaseSymbol } = mainStore
-  const height = 90 / assets.length;
-  console.log(height)
   function handleClick(e, v) {
     search(v);
   }

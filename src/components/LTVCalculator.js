@@ -35,7 +35,7 @@ function getCLFFilter(inputValue) {
 function CLFInput(props) {
     const [CLFOptions, setCLFOptions] = useState(CLFValues)
     const handleCLFandLTVChanges = props.handleCLFandLTVChanges;
-    const clf = props.clf;
+    const CLF = props.CLF;
     const {
         isOpen,
         getMenuProps,
@@ -43,9 +43,8 @@ function CLFInput(props) {
         highlightedIndex,
         getItemProps,
     } = useCombobox({
-        defaultInputValue:clf,
         items: CLFOptions,
-        initialSelectedItem: CLFValues[0],
+        inputValue:CLF,
         itemToString(item) { return item ? item.value : '' },
         onInputValueChange: ({ inputValue }) => {
             handleCLFandLTVChanges('clf', Number(inputValue))
@@ -59,7 +58,7 @@ function CLFInput(props) {
                 <input
                     pattern="[0-9]+"
                     className="ltv-select"
-                    style={{borderColor: isNaN(clf) ? '#FF0000' : ''}}
+                    style={{borderColor: isNaN(CLF) ? '#FF0000' : ''}}
                     {...getInputProps()}
                 />
             </div>
@@ -154,7 +153,7 @@ const LTVCalculator = observer(props => {
                         <small>CLF</small>
                     </div>
                     <div className="ltv-value-div">
-                    <CLFInput handleCLFandLTVChanges={handleCLFandLTVChanges} clf={CLF} />
+                    <CLFInput handleCLFandLTVChanges={handleCLFandLTVChanges} CLF={CLF} />
                     </div>
                 </div>
                 <div className="ltv-asset" title="Loan To Value ratio.">
