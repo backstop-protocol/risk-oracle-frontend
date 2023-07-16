@@ -15,6 +15,7 @@ const SideNav = observer(props => {
         <Tabs
           orientation="vertical"
           value={selectedBaseSymbol === "WETH" ? "ETH" : selectedBaseSymbol === "sUSD" ? "SUSD" : selectedBaseSymbol}
+          variant="scrollable"
           onChange={handleClick}
           textColor="inherit"
           indicatorColor="secondary"

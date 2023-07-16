@@ -74,7 +74,7 @@ const MainPanel = observer(props => {
   return (
     <div className="graphPanel">
       <Box sx={{height:"92%", width:"100%", display:'flex', flexDirection:"column", justifyContent:"space-between", alignItems:"center"}}>
-      <Box sx={{display:'flex', height:"45%", width:"100%", flexDirection:"row", justifyContent:"space-around", alignItems:"center"}}>
+      <Box sx={{display:'flex', width:"100%", flexDirection:"row", justifyContent:"space-around", alignItems:"center", rowGap:"2%",flexWrap:"wrap"}}>
         <LiquidityChart availableQuotesForBase={availableQuotesForBase} selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading} displayData={displayData} dataStore={dataStore} />
         <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData} />
       </Box>

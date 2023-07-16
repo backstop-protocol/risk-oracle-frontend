@@ -4,6 +4,8 @@ import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { timeWindows } from "../stores/config.store";
 import { largeNumberFormatter } from "../utils/utils";
+import { useState } from "react";
+import { useCombobox } from "downshift";
 const CLFValues = [
     {
         text: 'High confidence',
@@ -18,9 +20,76 @@ const CLFValues = [
         value: '10'
     },
 ]
-const controlledWidth = {}
-// const controlledWidth = { flex: "1", flexGrow: "1" }
+function getCLFFilter(inputValue) {
+    const lowerCasedInputValue = inputValue.toLowerCase()
 
+    return function CLFFilter(item) {
+        return (
+            !inputValue ||
+            item.text.toLowerCase().includes(lowerCasedInputValue) ||
+            item.value.toLowerCase().includes(lowerCasedInputValue)
+        )
+    }
+}
+
+function CLFInput(props) {
+    const [CLFOptions, setCLFOptions] = useState(CLFValues)
+    const handleCLFandLTVChanges = props.handleCLFandLTVChanges;
+    const clf = props.clf;
+    const {
+        isOpen,
+        getMenuProps,
+        getInputProps,
+        highlightedIndex,
+        getItemProps,
+    } = useCombobox({
+        defaultInputValue:clf,
+        items: CLFOptions,
+        initialSelectedItem: CLFValues[0],
+        itemToString(item) { return item ? item.value : '' },
+        onInputValueChange: ({ inputValue }) => {
+            handleCLFandLTVChanges('clf', Number(inputValue))
+        },
+        handleCLFandLTVChanges,
+        onSelectedItemChange: ((newItem) => handleCLFandLTVChanges('clf', Number(newItem.selectedItem.value)))
+    })
+    return (
+        <div>
+            <div>
+                <input
+                    pattern="[0-9]+"
+                    className="ltv-select"
+                    style={{borderColor: isNaN(clf) ? '#FF0000' : ''}}
+                    {...getInputProps()}
+                />
+            </div>
+            <ul
+            className="ltv-dropdown-content"
+                {...getMenuProps()}
+            >
+                {isOpen &&
+                    CLFOptions.map((item, index) => (
+                        <li
+                        className="ltv-dropdown-item"
+                            style={{
+                                padding: '4px',
+                                backgroundColor: highlightedIndex === index ? '#bde4ff' : null,
+                            }}
+                            key={`${item}${index}`}
+                            {...getItemProps({
+                                item,
+                                index,
+                            })}
+                        >
+                            <div className="ltv-dropdown-text">{item.text}</div>
+                            <div className="ltv-dropdown-value">{item.value}</div>
+
+                        </li>
+                    ))}
+            </ul>
+        </div>
+    )
+}
 
 
 const LTVCalculator = observer(props => {
@@ -85,7 +154,7 @@ const LTVCalculator = observer(props => {
                         <small>CLF</small>
                     </div>
                     <div className="ltv-value-div">
-                    <input className="ltv-select" value={CLF} onChange={(event) => { handleCLFandLTVChanges('clf', event.target.value)}} />
+                    <CLFInput handleCLFandLTVChanges={handleCLFandLTVChanges} clf={CLF} />
                     </div>
                 </div>
                 <div className="ltv-asset" title="Loan To Value ratio.">
