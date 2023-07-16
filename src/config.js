@@ -88,7 +88,7 @@ export const darkTheme = {
       lineHeight: 1.6,
       fontSize: '1.5rem',
     },
-    fontSize: 14,
+    fontSize: 12,
   },
 };
 
