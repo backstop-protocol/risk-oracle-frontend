@@ -40,7 +40,7 @@ const First = props => {
           <img alt="pythia-code-example" src={darkMode ? 'images/pythia-code-dark.png' : 'images/pythia-code.png'}/>
         </div>
       </div>
-      <Fab size='medium' sx={{position:"absolute", marginLeft:"auto", minWidth:"250px", maxWidth:"250px", marginRight:"auto", left:"0", right:"0", bottom:"0", zIndex:"10", color:"secondary.main"}} variant="extended" onClick={(e)=>{goTo(e,'mainSection')}}>
+      <Fab size='medium' sx={{position:"absolute", marginLeft:"auto", minWidth:"200px", maxWidth:"250px", marginRight:"auto", left:"0", right:"0", bottom:"0", zIndex:"10", color:"secondary.main"}} variant="extended" onClick={(e)=>{goTo(e,'mainSection')}}>
         <NavigationIcon sx={{ mr: 1, transform:"rotate(180deg)", color:"secondary.main" }} />
         Try it!
       </Fab>
