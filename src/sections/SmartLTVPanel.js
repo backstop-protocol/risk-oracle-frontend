@@ -75,13 +75,15 @@ const LTVSection = observer(props => {
             const borrowInKind = borrowCap * 1e6 / mainStore.basePrice;
             const clf = findCLFFromParameters(recommendedLTV, slippage / 100, liquidity, borrowInKind, volatility);
             setCLF(clf.toFixed(2));
+            setWhatAmIComputing('ltv');
         }
         else {
            mainStore.updateDebtAssetPrices(selectedQuote).then(()=>{
             const borrowInKind = borrowCap * 1e6 / mainStore.basePrice;
             const clf = findCLFFromParameters(recommendedLTV, slippage / 100, liquidity, borrowInKind, volatility);
             setCLF(clf.toFixed(2));
-            })
+            setWhatAmIComputing('ltv');
+        })
         }}
     }, [liquidity, slippage, volatility, borrowCap, CLF, debtAssetPrices, selectedQuote, WhatAmIComputing, recommendedLTV])
 
