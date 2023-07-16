@@ -59,27 +59,27 @@ const LTVSection = observer(props => {
     useEffect(() => {
         if(WhatAmIComputing === 'ltv' && selectedQuote){
         if(debtAssetPrices[selectedQuote]){
-            const borrowInKind = borrowCap * 1e6 / debtAssetPrices[selectedQuote];
+            const borrowInKind = borrowCap * 1e6 / mainStore.basePrice;
             const ltv = findLTVFromParameters(liquidity, borrowInKind, volatility, slippage / 100, CLF);
-        setRecommendedLTV(ltv.toFixed(2));
+            setRecommendedLTV(ltv.toFixed(2));
         }
         else{
             mainStore.updateDebtAssetPrices(selectedQuote).then(()=>{
-            const borrowInKind = borrowCap * 1e6 / debtAssetPrices[selectedQuote];
+            const borrowInKind = borrowCap * 1e6 / mainStore.basePrice;
             const ltv = findLTVFromParameters(liquidity, borrowInKind, volatility, slippage / 100, CLF);
-        setRecommendedLTV(ltv.toFixed(2));
+            setRecommendedLTV(ltv.toFixed(2));
             })
         }
     }
     if(WhatAmIComputing === 'clf' && selectedQuote){
         if(debtAssetPrices[selectedQuote]){
-            const borrowInKind = borrowCap * 1e6 / debtAssetPrices[selectedQuote];
+            const borrowInKind = borrowCap * 1e6 / mainStore.basePrice;
             const clf = findCLFFromParameters(recommendedLTV, slippage / 100, liquidity, borrowInKind, volatility);
-        setCLF(clf.toFixed(2));
+            setCLF(clf.toFixed(2));
         }
-        else{
+        else {
            mainStore.updateDebtAssetPrices(selectedQuote).then(()=>{
-            const borrowInKind = borrowCap * 1e6 / debtAssetPrices[selectedQuote];
+            const borrowInKind = borrowCap * 1e6 / mainStore.basePrice;
             const clf = findCLFFromParameters(recommendedLTV, slippage / 100, liquidity, borrowInKind, volatility);
             setCLF(clf.toFixed(2));
             })

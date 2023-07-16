@@ -34,21 +34,23 @@ export function encodeLiquidityKey(collateralAsset, debtAsset, source, slippage,
     return ethers.keccak256(ethers.AbiCoder.defaultAbiCoder().encode(['string', 'address', 'uint8', 'uint256', 'uint256'], ['liquidity', debtAsset, source, slippage, period]))
 }
 
-export function findCLFFromParameters(ltv, beta, l, d, sigma) {
-    const sqrtResult = Math.sqrt(l/d);
-    const sqrtBySigma = sqrtResult / sigma;
-    const ltvPlusBeta = Number(ltv) + Number(beta);
+export function findCLFFromParameters(ltv, liquidationBonus, liquidity, borrowCap, volatility) {
+    console.log(`findCLFFromParameters: liquidity: ${liquidity}, borrow cap ${borrowCap}, volatility: ${volatility}, liquidiation bonus ${liquidationBonus}, ltv: ${ltv}`)
+    const sqrtResult = Math.sqrt(liquidity/borrowCap);
+    const sqrtBySigma = sqrtResult / volatility;
+    const ltvPlusBeta = Number(ltv) + Number(liquidationBonus);
     const lnLtvPlusBeta = Math.log(ltvPlusBeta);
     const c = -1 * lnLtvPlusBeta * sqrtBySigma;
     return c;
 }
 
-export function findLTVFromParameters(l, d, sigma, beta, CLF) {
-    const sqrRoot = Math.sqrt(l / d);
-    const sigmaOverSqrRoot = sigma / sqrRoot;
+export function findLTVFromParameters(liquidity, borrowCap, volatility, liquidationBonus, CLF) {
+    console.log(`findLTVFromParameters: liquidity: ${liquidity}, borrow cap ${borrowCap}, volatility: ${volatility}, liquidiation bonus ${liquidationBonus}, CLF: ${CLF}`)
+    const sqrRoot = Math.sqrt(liquidity / borrowCap);
+    const sigmaOverSqrRoot = volatility / sqrRoot;
     const clfMinusSigmaOverSqrRoot = (-1 * CLF) * sigmaOverSqrRoot;
     const exponential = Math.exp(clfMinusSigmaOverSqrRoot);
-    const ltv = exponential - beta;
+    const ltv = exponential - liquidationBonus;
     return ltv;
 }
 
