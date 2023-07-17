@@ -12,7 +12,10 @@ import { updateCode } from "../components/LTVCodeGenerator";
 const defaultAsset = "ETH"
 const apiUrl = "https://api.dex-history.la-tribu.xyz/api";
 const urlParams = new URLSearchParams(window.location.search);
-const USE_PARKINSON = urlParams.get('parkinson') && urlParams.get('parkinson') === 'true';
+let USE_PARKINSON = true; 
+if(urlParams.get('parkinson') && urlParams.get('parkinson') === 'false') {
+  USE_PARKINSON = false;
+}
 
 class MainStore {
   constructor() {
