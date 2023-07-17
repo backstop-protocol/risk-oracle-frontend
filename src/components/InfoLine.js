@@ -11,14 +11,20 @@ async function getPrice(base, setPrice, setDayChange) {
   const url = `https://api.coingecko.com/api/v3/coins/${id}`
   const data = await axios.get(url);
   setPrice((data.data['market_data']['current_price']['usd']).toFixed(2));
-  setDayChange((data.data['market_data']['price_change_24h']).toFixed(2));
+  setDayChange((data.data['market_data']['price_change_percentage_7d']).toFixed(2));
 }
 
 const InfoLine = observer(props => {
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseSymbol = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
   const graphData = mainStore.graphData;
-  const dataForPriceComputation = graphData['uniswapv2'] ? graphData['uniswapv2'][1] : 0;
+  let selectedDex = 'uniswapv3';
+  if(!graphData['uniswapv3'] 
+      || !graphData['uniswapv3'][7] 
+      || !graphData['uniswapv3'][7].some(_ => _.base.toLowerCase() === selectedBaseSymbol.toLowerCase())) {
+    selectedDex = 'uniswapv2';
+  }
+  const dataForPriceComputation = graphData[selectedDex] ? graphData[selectedDex][7] : 0;
   const priceInfo = {};
   const [price, setPrice] = useState(0);
   const [dayChange, setDayChange] = useState(0);
@@ -29,14 +35,14 @@ const InfoLine = observer(props => {
       if (dataForBase[i].quote === 'USDC') {
         priceInfo['startPrice'] = dataForBase[i].startPrice.toFixed(2);
         priceInfo['lastPrice'] = dataForBase[i].endPrice.toFixed(2);
-        priceInfo['startLiquidity'] = dataForBase[i].volumeForSlippage[0].aggregated[1].toFixed(2);
-        priceInfo['endLiquidity'] = dataForBase[i].volumeForSlippage.slice(-1)[0].aggregated[1].toFixed(2);
+        priceInfo['startLiquidity'] = dataForBase[i].volumeForSlippage[0].aggregated[5].toFixed(2);
+        priceInfo['endLiquidity'] = dataForBase[i].volumeForSlippage.slice(-1)[0].aggregated[5].toFixed(2);
       }
     }
     if (Object.keys(priceInfo).length === 0) {
       const dataForBase = dataForPriceComputation.filter(_ => _.base.toLowerCase() === selectedBaseSymbol.toLowerCase());
-      priceInfo['startLiquidity'] = dataForBase[0].volumeForSlippage[0].aggregated[1].toFixed(2);
-      priceInfo['endLiquidity'] = dataForBase[0].volumeForSlippage.slice(-1)[0].aggregated[1].toFixed(2);
+      priceInfo['startLiquidity'] = dataForBase[0].volumeForSlippage[0].aggregated[5].toFixed(2);
+      priceInfo['endLiquidity'] = dataForBase[0].volumeForSlippage.slice(-1)[0].aggregated[5].toFixed(2);
     }
   }
   useEffect(() => {
@@ -61,10 +67,10 @@ const InfoLine = observer(props => {
           <Typography>Price: $<b>{priceInfo.lastPrice ? priceInfo.lastPrice : price}</b></Typography>
         </Box>
         <Box>
-          <Typography>24H price change: <b>{priceInfo.lastPrice ? ((Number(priceInfo.lastPrice) - Number(priceInfo.startPrice)) / Number(priceInfo.startPrice) * 100).toFixed(2) : dayChange}%</b></Typography>
+          <Typography>7D price change: <b>{priceInfo.lastPrice ? (((Number(priceInfo.lastPrice) / Number(priceInfo.startPrice)) - 1) * 100).toFixed(2) : dayChange}%</b></Typography>
         </Box>
         <Box>
-          <Typography>24H Liquidity change: <b>{((Number(priceInfo.endLiquidity) - Number(priceInfo.startLiquidity)) / Number(priceInfo.endLiquidity) * 100).toFixed(2)}%</b></Typography>
+          <Typography>7D Liquidity change: <b>{((Number(priceInfo.endLiquidity) / Number(priceInfo.startLiquidity) - 1) * 100).toFixed(2)}%</b></Typography>
         </Box>
       </Stack>
     </Box>

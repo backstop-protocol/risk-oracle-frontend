@@ -40,7 +40,7 @@ class MainStore {
     this.graphData = null;
     this.loading = true;
     this.timestamps = {};
-    this.spans = [1, 7, 30, 180, 365];
+    this.spans = [7, 30, 180, 365];
     this.platforms = ['uniswapv2', 'curve', 'uniswapv3'];
     this.quotes = ['USDC', 'WBTC', 'WETH']
     this.ltvQuotes = []
@@ -266,7 +266,7 @@ class MainStore {
     const available = [];
     for (const platform of this.platforms) {
       if (this.graphData[platform]) {
-        const availableBases = this.graphData[platform]['1'].map(_ => _.base);
+        const availableBases = this.graphData[platform]['7'].map(_ => _.base);
         if (availableBases.includes(this.selectedBaseSymbol)) {
           available.push(platform);
         };
@@ -292,7 +292,7 @@ class MainStore {
     const quotesHolder = [];
     const newQuotes = [];
     for (const dex of this.selectedDexes) {
-      const dataForDex = this.graphData[dex][1];
+      const dataForDex = this.graphData[dex][7];
       const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === this.selectedBaseSymbol.toLowerCase());
       for (const slippageData of dataForDexForBase) {
         if (!quotesHolder.includes(slippageData.quote)) {
@@ -331,7 +331,7 @@ class MainStore {
     this.selectedQuotes = [];
     const quotesHolder = [];
     for (const dex of this.selectedDexes) {
-      const dataForDex = this.graphData[dex][1];
+      const dataForDex = this.graphData[dex][7];
       const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === this.selectedBaseSymbol.toLowerCase());
       for (const slippageData of dataForDexForBase) {
         if (!quotesHolder.includes(slippageData.quote)) {
