@@ -35,7 +35,7 @@ const First = observer(props => {
         </p>
         <div className="button-container">
           <a href="https://docs.bprotocol.org" role="button" >Read Docs</a>
-          <a href="https://app.bprotocol.org" role="button" className="outline">Request an Asset</a>
+          <a href="https://twitter.com/bprotocoleth" role="button" className="outline">Request an Asset</a>
         </div>
       </div>
       <div style={styles.flexItem}>
