@@ -8,13 +8,7 @@ import { observer } from "mobx-react";
 
 async function getPrice(base, setPrice, setDayChange) {
   if(!mainStore.coingeckoPriceInfos[base]) {
-    const id = coingeckoMap[base.toLowerCase()];
-    const url = `https://api.coingecko.com/api/v3/coins/${id}`
-    const data = await axios.get(url);
-    mainStore.coingeckoPriceInfos[base] = {
-      price: data.data['market_data']['current_price']['usd'].toFixed(2),
-      change: data.data['market_data']['price_change_percentage_7d'].toFixed(2)
-    };
+    return;
   }
   
   setPrice(mainStore.coingeckoPriceInfos[base].price);
@@ -72,7 +66,7 @@ const InfoLine = observer(props => {
           <Typography>Price: $<b>{priceInfo.lastPrice ? priceInfo.lastPrice : price}</b></Typography>
         </Box>
         <Box>
-          <Typography>7D price change: <b>{dayChange > 0 ? `+${dayChange}` : dayChange}%</b></Typography>
+          <Typography>24H price change: <b>{dayChange > 0 ? `+${dayChange}` : dayChange}%</b></Typography>
         </Box>
         <Box>
           <Typography>7D Liquidity change: <b>{ liquidityRatio7D > 0 ? `+${liquidityRatio7D.toFixed(2)}` : liquidityRatio7D.toFixed(2)}%</b></Typography>

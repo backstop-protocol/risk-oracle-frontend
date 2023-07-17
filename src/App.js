@@ -1,7 +1,7 @@
 import '@picocss/pico';
 import './App.css';
 
-import { Box, ThemeProvider, createTheme } from '@mui/material';
+import { Box, Skeleton, ThemeProvider, createTheme } from '@mui/material';
 
 import First from './sections/First';
 import GraphPanel from './sections/GraphPanel';
@@ -12,8 +12,9 @@ import mainStore from './stores/main.store';
 import { darkTheme, lightTheme } from './config';
 import { useEffect } from 'react';
 import Footer from "./sections/Footer";
+import { observer } from 'mobx-react';
 
-function App() {
+const App = observer(() => {
   useEffect(() => {
     // runs once after app is fully loaded
     const searchQs = mainStore.getSearchQs()
@@ -138,6 +139,8 @@ function App() {
           <Header />
           <First />
         </Box>
+        {mainStore.loading ? 
+        <Skeleton></Skeleton> :
         <Box id="mainSection" sx={{ display: 'flex', flexDirection: 'row'}}>
           <SideNav />
           <Box sx={{ display: 'flex', flexDirection: 'column', width: "93vw" }}>
@@ -146,8 +149,10 @@ function App() {
             <Footer />
           </Box>
         </Box>
+        }
       </div>
     </ThemeProvider>
   );
-}
+})
+
 export default App;

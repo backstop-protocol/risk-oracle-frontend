@@ -16,6 +16,8 @@ const LTVSection = observer(props => {
     const averages = mainStore.averages;
     const selectedBaseName = mainStore.selectedAsset.name;
     const debtAssetPrices = mainStore.debtAssetPrices;
+    console.log(selectedBaseName);
+    const basePrice = mainStore.coingeckoPriceInfos[selectedBaseName].price;
     //ltv variables
     const [selectedQuote, setSelectedQuote] = useState(quotes[0]);
     const span = mainStore.selectedSpan;
@@ -59,13 +61,13 @@ const LTVSection = observer(props => {
     useEffect(() => {
         if(WhatAmIComputing === 'ltv' && selectedQuote){
         if(debtAssetPrices[selectedQuote]){
-            const borrowInKind = borrowCap * 1e6 / mainStore.basePrice;
+            const borrowInKind = borrowCap * 1e6 / basePrice;
             const ltv = findLTVFromParameters(liquidity, borrowInKind, volatility, slippage / 100, CLF);
             setRecommendedLTV(ltv.toFixed(2));
         }
         else{
             mainStore.updateDebtAssetPrices(selectedQuote).then(()=>{
-            const borrowInKind = borrowCap * 1e6 / mainStore.basePrice;
+            const borrowInKind = borrowCap * 1e6 / basePrice;
             const ltv = findLTVFromParameters(liquidity, borrowInKind, volatility, slippage / 100, CLF);
             setRecommendedLTV(ltv.toFixed(2));
             })
@@ -73,20 +75,20 @@ const LTVSection = observer(props => {
     }
     if(WhatAmIComputing === 'clf' && selectedQuote){
         if(debtAssetPrices[selectedQuote]){
-            const borrowInKind = borrowCap * 1e6 / mainStore.basePrice;
+            const borrowInKind = borrowCap * 1e6 / basePrice;
             const clf = findCLFFromParameters(recommendedLTV, slippage / 100, liquidity, borrowInKind, volatility);
             setCLF(clf.toFixed(2));
             setWhatAmIComputing('ltv');
         }
         else {
            mainStore.updateDebtAssetPrices(selectedQuote).then(()=>{
-            const borrowInKind = borrowCap * 1e6 / mainStore.basePrice;
+            const borrowInKind = borrowCap * 1e6 / basePrice;
             const clf = findCLFFromParameters(recommendedLTV, slippage / 100, liquidity, borrowInKind, volatility);
             setCLF(clf.toFixed(2));
             setWhatAmIComputing('ltv');
         })
         }}
-    }, [liquidity, slippage, volatility, borrowCap, CLF, debtAssetPrices, selectedQuote, WhatAmIComputing, recommendedLTV])
+    }, [basePrice, liquidity, slippage, volatility, borrowCap, CLF, debtAssetPrices, selectedQuote, WhatAmIComputing, recommendedLTV])
 
 
     return (

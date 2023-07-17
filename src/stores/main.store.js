@@ -99,14 +99,18 @@ class MainStore {
         this.initialDexes();
         this.initialQuotes();
         this.updateAverages();
-
+      }).then(() => {
+        this.getAllPrices().then(() => {
+          this.getWeb3Data().then(() => {
+            this.loading = false;
+          });
+        });
       })
       .catch(error => {
         console.error('error', error);
       });
-    this.loading = false;
-    this.getWeb3Data();
-    makeAutoObservable(this);
+
+      makeAutoObservable(this);
   }
   async sendParallelRequests(urls) {
     const requests = urls.map(url => axios.get(url)); // Create an array of requests
@@ -230,8 +234,31 @@ class MainStore {
     }
   }
 
+  async getAllPrices() {
+    const coingeckoIds = [];
+    for(const asset of Object.keys(assets)) {
+      coingeckoIds.push(coingeckoMap[asset.toLowerCase()]);
+    }
+
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coingeckoIds.join(',')}&vs_currencies=usd&precision=2&include_24hr_change=true`;
+    const data = await axios.get(url);
+    
+    for(const asset of Object.keys(assets)) {
+      const coingeckoId = coingeckoMap[asset.toLowerCase()];
+      const result = data.data[coingeckoId];
+      this.coingeckoPriceInfos[asset] = {
+        price: result.usd,
+        change: result.usd_24h_change.toFixed(2)
+      };
+      this.debtAssetPrices[asset] = result.usd;
+    }
+
+    console.log('this.coingeckoPriceInfos', this.coingeckoPriceInfos);
+  }
+
   async updateDebtAssetPrices(asset) {
     if(!this.debtAssetPrices[asset]){
+      console.log('updateDebtAssetPrices');
       const id = coingeckoMap[asset.toLowerCase()];
       const url = `https://api.coingecko.com/api/v3/coins/${id}`
       const data = await axios.get(url);
