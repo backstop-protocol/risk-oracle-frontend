@@ -35,6 +35,7 @@ export function encodeLiquidityKey(collateralAsset, debtAsset, source, slippage,
 }
 
 export function findCLFFromParameters(ltv, liquidationBonus, liquidity, borrowCap, volatility) {
+    ltv = Number(ltv) / 100;
     // console.log(`findCLFFromParameters: liquidity: ${liquidity}, borrow cap ${borrowCap}, volatility: ${volatility}, liquidiation bonus ${liquidationBonus}, ltv: ${ltv}`)
     const sqrtResult = Math.sqrt(liquidity/borrowCap);
     const sqrtBySigma = sqrtResult / volatility;
@@ -50,8 +51,16 @@ export function findLTVFromParameters(liquidity, borrowCap, volatility, liquidat
     const sigmaOverSqrRoot = volatility / sqrRoot;
     const clfMinusSigmaOverSqrRoot = (-1 * CLF) * sigmaOverSqrRoot;
     const exponential = Math.exp(clfMinusSigmaOverSqrRoot);
-    const ltv = exponential - liquidationBonus;
-    return ltv;
+    let ltv = exponential - liquidationBonus;
+
+    if(ltv < 0) {
+        ltv = 0;
+    }
+    if(ltv > 100) {
+        ltv = 100;
+    }
+
+    return roundTo(ltv * 100, 1);
 }
 
 /**

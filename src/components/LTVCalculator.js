@@ -158,7 +158,7 @@ const LTVCalculator = observer(props => {
                 </div>
                 <div className="ltv-asset" title="Loan To Value ratio.">
                     <div className="ltv-title-div">
-                        <small>Recommended LTV</small>
+                        <small>Recommended LTV (%)</small>
                     </div>
                     <div className="ltv-value-div">
                     <input className="ltv-select" value={recommendedLTV} onChange={(event) => { handleCLFandLTVChanges('ltv', event.target.value)}} />

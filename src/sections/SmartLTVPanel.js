@@ -65,7 +65,7 @@ const LTVSection = observer(props => {
         if(WhatAmIComputing === 'ltv' && selectedQuote) {
             const borrowInKind = borrowCap * 1e6 / basePrice;
             const ltv = findLTVFromParameters(liquidity, borrowInKind, volatility, slippage / 100, CLF);
-            setRecommendedLTV(ltv.toFixed(2));
+            setRecommendedLTV(ltv);
         }
 
         if(WhatAmIComputing === 'clf' && selectedQuote){
