@@ -142,7 +142,7 @@ const LTVCalculator = observer(props => {
                 </div>
                 <div className="ltv-asset" title="The borrow cap of the debt asset in USD value.">
                     <div className="ltv-title-div">
-                        <small><em>&#100;</em><br />borrow cap (M$)</small>
+                        <small><em>&#100;</em><br />borrow cap ($M)</small>
                     </div>
                     <div className="ltv-value-div">
                     <input className="ltv-select" value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} />
