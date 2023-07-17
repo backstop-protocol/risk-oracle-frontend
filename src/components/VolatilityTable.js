@@ -70,7 +70,7 @@ const VolatilityTable = observer(props => {
     }
   }
   return (
-    <Paper style={{ marginTop: "2%" }} className="box">
+    <Paper style={{ marginTop: "4%" }} className="box">
       <table style={{marginBottom :0}}>
         <thead>
           <tr>
