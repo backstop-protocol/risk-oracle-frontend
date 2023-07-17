@@ -1,5 +1,7 @@
 import NavigationIcon from '@mui/icons-material/Navigation';
-import { Fab } from '@mui/material';
+import { CircularProgress, Fab, LinearProgress } from '@mui/material';
+import { observer } from 'mobx-react';
+import mainStore from '../stores/main.store';
 
 const styles = {
   flex: {
@@ -17,7 +19,8 @@ const styles = {
   }
 }
 
-const First = props => {
+const First = observer(props => {
+  const loading = mainStore.loading;
   const {darkMode} = window
   function goTo(e, id){
     let element = document.getElementById(id);
@@ -40,12 +43,16 @@ const First = props => {
           <img alt="pythia-code-example" src={darkMode ? 'images/pythia-code-dark.png' : 'images/pythia-code.png'}/>
         </div>
       </div>
+      {loading ? 
+      <LinearProgress sx={{position:"absolute", marginLeft:"auto", minWidth:"100px", maxWidth:"100", marginRight:"auto", left:"0", right:"0", bottom:"0", zIndex:"10"}}></LinearProgress>
+      : 
       <Fab size='medium' sx={{position:"absolute", marginLeft:"auto", minWidth:"200px", maxWidth:"250px", marginRight:"auto", left:"0", right:"0", bottom:"0", zIndex:"10", color:"secondary.main"}} variant="extended" onClick={(e)=>{goTo(e,'mainSection')}}>
         <NavigationIcon sx={{ mr: 1, transform:"rotate(180deg)", color:"secondary.main" }} />
         Try it!
       </Fab>
+      }
     </section>
   </div>
-}
+})
 
 export default First
