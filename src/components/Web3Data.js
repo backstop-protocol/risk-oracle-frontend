@@ -39,5 +39,4 @@ const Web3Data = observer(props => {
     )
 })
 
-// className="web3data" style={{ display: 'flex', justifyContent: 'space-between', alignItems: "start", margin: "0 !important" }}
 export default Web3Data
