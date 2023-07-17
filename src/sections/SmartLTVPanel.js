@@ -46,9 +46,6 @@ const LTVSection = observer(props => {
 
     useEffect(() => {
         setSelectedQuote(quotes[0]);
-        for (const quote of quotes) {
-            mainStore.updateDebtAssetPrices(quote);
-        }
     }, [quotes]);
     
     useEffect(() => {
@@ -59,35 +56,18 @@ const LTVSection = observer(props => {
 
     //computing recommended LTV
     useEffect(() => {
-        if(WhatAmIComputing === 'ltv' && selectedQuote){
-        if(debtAssetPrices[selectedQuote]){
+        if(WhatAmIComputing === 'ltv' && selectedQuote) {
             const borrowInKind = borrowCap * 1e6 / basePrice;
             const ltv = findLTVFromParameters(liquidity, borrowInKind, volatility, slippage / 100, CLF);
             setRecommendedLTV(ltv.toFixed(2));
         }
-        else{
-            mainStore.updateDebtAssetPrices(selectedQuote).then(()=>{
-            const borrowInKind = borrowCap * 1e6 / basePrice;
-            const ltv = findLTVFromParameters(liquidity, borrowInKind, volatility, slippage / 100, CLF);
-            setRecommendedLTV(ltv.toFixed(2));
-            })
+
+        if(WhatAmIComputing === 'clf' && selectedQuote){
+                const borrowInKind = borrowCap * 1e6 / basePrice;
+                const clf = findCLFFromParameters(recommendedLTV, slippage / 100, liquidity, borrowInKind, volatility);
+                setCLF(clf.toFixed(2));
+                setWhatAmIComputing('ltv');
         }
-    }
-    if(WhatAmIComputing === 'clf' && selectedQuote){
-        if(debtAssetPrices[selectedQuote]){
-            const borrowInKind = borrowCap * 1e6 / basePrice;
-            const clf = findCLFFromParameters(recommendedLTV, slippage / 100, liquidity, borrowInKind, volatility);
-            setCLF(clf.toFixed(2));
-            setWhatAmIComputing('ltv');
-        }
-        else {
-           mainStore.updateDebtAssetPrices(selectedQuote).then(()=>{
-            const borrowInKind = borrowCap * 1e6 / basePrice;
-            const clf = findCLFFromParameters(recommendedLTV, slippage / 100, liquidity, borrowInKind, volatility);
-            setCLF(clf.toFixed(2));
-            setWhatAmIComputing('ltv');
-        })
-        }}
     }, [basePrice, liquidity, slippage, volatility, borrowCap, CLF, debtAssetPrices, selectedQuote, WhatAmIComputing, recommendedLTV])
 
 

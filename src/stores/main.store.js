@@ -256,21 +256,6 @@ class MainStore {
     console.log('this.coingeckoPriceInfos', this.coingeckoPriceInfos);
   }
 
-  async updateDebtAssetPrices(asset) {
-    if(!this.debtAssetPrices[asset]){
-      console.log('updateDebtAssetPrices');
-      const id = coingeckoMap[asset.toLowerCase()];
-      const url = `https://api.coingecko.com/api/v3/coins/${id}`
-      const data = await axios.get(url);
-      const price = (data.data['market_data']['current_price']['usd']).toFixed(2);
-      this.debtAssetPrices[asset] = price;
-      this.coingeckoPriceInfos[asset] = {
-          price: data.data['market_data']['current_price']['usd'].toFixed(2),
-          change: data.data['market_data']['price_change_percentage_7d'].toFixed(2)
-      };
-    }
-  }
-
   search = (assetName) => {
     const searchQueryStringParam = this.getSearchQs()
     if (searchQueryStringParam !== assetName) {
