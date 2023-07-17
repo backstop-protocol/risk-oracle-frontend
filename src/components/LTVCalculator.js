@@ -101,7 +101,7 @@ const LTVCalculator = observer(props => {
     const basePrice = mainStore.basePrice;
 
     return (
-        <Paper className="ltv-container">
+        <Paper className="ltv-container" sx={{width:"100%"}}>
             <div className="ltv-table">
                 <div className="ltv-asset" title="The asset pair against which the data is being fetched.">
                     <div className="ltv-title-div">
