@@ -59,16 +59,16 @@ const InfoLine = observer(props => {
     <Box sx={{display: "flex", justifyContent:"space-between", flexWrap:"wrap", alignItems:"center"}}>
       <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
         <Box>
-        <Typography><b>{selectedBase.name}</b></Typography>
+        <div><b>{selectedBase.name}</b></div>
         </Box>
         <Box>
-          <Typography>Price: $<b>{priceInfo.lastPrice ? priceInfo.lastPrice : price}</b></Typography>
+          <div>Price: $<b>{priceInfo.lastPrice ? priceInfo.lastPrice : price}</b></div>
         </Box>
         <Box>
-          <Typography>24H price change: <b>{dayChange > 0 ? `+${dayChange}` : dayChange}%</b></Typography>
+          <div>24H price change: <b>{dayChange > 0 ? `+${dayChange}` : dayChange}%</b></div>
         </Box>
         <Box>
-          <Typography>7D Liquidity change: <b>{ liquidityRatio7D > 0 ? `+${liquidityRatio7D.toFixed(2)}` : liquidityRatio7D.toFixed(2)}%</b></Typography>
+          <div>7D Liquidity change: <b>{ liquidityRatio7D > 0 ? `+${liquidityRatio7D.toFixed(2)}` : liquidityRatio7D.toFixed(2)}%</b></div>
         </Box>
       </Stack>
     </Box>
