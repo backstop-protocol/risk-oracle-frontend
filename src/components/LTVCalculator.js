@@ -101,7 +101,7 @@ const LTVCalculator = observer(props => {
     const basePrice = mainStore.basePrice;
 
     return (
-        <Paper className="ltv-container">
+        <Paper className="ltv-container" sx={{width:"100%"}}>
             <div className="ltv-table">
                 <div className="ltv-asset" title="The asset pair against which the data is being fetched.">
                     <div className="ltv-title-div">
@@ -142,7 +142,7 @@ const LTVCalculator = observer(props => {
                 </div>
                 <div className="ltv-asset" title="The borrow cap of the debt asset in USD value.">
                     <div className="ltv-title-div">
-                        <small><em>&#100;</em><br />borrow cap (M$)</small>
+                        <small><em>&#100;</em><br />borrow cap ($M)</small>
                     </div>
                     <div className="ltv-value-div">
                     <input className="ltv-select" value={borrowCap} onChange={(event) => { setBorrowCap(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} />
@@ -153,7 +153,7 @@ const LTVCalculator = observer(props => {
                         <small>CLF</small>
                     </div>
                     <div className="ltv-value-div">
-                    <CLFInput handleCLFandLTVChanges={handleCLFandLTVChanges} CLF={CLF} />
+                    <input className="ltv-select" value={CLF} onChange={(event) => { handleCLFandLTVChanges('clf', event.target.value)}} />
                     </div>
                 </div>
                 <div className="ltv-asset" title="Loan To Value ratio.">

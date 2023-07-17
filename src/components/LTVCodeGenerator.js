@@ -1,4 +1,6 @@
 import { assets } from "../stores/config.store";
+import { relayerAddress } from "../config";
+import { pythiaAddress } from "../config";
 
 function updateCode(debtAsset='USDC', baseAsset="ETH", span=30, CLF=7, borrowCap=0.7, slippage=5){
     const base = baseAsset;
@@ -12,8 +14,8 @@ import "./KeyEncoder.sol";
 import "./RiskyMath.sol";
 
 contract SmartLTV is RiskyMath, KeyEncoder {
-    Pythia immutable PYTHIA = Pythia(0x5FbDB2315678afecb367f032d93F642f64180aa3);
-    address immutable TRUSTED_RELAYER = address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8);
+    Pythia immutable PYTHIA = Pythia(${pythiaAddress});
+    address immutable TRUSTED_RELAYER = address(${relayerAddress});
 
     // fixed parameters, set according to risk preference
     uint constant CLF = ${CLF}e15;

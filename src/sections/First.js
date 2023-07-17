@@ -25,10 +25,10 @@ const First = props => {
   return <div className="container-fluid" style={{marginTop: '102px'}}>
     <section  style={styles.flex}>
       <div style={styles.flexItem}>
-        <div className='title'>Asset Tracker for On-Chain Liquidity and Volatility </div>
-        <div className='subtitle'>The Risk Oracle provides an on-chain feed of liquidity and volatility for specific assets.</div>
+        <div className='title'>Removing the Human Factor from DeFi Risk Management</div>
+        <div className='subtitle'>Risk Oracle is an automated, decentralized, transparent, and self-executing DeFi risk engine.</div>
         <p>
-          Devs can add these feeds into their smart contracts to enable a new layer of transparency and security to their dapps.
+        The Risk Oracle provides on-chain risk parameter feeds that smart contracts can use to automate their economic risk management processes.
         </p>
         <div className="button-container">
           <a href="https://docs.bprotocol.org" role="button" >Read Docs</a>

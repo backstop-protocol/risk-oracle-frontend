@@ -20,7 +20,6 @@ function row(rowData, selectedBaseSymbol) {
     <td>{symbol}</td>
     <td>{largeNumberFormatter(data.average.toFixed(2))} {selectedBaseSymbol}
     <br/><small>${largeNumberFormatter(data.average*mainStore.basePrice)}</small></td>
-    <td>{(data.parkinsonVolatility * 100).toFixed(2)}%</td>
   </tr>
 }
 
@@ -36,7 +35,6 @@ const AvgTable = observer(props => {
           <tr>
             <th scope="col">AVG {selectedBaseSymbol} {timeMap[span]}</th>
             <th scope="col">Liquidity</th>
-            <th scope="col">Volatility</th>
           </tr>
         </thead>
         <tbody>
