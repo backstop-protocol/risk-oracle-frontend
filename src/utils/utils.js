@@ -51,7 +51,15 @@ export function findLTVFromParameters(liquidity, borrowCap, volatility, liquidat
     const sigmaOverSqrRoot = volatility / sqrRoot;
     const clfMinusSigmaOverSqrRoot = (-1 * CLF) * sigmaOverSqrRoot;
     const exponential = Math.exp(clfMinusSigmaOverSqrRoot);
-    const ltv = exponential - liquidationBonus;
+    let ltv = exponential - liquidationBonus;
+
+    if(ltv < 0) {
+        ltv = 0;
+    }
+    if(ltv > 100) {
+        ltv = 100;
+    }
+
     return roundTo(ltv * 100, 1);
 }
 
