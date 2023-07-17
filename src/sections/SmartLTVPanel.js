@@ -8,7 +8,7 @@ import Web3Data from "../components/Web3Data";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { updateCode } from "../components/LTVCodeGenerator";
-import { findCLFFromParameters, findLTVFromParameters } from "../utils/utils";
+import { findCLFFromParameters, findLTVFromParameters, roundTo } from "../utils/utils";
 import LTVDisclaimer from "../components/LTVDisclaimer";
 
 const LTVSection = observer(props => {
@@ -16,7 +16,6 @@ const LTVSection = observer(props => {
     const averages = mainStore.averages;
     const selectedBaseName = mainStore.selectedAsset.name;
     const debtAssetPrices = mainStore.debtAssetPrices;
-    console.log(selectedBaseName);
     const basePrice = mainStore.coingeckoPriceInfos[selectedBaseName].price;
     //ltv variables
     const [selectedQuote, setSelectedQuote] = useState(quotes[0]);
@@ -24,7 +23,10 @@ const LTVSection = observer(props => {
     const liquidity = averages[selectedQuote] ? averages[selectedQuote]['average'] : 0;
     const volatility = averages[selectedQuote] ? averages[selectedQuote]['parkinsonVolatility'] : 0;
     const slippage = mainStore.selectedSlippage;
-    const [borrowCap, setBorrowCap] = useState(0.7);
+    const borrowCapInUsd = roundTo(liquidity * basePrice / 1e6, 2);
+    console.log('test')
+
+    const [borrowCap, setBorrowCap] = useState(borrowCapInUsd);
     const [CLF, setCLF] = useState(7);
     const [recommendedLTV, setRecommendedLTV] = useState(0)
     const [WhatAmIComputing, setWhatAmIComputing] = useState('ltv');
@@ -43,6 +45,10 @@ const LTVSection = observer(props => {
         }
 
     }
+
+    useEffect(() => {
+        setBorrowCap(borrowCapInUsd);
+    }, [selectedBaseName, borrowCapInUsd]);
 
     useEffect(() => {
         setSelectedQuote(quotes[0]);
