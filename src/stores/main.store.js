@@ -251,6 +251,15 @@ class MainStore {
         change: result.usd_24h_change.toFixed(2)
       };
       this.debtAssetPrices[asset] = result.usd;
+
+      if(asset === 'ETH') {
+        // also add for WETH
+        this.coingeckoPriceInfos['WETH'] = {
+          price: result.usd,
+          change: result.usd_24h_change.toFixed(2)
+        };
+        this.debtAssetPrices['WETH'] = result.usd;
+      }
     }
 
     console.log('this.coingeckoPriceInfos', this.coingeckoPriceInfos);

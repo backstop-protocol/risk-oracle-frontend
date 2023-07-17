@@ -98,7 +98,7 @@ const LTVCalculator = observer(props => {
     const {quotes, selectedQuote, handleCLFandLTVChanges, setSelectedQuote, span, liquidity, volatility, slippage, borrowCap, setBorrowCap, CLF, recommendedLTV } = props;
     const slippageOptions = [1, 5, 10, 15, 20];
     const selectedBase = mainStore.selectedBaseSymbol;
-    const basePrice = mainStore.basePrice;
+    const basePrice = mainStore.coingeckoPriceInfos[selectedBase].price;
 
     return (
         <Paper className="ltv-container" sx={{width:"100%"}}>
