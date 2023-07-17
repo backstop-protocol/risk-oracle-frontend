@@ -259,6 +259,15 @@ class MainStore {
         };
         this.debtAssetPrices['WETH'] = result.usd;
       }
+
+      if(asset === 'SUSD') {
+        // also add for WETH
+        this.coingeckoPriceInfos['sUSD'] = {
+          price: result.usd,
+          change: result.usd_24h_change.toFixed(2)
+        };
+        this.debtAssetPrices['sUSD'] = result.usd;
+      }
     }
 
     console.log('this.coingeckoPriceInfos', this.coingeckoPriceInfos);
