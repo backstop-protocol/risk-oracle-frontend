@@ -46,7 +46,7 @@ const First = observer(props => {
       {loading ? 
       <LinearProgress sx={{position:"absolute", marginLeft:"auto", minWidth:"100px", maxWidth:"100", marginRight:"auto", left:"0", right:"0", bottom:"0", zIndex:"10"}}></LinearProgress>
       : 
-      <Fab size='medium' sx={{position:"absolute", marginLeft:"auto", minWidth:"200px", maxWidth:"250px", marginRight:"auto", left:"0", right:"0", bottom:"0", zIndex:"10", color:"secondary.main"}} variant="extended" onClick={(e)=>{goTo(e,'mainSection')}}>
+      <Fab size='medium' sx={{position:"absolute", marginLeft:"auto", minWidth:"200px", maxWidth:"250px", marginRight:"auto", left:"0", right:"0", bottom:"10px", zIndex:"10", color:"secondary.main"}} variant="extended" onClick={(e)=>{goTo(e,'mainSection')}}>
         <NavigationIcon sx={{ mr: 1, transform:"rotate(180deg)", color:"secondary.main" }} />
         Try it!
       </Fab>
