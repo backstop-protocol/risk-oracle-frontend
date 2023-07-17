@@ -85,11 +85,12 @@ export const coingeckoMap = {
     uni: 'uniswap',
     dai: 'dai',
     eth: 'ethereum',
-    weth: 'weth'
+    weth: 'weth',
+    usdt: 'tether'
 }
 export function isDexAvailableForBase(dexName, selectedBaseName) {
     if(mainStore.graphData[dexName]){
-    const availableBases = mainStore.graphData[dexName]['1'].map(_ => _.base);
+    const availableBases = mainStore.graphData[dexName]['7'].map(_ => _.base);
     return availableBases.includes(selectedBaseName);}
     else{return false}
 }

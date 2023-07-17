@@ -12,7 +12,10 @@ import { updateCode } from "../components/LTVCodeGenerator";
 const defaultAsset = "ETH"
 const apiUrl = "https://api.dex-history.la-tribu.xyz/api";
 const urlParams = new URLSearchParams(window.location.search);
-const USE_PARKINSON = urlParams.get('parkinson') && urlParams.get('parkinson') === 'true';
+let USE_PARKINSON = true; 
+if(urlParams.get('parkinson') && urlParams.get('parkinson') === 'false') {
+  USE_PARKINSON = false;
+}
 
 class MainStore {
   constructor() {
@@ -37,7 +40,7 @@ class MainStore {
     this.graphData = null;
     this.loading = true;
     this.timestamps = {};
-    this.spans = [1, 7, 30, 180, 365];
+    this.spans = [7, 30, 180, 365];
     this.platforms = ['uniswapv2', 'curve', 'uniswapv3'];
     this.quotes = ['USDC', 'WBTC', 'WETH']
     this.ltvQuotes = []
@@ -52,6 +55,7 @@ class MainStore {
     this.basePrice = 0;
     this.loading = true;
     this.defaultCode = updateCode();
+    this.coingeckoPriceInfos = {};
     const urls = [];
     const averageUrls = [];
     for (let i = 0; i < this.platforms.length; i++) {
@@ -228,12 +232,16 @@ class MainStore {
 
   async updateDebtAssetPrices(asset) {
     if(!this.debtAssetPrices[asset]){
-    const id = coingeckoMap[asset.toLowerCase()];
-    const url = `https://api.coingecko.com/api/v3/coins/${id}`
-    const data = await axios.get(url);
-    const price = (data.data['market_data']['current_price']['usd']).toFixed(2);
-    this.debtAssetPrices[asset] = price;
-  }
+      const id = coingeckoMap[asset.toLowerCase()];
+      const url = `https://api.coingecko.com/api/v3/coins/${id}`
+      const data = await axios.get(url);
+      const price = (data.data['market_data']['current_price']['usd']).toFixed(2);
+      this.debtAssetPrices[asset] = price;
+      this.coingeckoPriceInfos[asset] = {
+          price: data.data['market_data']['current_price']['usd'].toFixed(2),
+          change: data.data['market_data']['price_change_percentage_7d'].toFixed(2)
+      };
+    }
   }
 
   search = (assetName) => {
@@ -263,7 +271,7 @@ class MainStore {
     const available = [];
     for (const platform of this.platforms) {
       if (this.graphData[platform]) {
-        const availableBases = this.graphData[platform]['1'].map(_ => _.base);
+        const availableBases = this.graphData[platform]['7'].map(_ => _.base);
         if (availableBases.includes(this.selectedBaseSymbol)) {
           available.push(platform);
         };
@@ -289,7 +297,7 @@ class MainStore {
     const quotesHolder = [];
     const newQuotes = [];
     for (const dex of this.selectedDexes) {
-      const dataForDex = this.graphData[dex][1];
+      const dataForDex = this.graphData[dex][7];
       const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === this.selectedBaseSymbol.toLowerCase());
       for (const slippageData of dataForDexForBase) {
         if (!quotesHolder.includes(slippageData.quote)) {
@@ -328,7 +336,7 @@ class MainStore {
     this.selectedQuotes = [];
     const quotesHolder = [];
     for (const dex of this.selectedDexes) {
-      const dataForDex = this.graphData[dex][1];
+      const dataForDex = this.graphData[dex][7];
       const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === this.selectedBaseSymbol.toLowerCase());
       for (const slippageData of dataForDexForBase) {
         if (!quotesHolder.includes(slippageData.quote)) {
