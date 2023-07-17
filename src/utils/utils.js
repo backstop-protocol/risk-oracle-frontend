@@ -56,8 +56,8 @@ export function findLTVFromParameters(liquidity, borrowCap, volatility, liquidat
     if(ltv < 0) {
         ltv = 0;
     }
-    if(ltv > 100) {
-        ltv = 100;
+    if(ltv > 1) {
+        ltv = 1;
     }
 
     return roundTo(ltv * 100, 1);
