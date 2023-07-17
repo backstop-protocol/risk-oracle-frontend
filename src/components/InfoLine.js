@@ -7,11 +7,18 @@ import mainStore from '../stores/main.store';
 import { observer } from "mobx-react";
 
 async function getPrice(base, setPrice, setDayChange) {
-  const id = coingeckoMap[base.toLowerCase()];
-  const url = `https://api.coingecko.com/api/v3/coins/${id}`
-  const data = await axios.get(url);
-  setPrice((data.data['market_data']['current_price']['usd']).toFixed(2));
-  setDayChange((data.data['market_data']['price_change_percentage_7d']).toFixed(2));
+  if(!mainStore.coingeckoPriceInfos[base]) {
+    const id = coingeckoMap[base.toLowerCase()];
+    const url = `https://api.coingecko.com/api/v3/coins/${id}`
+    const data = await axios.get(url);
+    mainStore.coingeckoPriceInfos[base] = {
+      price: data.data['market_data']['current_price']['usd'].toFixed(2),
+      change: data.data['market_data']['price_change_percentage_7d'].toFixed(2)
+    };
+  }
+  
+  setPrice(mainStore.coingeckoPriceInfos[base].price);
+  setDayChange(mainStore.coingeckoPriceInfos[base].change);
 }
 
 const InfoLine = observer(props => {
@@ -45,17 +52,15 @@ const InfoLine = observer(props => {
       priceInfo['endLiquidity'] = dataForBase[0].volumeForSlippage.slice(-1)[0].aggregated[5].toFixed(2);
     }
   }
+
   useEffect(() => {
-    if (priceInfo.lastPrice === undefined && mainStore.debtAssetPrices[selectedBaseSymbol]) {
+    if(selectedBaseSymbol) {
       getPrice(selectedBaseSymbol, setPrice, setDayChange);
     }
-    else{
-      setPrice(undefined);
-      setDayChange(undefined);
-    }
-  }, [selectedBaseSymbol, priceInfo.lastPrice]);
+  }, [selectedBaseSymbol]);
 
-  mainStore.basePrice = priceInfo.lastPrice ? priceInfo.lastPrice : price;
+  mainStore.basePrice = price;
+  const liquidityRatio7D = (Number(priceInfo.endLiquidity) / Number(priceInfo.startLiquidity) - 1) * 100;
 
   return (
     <Box sx={{display: "flex", justifyContent:"space-between", flexWrap:"wrap", alignItems:"center"}}>
@@ -67,10 +72,10 @@ const InfoLine = observer(props => {
           <Typography>Price: $<b>{priceInfo.lastPrice ? priceInfo.lastPrice : price}</b></Typography>
         </Box>
         <Box>
-          <Typography>7D price change: <b>{priceInfo.lastPrice ? (((Number(priceInfo.lastPrice) / Number(priceInfo.startPrice)) - 1) * 100).toFixed(2) : dayChange}%</b></Typography>
+          <Typography>7D price change: <b>{dayChange > 0 ? `+${dayChange}` : dayChange}%</b></Typography>
         </Box>
         <Box>
-          <Typography>7D Liquidity change: <b>{((Number(priceInfo.endLiquidity) / Number(priceInfo.startLiquidity) - 1) * 100).toFixed(2)}%</b></Typography>
+          <Typography>7D Liquidity change: <b>{ liquidityRatio7D > 0 ? `+${liquidityRatio7D.toFixed(2)}` : liquidityRatio7D.toFixed(2)}%</b></Typography>
         </Box>
       </Stack>
     </Box>
