@@ -52,7 +52,6 @@ class MainStore {
     this.averages = {};
     this.darkTheme = true;
     this.debtAssetPrices = {};
-    this.basePrice = 0;
     this.loading = true;
     this.defaultCode = updateCode();
     this.coingeckoPriceInfos = {};

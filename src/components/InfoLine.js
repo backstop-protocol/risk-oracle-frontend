@@ -53,7 +53,6 @@ const InfoLine = observer(props => {
     }
   }, [selectedBaseSymbol]);
 
-  mainStore.basePrice = price;
   const liquidityRatio7D = (Number(priceInfo.endLiquidity) / Number(priceInfo.startLiquidity) - 1) * 100;
 
   return (
