@@ -3,7 +3,7 @@ import { Box, Paper, Typography } from "@mui/material";
 import ContractAddress from "./ContractAddress";
 import InfoLine from "./InfoLine";
 import LastUpdate from "./LastUpdate";
-import { largeNumberFormatter } from "../utils/utils";
+import { largeNumberFormatter, roundTo } from "../utils/utils";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { pythiaAddress } from "../config";
@@ -26,6 +26,14 @@ const Web3Data = observer(props => {
                     
                     <Typography>
                             {selectedBase}: {largeNumberFormatter(web3Data[selectedBase]['value'])} (${largeNumberFormatter(web3Data[selectedBase]['value'] * mainStore.basePrice)})
+                    </Typography>
+                    
+                    <Typography>
+                    30 days uniV3 volatility vs USDC
+                    </Typography>
+                    
+                    <Typography>
+                            {selectedBase}: {`${roundTo(web3Data[selectedBase]['volatilityValue'] * 100, 2)}%`}
                     </Typography>
                         
                 </Box>
