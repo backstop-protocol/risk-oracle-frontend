@@ -9,7 +9,7 @@ import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { updateCode } from "../components/LTVCodeGenerator";
 import { findCLFFromParameters, findLTVFromParameters } from "../utils/utils";
-import Disclaimer from "../components/Disclaimer";
+import LTVDisclaimer from "../components/LTVDisclaimer";
 
 const LTVSection = observer(props => {
     const quotes = mainStore.ltvQuotes;
@@ -111,7 +111,7 @@ const LTVSection = observer(props => {
                 recommendedLTV={recommendedLTV}
                 setRecommendedLTV={setRecommendedLTV} />
             <LTVCodeSection defaultCode={defaultCode} updatedCode={updatedCode} />
-            <Disclaimer />
+            <LTVDisclaimer />
         </Box>
     )
 })
