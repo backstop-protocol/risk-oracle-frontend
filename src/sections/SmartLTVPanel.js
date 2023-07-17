@@ -28,10 +28,10 @@ const LTVSection = observer(props => {
 
     const [borrowCap, setBorrowCap] = useState(borrowCapInUsd);
     const [CLF, setCLF] = useState(7);
-    const [recommendedLTV, setRecommendedLTV] = useState(0)
+    const [recommendedLTV, setRecommendedLTV] = useState(50)
     const [WhatAmIComputing, setWhatAmIComputing] = useState('ltv');
     // code editor variables
-    const defaultCode = mainStore.defaultCode;
+    const defaultCode  = mainStore.defaultCode;
     const [updatedCode, setUpdatedCode] = useState(defaultCode);
 
     function handleCLFandLTVChanges(type, value){
@@ -49,6 +49,13 @@ const LTVSection = observer(props => {
     useEffect(() => {
         setBorrowCap(borrowCapInUsd);
     }, [selectedBaseName, borrowCapInUsd]);
+
+    
+    useEffect(() => {
+        const borrowInKind = borrowCap * 1e6 / basePrice;
+        const clf = findCLFFromParameters(50, slippage / 100, liquidity, borrowInKind, volatility);
+        setCLF(clf.toFixed(2));
+    }, [selectedBaseName, basePrice, borrowCap, liquidity, slippage, volatility]);
 
     useEffect(() => {
         setSelectedQuote(quotes[0]);
