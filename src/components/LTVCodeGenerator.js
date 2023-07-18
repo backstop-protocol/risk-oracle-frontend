@@ -2,7 +2,7 @@ import { assets } from "../stores/config.store";
 import { relayerAddress } from "../config";
 import { pythiaAddress } from "../config";
 
-function updateCode(debtAsset='USDC', baseAsset="ETH", span=30, CLF=7, borrowCap=0.7, slippage=5){
+function updateCode(debtAsset='USDC', baseAsset="ETH", span=30, CLF=7, borrowCap=0.7, slippage=5, debtTokenDecimals=18){
     const base = baseAsset;
     let debt = undefined;
     debtAsset === "WETH" ? debt = "ETH" : debt = debtAsset;
@@ -26,7 +26,7 @@ contract SmartLTV is RiskyMath, KeyEncoder {
     // TODO - read from actual lending market
     address constant COLLATERAL_ASSET = address(${assets[base].address});
     address constant DEBT_ASSET = address(${assets[debt].address});
-    uint constant DEBT_CELING = ${(borrowCap*1e6).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "_")} * 1e18;
+    uint constant DEBT_CEILING = ${(borrowCap*1e6).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "_")} * 1e${debtTokenDecimals};
     uint constant LIQUIDATION_INCENTIVE = ${slippage}e16;
 
     function getVolatility(address collateralAsset, address debtAsset) public view returns(uint value) {
@@ -51,7 +51,7 @@ contract SmartLTV is RiskyMath, KeyEncoder {
         uint sigma = getVolatility(collateralAsset, debtAsset);
         uint beta = LIQUIDATION_INCENTIVE;
         uint l = getLiquidity(collateralAsset, debtAsset, beta);
-        uint d = DEBT_CELING;
+        uint d = DEBT_CEILING;
 
         // LTV  = e ^ (-c * sigma / sqrt(l/d)) - beta
         uint cTimesSigma = CLF * sigma / 1e18;
@@ -89,7 +89,7 @@ contract SmartLTV is RiskyMath, KeyEncoder {
     // TODO - read from actual lending market
     address constant COLLATERAL_ASSET = address(0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2);
     address constant DEBT_ASSET = address(0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48);
-    uint constant DEBT_CELING = 700_000 * 1e18;
+    uint constant DEBT_CEILING = 700_000 * 1e18;
     uint constant LIQUIDATION_INCENTIVE = 5e16;
 
     function getVolatility(address collateralAsset, address debtAsset) public view returns(uint value) {
@@ -114,7 +114,7 @@ contract SmartLTV is RiskyMath, KeyEncoder {
         uint sigma = getVolatility(collateralAsset, debtAsset);
         uint beta = LIQUIDATION_INCENTIVE;
         uint l = getLiquidity(collateralAsset, debtAsset, beta);
-        uint d = DEBT_CELING;
+        uint d = DEBT_CEILING;
 
         // LTV  = e ^ (-c * sigma / sqrt(l/d)) - beta
         uint cTimesSigma = CLF * sigma / 1e18;

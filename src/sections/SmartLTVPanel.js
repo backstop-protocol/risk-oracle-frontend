@@ -10,6 +10,7 @@ import { observer } from "mobx-react";
 import { updateCode } from "../components/LTVCodeGenerator";
 import { findCLFFromParameters, findLTVFromParameters, roundTo } from "../utils/utils";
 import LTVDisclaimer from "../components/LTVDisclaimer";
+import { assets } from "../stores/config.store";
 
 const LTVSection = observer(props => {
     const quotes = mainStore.ltvQuotes;
@@ -62,7 +63,7 @@ const LTVSection = observer(props => {
     }, [quotes]);
     
     useEffect(() => {
-        const up = updateCode(selectedQuote, selectedBaseName, span, CLF, borrowCap, slippage);
+        const up = updateCode(selectedQuote, selectedBaseName, span, CLF, borrowCap, slippage, assets[selectedQuote === 'WETH' ? 'ETH' : selectedQuote].decimals);
         setUpdatedCode(up)
     }, [CLF, borrowCap, selectedBaseName, selectedQuote, slippage, span])
 
