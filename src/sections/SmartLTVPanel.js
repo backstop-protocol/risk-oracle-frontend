@@ -11,6 +11,7 @@ import { updateCode } from "../components/LTVCodeGenerator";
 import { findCLFFromParameters, findLTVFromParameters, roundTo } from "../utils/utils";
 import LTVDisclaimer from "../components/LTVDisclaimer";
 import { assets } from "../stores/config.store";
+import BigNumber from "bignumber.js";
 
 const LTVSection = observer(props => {
     const quotes = mainStore.ltvQuotes;
@@ -61,9 +62,11 @@ const LTVSection = observer(props => {
     }, [quotes]);
     
     useEffect(() => {
-        const up = updateCode(selectedQuote, selectedBaseName, span, CLF, borrowCap, slippage, assets[selectedQuote === 'WETH' ? 'ETH' : selectedQuote].decimals);
+        const debtCeiling = new BigNumber(borrowCap / basePrice).times(new BigNumber(10).pow(assets[selectedBaseName].decimals));
+        console.log(debtCeiling.toFixed(0));
+        const up = updateCode(selectedQuote, selectedBaseName, span, CLF, debtCeiling.toFixed(0), slippage);
         setUpdatedCode(up)
-    }, [CLF, borrowCap, selectedBaseName, selectedQuote, slippage, span])
+    }, [CLF, borrowCap, selectedBaseName, selectedQuote, slippage, span, basePrice])
 
 
     //computing recommended LTV

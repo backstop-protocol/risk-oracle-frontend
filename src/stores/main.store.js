@@ -290,7 +290,7 @@ class MainStore {
     this.initialQuotes();
     this.allDexes = true;
     this.searchFieldValue = ""
-    this.defaultCode = updateCode(this.quotes[0], this.selectedAsset.name, 30, 7, 0.7, 5, 18);
+    this.defaultCode = updateCode(this.quotes[0], this.selectedAsset.name, 30, 7, 1e6, 5);
     this.updateAverages();
     runInAction(() => {
       this.searchCounter++

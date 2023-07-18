@@ -2,7 +2,7 @@ import { assets } from "../stores/config.store";
 import { relayerAddress } from "../config";
 import { pythiaAddress } from "../config";
 
-function updateCode(debtAsset='USDC', baseAsset="ETH", span=30, CLF=7, borrowCap=0.7, slippage=5, debtTokenDecimals=18){
+function updateCode(debtAsset='USDC', baseAsset="ETH", span=30, CLF=7, borrowCap=1000000, slippage=5){
     const base = baseAsset;
     let debt = undefined;
     debtAsset === "WETH" ? debt = "ETH" : debt = debtAsset;
@@ -26,7 +26,7 @@ contract SmartLTV is RiskyMath, KeyEncoder {
     // TODO - read from actual lending market
     address constant COLLATERAL_ASSET = address(${assets[base].address});
     address constant DEBT_ASSET = address(${assets[debt].address});
-    uint constant DEBT_CEILING = ${(borrowCap*1e6).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "_")} * 1e${debtTokenDecimals};
+    uint constant DEBT_CEILING = ${(borrowCap).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "_")};
     uint constant LIQUIDATION_INCENTIVE = ${slippage}e16;
 
     function getVolatility(address collateralAsset, address debtAsset) public view returns(uint value) {
