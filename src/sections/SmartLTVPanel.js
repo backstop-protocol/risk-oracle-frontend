@@ -25,8 +25,6 @@ const LTVSection = observer(props => {
     const volatility = averages[selectedQuote] ? averages[selectedQuote]['parkinsonVolatility'] : 0;
     const slippage = mainStore.selectedSlippage;
     const borrowCapInUsd = roundTo(liquidity * basePrice / 1e6, 2);
-    console.log('test')
-
     const [borrowCap, setBorrowCap] = useState(borrowCapInUsd);
     const [CLF, setCLF] = useState(7);
     const [recommendedLTV, setRecommendedLTV] = useState(50)
