@@ -87,7 +87,7 @@ const LTVSection = observer(props => {
 
 
     return (
-        <Box sx={{ display: "flex", minHeight:"100vh", width: "93vw", flexDirection: "column", alignItems: "center", scrollSnapAlign: "center", paddingTop: "8vh" }}>
+        <Box sx={{ display: "flex", minHeight:"100vh", height:"100%", width: "93vw", flexDirection: "column", alignItems: "center", scrollSnapAlign: "center", paddingTop: "8vh" }}>
             <Web3Data />
             <LTVTextSection />
             <LTVCalculator

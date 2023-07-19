@@ -6,6 +6,7 @@ import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { roundTo } from "../utils/utils";
 import symbols from "../config";
+import { Divider } from "@mui/material";
 
 const MainPanel = observer(props => {
   const slippage = mainStore.selectedSlippage;
@@ -72,6 +73,7 @@ const MainPanel = observer(props => {
   }
   return (
       <Box sx={{flex:"0 2 auto", marginTop:"5%", width:"100%", display:'flex', flexDirection:"column", justifyContent:"space-evenly", alignItems:"center"}}>
+  <Divider sx={{width:"100%", marginBottom:"5%"}} />
       <Box sx={{display:'flex', width:"100%", flexDirection:"row", justifyContent:"space-around", alignItems:"center", rowGap:"2%",flexWrap:"wrap"}}>
         <LiquidityChart availableQuotesForBase={availableQuotesForBase} selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading} displayData={displayData} dataStore={dataStore} />
         <AvgTable selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} slippage={slippage} dexes={dexes} averageData={averageData} />
