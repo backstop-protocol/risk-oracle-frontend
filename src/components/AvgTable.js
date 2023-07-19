@@ -14,7 +14,7 @@ const timeMap = {
 function row(rowData, selectedBaseSymbol) {
   const symbol = (Object.keys(rowData)[0])
   const data = rowData[symbol];
-  const price = mainStore.coingeckoPriceInfos[symbol.toUpperCase()].price;
+  const price = mainStore.coingeckoPriceInfos[selectedBaseSymbol].price;
   
 
   return <tr key={symbol}>
