@@ -161,7 +161,7 @@ const LTVCalculator = observer(props => {
                         <small>Recommended LTV (%)</small>
                     </div>
                     <div className="ltv-value-div">
-                    <input className="ltv-select" value={recommendedLTV} onChange={(event) => { handleCLFandLTVChanges('ltv', event.target.value)}} />
+                    <input className="ltv-select" type="number" max="100" min="0" value={recommendedLTV} onChange={(event) => { handleCLFandLTVChanges('ltv', event.target.value)}} />
                     </div>
                 </div>
             </div>
