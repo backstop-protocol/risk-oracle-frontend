@@ -62,7 +62,7 @@ const InfoLine = observer(props => {
         <div><b>{selectedBase.name}</b></div>
         </Box>
         <Box>
-          <div>Price: $<b>{priceInfo.lastPrice ? priceInfo.lastPrice : price}</b></div>
+          <div>Price: $<b>{price}</b></div>
         </Box>
         <Box>
           <div>24H price change: <b>{dayChange > 0 ? `+${dayChange}` : dayChange}%</b></div>
