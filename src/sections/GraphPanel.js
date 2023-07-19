@@ -59,7 +59,6 @@ const MainPanel = observer(props => {
     }
   }
 
-
   const { searchedAsset, selectedAsset, dataStore } = mainStore
 
   if (!selectedAsset && !searchedAsset) {
