@@ -1,5 +1,5 @@
 import NavigationIcon from '@mui/icons-material/Navigation';
-import { CircularProgress, Fab, LinearProgress } from '@mui/material';
+import { Fab, LinearProgress } from '@mui/material';
 import { observer } from 'mobx-react';
 import mainStore from '../stores/main.store';
 
@@ -25,7 +25,7 @@ const First = observer(props => {
   function goTo(e, id){
     let element = document.getElementById(id);
     element.scrollIntoView({behavior:'smooth'});}
-  return <div className="container-fluid" style={{marginTop: '102px'}}>
+  return <div className="container-fluid" style={{marginTop: '10vh', height:"100vh"}}>
     <section  style={styles.flex}>
       <div style={styles.flexItem}>
         <div className='title'>Removing the Human Factor from DeFi Risk Management</div>

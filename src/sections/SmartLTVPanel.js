@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 
 import { Box } from "@mui/material";
-import LTVCalculator from "../components/LTVCalculator";
-import LTVCodeSection from "../components/LTVCodeSection";
-import LTVTextSection from "../components/LTVTextSection";
-import Web3Data from "../components/Web3Data";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { updateCode } from "../components/LTVCodeGenerator";
@@ -12,6 +8,13 @@ import { findCLFFromParameters, findLTVFromParameters, roundTo } from "../utils/
 import LTVDisclaimer from "../components/LTVDisclaimer";
 import { assets } from "../stores/config.store";
 import BigNumber from "bignumber.js";
+import Web3Mobile from "../components/Web3Mobile";
+import Web3Data from "../components/Web3Data";
+import LTVCalculatorMobile from "../components/LTVCalculatorMobile";
+import LTVCalculator from "../components/LTVCalculator";
+import LTVTextSection from "../components/LTVTextSection";
+import LTVCodeSectionMobile from "../components/LTVCodeSectionMobile";
+import LTVCodeSection from "../components/LTVCodeSection";
 
 const LTVSection = observer(props => {
     const quotes = mainStore.ltvQuotes;
@@ -87,10 +90,33 @@ const LTVSection = observer(props => {
 
 
     return (
-        <Box sx={{ display: "flex", minHeight:"100vh", height:"100%", width: "93vw", flexDirection: "column", alignItems: "center", scrollSnapAlign: "center", paddingTop: "8vh" }}>
+        <Box sx={{ display: "flex", height:"100%", width: "93vw", flexDirection: "column", alignItems: "center", paddingTop: "8vh" }}>
+            {mainStore.mobile ?
+            <Web3Mobile />
+            :
             <Web3Data />
+        }
             <LTVTextSection />
-            <LTVCalculator
+            {mainStore.mobile ?
+            <LTVCalculatorMobile
+            selectedBaseSymbol={selectedBaseName}
+            debtAssetPrices = {debtAssetPrices}
+            quotes={quotes}
+            selectedQuote={selectedQuote}
+            setSelectedQuote={setSelectedQuote}
+            handleCLFandLTVChanges = {handleCLFandLTVChanges}
+            span={span}
+            liquidity={liquidity}
+            volatility={volatility}
+            slippage={slippage}
+            borrowCap={borrowCap}
+            setBorrowCap={setBorrowCap}
+            CLF={CLF}
+            setCLF={setCLF}
+            recommendedLTV={recommendedLTV}
+            setRecommendedLTV={setRecommendedLTV} />
+            :
+            <LTVCalculator 
                 selectedBaseSymbol={selectedBaseName}
                 debtAssetPrices = {debtAssetPrices}
                 quotes={quotes}
@@ -107,7 +133,13 @@ const LTVSection = observer(props => {
                 setCLF={setCLF}
                 recommendedLTV={recommendedLTV}
                 setRecommendedLTV={setRecommendedLTV} />
+        }
+            
+                {mainStore.mobile ?
+            <LTVCodeSectionMobile defaultCode={defaultCode} updatedCode={updatedCode} />
+            :
             <LTVCodeSection defaultCode={defaultCode} updatedCode={updatedCode} />
+        }
             <LTVDisclaimer />
         </Box>
     )

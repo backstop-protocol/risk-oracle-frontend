@@ -1,4 +1,4 @@
-import { Paper } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 
@@ -10,8 +10,8 @@ function row(rowData) {
     values.push([key, value]);
   }
   return <tr key={symbol}>
-    <th>{symbol}</th>
-    {values.map((_, index) => <td key={index}>{ isNaN(_[1]) ? 'unavailable' : `${((_[1] * 100).toFixed(2))}%`}</td>)}
+    <th><Typography variant="body2">{symbol}</Typography></th>
+    {values.map((_, index) => <td key={index}><Typography variant="body2">{ isNaN(_[1]) ? 'N/A' : `${((_[1] * 100).toFixed(2))}%`}</Typography></td>)}
   </tr>
 }
 const timeMap = {
@@ -70,12 +70,12 @@ const VolatilityTable = observer(props => {
     }
   }
   return (
-    <Paper style={{ marginTop: "4%" }} className="box">
+    <Paper style={{ marginTop: "4%", width:"95%"}} className="box">
       <table style={{marginBottom :0}}>
         <thead>
           <tr>
-            <th scope="col">Avg Volatility</th>
-            {spans.map((_, index) => <th key={index} scope="col">{timeMap[_]}</th>)}
+            <th scope="col"><Typography variant="body2">Avg Volatility</Typography></th>
+            {spans.map((_, index) => <th key={index} scope="col"><Typography variant="body2">{timeMap[_]}</Typography></th>)}
           </tr>
         </thead>
         <tbody>

@@ -1,4 +1,4 @@
-import { Paper } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import { largeNumberFormatter } from "../utils/utils";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
@@ -18,9 +18,9 @@ function row(rowData, selectedBaseSymbol) {
   
 
   return <tr key={symbol}>
-    <td>{symbol}</td>
-    <td>{largeNumberFormatter(data.average.toFixed(2))} {selectedBaseSymbol}
-    <br/><small>${largeNumberFormatter(data.average*price)}</small></td>
+    <td><Typography variant="body2">{symbol}</Typography></td>
+    <td><Typography variant="body2">{largeNumberFormatter(data.average.toFixed(2))} {selectedBaseSymbol}</Typography>
+    <Typography variant="body2">${largeNumberFormatter(data.average*price)}</Typography></td>
   </tr>
 }
 
@@ -34,8 +34,8 @@ const AvgTable = observer(props => {
       <table>
         <thead>
           <tr>
-            <th scope="col">AVG {selectedBaseSymbol} {timeMap[span]}</th>
-            <th scope="col">Liquidity</th>
+            <th scope="col"><Typography variant="body2">AVG {selectedBaseSymbol} {timeMap[span]}</Typography></th>
+            <th scope="col"><Typography variant="body2">Liquidity</Typography></th>
           </tr>
         </thead>
         <tbody>

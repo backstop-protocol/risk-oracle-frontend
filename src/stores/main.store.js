@@ -55,6 +55,7 @@ class MainStore {
     this.loading = true;
     this.defaultCode = updateCode();
     this.coingeckoPriceInfos = {};
+    this.mobile = false;
     const urls = [];
     const averageUrls = [];
     for (let i = 0; i < this.platforms.length; i++) {

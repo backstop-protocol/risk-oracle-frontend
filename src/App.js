@@ -1,7 +1,7 @@
 import '@picocss/pico';
 import './App.css';
 
-import { Box, Skeleton, ThemeProvider, createTheme, Typography, useMediaQuery } from '@mui/material';
+import { Box, Skeleton, ThemeProvider, createTheme, useMediaQuery } from '@mui/material';
 
 import First from './sections/First';
 import GraphPanel from './sections/GraphPanel';
@@ -15,11 +15,15 @@ import Footer from "./sections/Footer";
 import { observer } from 'mobx-react';
 
 const App = observer(() => {
+  const mobile = useMediaQuery('(max-width:900px)');
   useEffect(() => {
     // runs once after app is fully loaded
     const searchQs = mainStore.getSearchQs()
     if (searchQs) {
       mainStore.search(searchQs)
+    }
+    if(mobile){
+      mainStore.mobile = true;
     }
   }, [])
 
@@ -132,12 +136,9 @@ const App = observer(() => {
 
 
   const theme = mainStore.darkTheme ? createTheme(darkTheme) : createTheme(lightTheme);
-  const mobile = useMediaQuery('(max-width:900px)');
+
   return (
     <ThemeProvider theme={theme}>
-      {mobile ?
-      <Typography sx={{display:"flex", textAlign:"center", alignItems:"center", justifyContent:"center", width:"100vw", height:"100vh"}}>This website is not available on mobile.</Typography>
-       : 
       <div className="App">
         <Box id="heroZone" sx={{ scrollSnapAlign: "center" }}>
           <Header />
@@ -154,7 +155,7 @@ const App = observer(() => {
           </Box>
         </Box>
         }
-      </div>}
+      </div>
     </ThemeProvider>
   );
 })
