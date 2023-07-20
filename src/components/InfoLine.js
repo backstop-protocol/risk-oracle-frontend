@@ -1,3 +1,4 @@
+import { Box, Divider, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import axios from 'axios';
@@ -6,18 +7,25 @@ import mainStore from '../stores/main.store';
 import { observer } from "mobx-react";
 
 async function getPrice(base, setPrice, setDayChange) {
-  const id = coingeckoMap[base.toLowerCase()];
-  const url = `https://api.coingecko.com/api/v3/coins/${id}`
-  const data = await axios.get(url);
-  setPrice((data.data['market_data']['current_price']['usd']).toFixed(2));
-  setDayChange((data.data['market_data']['price_change_24h']).toFixed(2));
+  if(!mainStore.coingeckoPriceInfos[base]) {
+    return;
+  }
+  
+  setPrice(mainStore.coingeckoPriceInfos[base].price);
+  setDayChange(mainStore.coingeckoPriceInfos[base].change);
 }
 
 const InfoLine = observer(props => {
   const selectedBase = mainStore.selectedAsset;
   const selectedBaseSymbol = selectedBase.name === 'ETH' ? 'WETH' : selectedBase.name;
   const graphData = mainStore.graphData;
-  const dataForPriceComputation = graphData['uniswapv2'][1];
+  let selectedDex = 'uniswapv3';
+  if(!graphData['uniswapv3'] 
+      || !graphData['uniswapv3'][7] 
+      || !graphData['uniswapv3'][7].some(_ => _.base.toLowerCase() === selectedBaseSymbol.toLowerCase())) {
+    selectedDex = 'uniswapv2';
+  }
+  const dataForPriceComputation = graphData[selectedDex] ? graphData[selectedDex][7] : 0;
   const priceInfo = {};
   const [price, setPrice] = useState(0);
   const [dayChange, setDayChange] = useState(0);
@@ -28,49 +36,41 @@ const InfoLine = observer(props => {
       if (dataForBase[i].quote === 'USDC') {
         priceInfo['startPrice'] = dataForBase[i].startPrice.toFixed(2);
         priceInfo['lastPrice'] = dataForBase[i].endPrice.toFixed(2);
-        priceInfo['startLiquidity'] = dataForBase[i].volumeForSlippage[0][1].toFixed(2);
-        priceInfo['endLiquidity'] = dataForBase[i].volumeForSlippage.slice(-1)[0][1].toFixed(2);
+        priceInfo['startLiquidity'] = dataForBase[i].volumeForSlippage[0].aggregated[5].toFixed(2);
+        priceInfo['endLiquidity'] = dataForBase[i].volumeForSlippage.slice(-1)[0].aggregated[5].toFixed(2);
       }
     }
     if (Object.keys(priceInfo).length === 0) {
       const dataForBase = dataForPriceComputation.filter(_ => _.base.toLowerCase() === selectedBaseSymbol.toLowerCase());
-      priceInfo['startLiquidity'] = dataForBase[0].volumeForSlippage[0][1].toFixed(2);
-      priceInfo['endLiquidity'] = dataForBase[0].volumeForSlippage.slice(-1)[0][1].toFixed(2);
+      priceInfo['startLiquidity'] = dataForBase[0].volumeForSlippage[0].aggregated[5].toFixed(2);
+      priceInfo['endLiquidity'] = dataForBase[0].volumeForSlippage.slice(-1)[0].aggregated[5].toFixed(2);
     }
   }
+
   useEffect(() => {
-    if (priceInfo.lastPrice === undefined) {
+    if(selectedBaseSymbol) {
       getPrice(selectedBaseSymbol, setPrice, setDayChange);
     }
-    else{
-      setPrice(undefined);
-      setDayChange(undefined);
-    }
-  }, [selectedBaseSymbol, priceInfo.lastPrice]);
+  }, [selectedBaseSymbol]);
+
+  const liquidityRatio7D = (Number(priceInfo.endLiquidity) / Number(priceInfo.startLiquidity) - 1) * 100;
 
   return (
-    <div className="info-line">
-      <div className="info">
-        <span>
-          <strong>{selectedBase.name}</strong>
-        </span>
-        <small>
-          <span>
-            price: <strong>${priceInfo.lastPrice ? priceInfo.lastPrice : price}</strong>
-          </span>
-        </small>
-        <small>
-          <span>
-            24H price change: <strong>{priceInfo.lastPrice ? ((Number(priceInfo.lastPrice) - Number(priceInfo.startPrice)) / Number(priceInfo.startPrice) * 100).toFixed(2) : dayChange}%</strong>
-          </span>
-        </small>
-        <small>
-          <span>
-            24H Liquidity change: <strong>{((Number(priceInfo.endLiquidity) - Number(priceInfo.startLiquidity)) / Number(priceInfo.endLiquidity) * 100).toFixed(2)}%</strong>
-          </span>
-        </small>
-      </div>
-    </div>
+    <Box sx={{display: "flex", justifyContent:"space-between", flexWrap:"wrap", alignItems:"center"}}>
+      <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
+        <Box>
+        <div><b>{selectedBase.name}</b></div>
+        {mainStore.mobile ? <div>Price: $<b>{price}</b></div> : ""}
+        </Box>        
+        {mainStore.mobile ? "" : <Box><div>Price: $<b>{price}</b></div></Box>}
+        <Box>
+          <div>24H price change: <b>{dayChange > 0 ? `+${dayChange}` : dayChange}%</b></div>
+        </Box>
+        <Box>
+          <div>7D Liquidity change: <b>{ liquidityRatio7D > 0 ? `+${liquidityRatio7D.toFixed(2)}` : liquidityRatio7D.toFixed(2)}%</b></div>
+        </Box>
+      </Stack>
+    </Box>
   )
 })
 

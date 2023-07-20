@@ -1,10 +1,10 @@
 import { Box, Paper, Skeleton } from '@mui/material';
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-import GraphControls from './GraphControls';
 import { largeNumberFormatter } from '../utils/utils';
 import mainStore from '../stores/main.store';
 import { observer } from "mobx-react";
+import GraphControlsMobile from './GraphControlsMobile';
 
 const strokes = {
   USDC: '#0088FE',
@@ -42,13 +42,12 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 
 
-const LiquidityChart = observer(props => {
+const LiquidityChartMobile = observer(props => {
  const {quotes, displayData, selectedBaseSymbol} = props;
   return (
-    <Paper sx={{display:"flex", flex:"1 1 auto", flexDirection:"column", minWidth:"50%", maxWidth:"1400px", height:"50%", minHeight: '410px', marginRight: "1vw", marginLeft:"1vw" }}>
-      <Box sx={{padding:"1vh 1vw 0 1vw"}}>
-      <GraphControls selectedBaseSymbol={props.selectedBaseSymbol} availableQuotesForBase={props.availableQuotesForBase} />
-      </Box>
+    <Box sx={{display:"flex", flex:"1 1 auto", flexDirection:"column", height:"60%", minHeight:"200px", minWidth:"250px", marginRight: "1vw", marginLeft:"1vw" }}>
+      <GraphControlsMobile selectedBaseSymbol={props.selectedBaseSymbol} availableQuotesForBase={props.availableQuotesForBase} />
+    <Paper sx={{display:"flex", flex:"1 1 auto", flexDirection:"column", height:"50%", minHeight:"200px", minWidth:"250px", marginRight: "1vw", marginLeft:"1vw" }}>
       <Box sx={{height:"100%", padding:"0 1vw 0 0"}}>
       <ResponsiveContainer width="100%" height="100%">
       {displayData ?
@@ -57,7 +56,7 @@ const LiquidityChart = observer(props => {
           margin={{
             top: 5,
             right: 0,
-            left: 60,
+            left: 0,
             bottom: 60,
           }}
         >
@@ -66,14 +65,15 @@ const LiquidityChart = observer(props => {
           <YAxis unit={` ${selectedBaseSymbol}`} tickMargin={5} tickFormatter={largeNumberFormatter} />
           <Tooltip content={CustomTooltip}/>
           <Legend verticalAlign='top' />
-          {quotes.map(_ => <Line key={_} type="monotone" stroke={strokes[_]} dataKey={_} activeDot={{ r: 8 }} />)}
+          {quotes.map(_ => <Line key={_} type="monotone" stroke={strokes[_]} dataKey={_} activeDot={{ r: 8 }} dot={false} />)}
         </LineChart>
       :
       <Skeleton/>}
       </ResponsiveContainer>
       </Box>
     </Paper>
+    </Box>
   )
 })
 
-export default LiquidityChart
+export default LiquidityChartMobile

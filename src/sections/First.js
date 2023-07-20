@@ -1,13 +1,14 @@
-import Title from "../components/Title"
-import Subtitle from "../components/Subtitle"
+import NavigationIcon from '@mui/icons-material/Navigation';
+import { Fab, LinearProgress } from '@mui/material';
+import { observer } from 'mobx-react';
+import mainStore from '../stores/main.store';
 
 const styles = {
   flex: {
     display: "flex",
     justifyContent: "space-evenly",
     flexWrap: "wrap",
-    width: '100%',
-    marginTop: 'calc(var(--spacing) * 2)',
+    width: 'auto',
     minHeight: "calc(100vh - 204px)",
     alignItems: "center",
   },
@@ -18,34 +19,40 @@ const styles = {
   }
 }
 
-const First = props => {
-  const {darkMode} = window
-  return <div className="container-fluid" style={{marginTop: '102px'}}>
+const First = observer(props => {
+  const loading = mainStore.loading;
+  const darkMode = mainStore.darkTheme
+  function goTo(e, id){
+    let element = document.getElementById(id);
+    element.scrollIntoView({behavior:'smooth'});}
+  return <div className="container-fluid" style={{marginTop: '10vh', height:"100vh"}}>
     <section  style={styles.flex}>
       <div style={styles.flexItem}>
-        <Title>Asset Tracker for On-Chain Liquidity and Volatility </Title>
-        <Subtitle>The Risk Oracle provides an on-chain feed of liquidity and volatility for specific assets.</Subtitle>
-        <p>
-          Devs can add these feeds into their smart contracts to enable a new layer of transparency and security to their dapps.
+        <div className='title'>Removing the Human Factor from DeFi Risk Management</div>
+        <div className='subtitle'>Risk Oracle is an automated, decentralized, transparent, and self-executing DeFi risk engine.</div>
+        <p style={mainStore.mobile ? {textAlign: "center"} : {textAlign:"left"}}>
+        The Risk Oracle provides on-chain risk parameter feeds that smart contracts can use to automate their economic risk management processes.
         </p>
-        <div className="button-container">
-          <a href="https://docs.bprotocol.org" role="button" >Read Docs</a>
-          <a href="https://app.bprotocol.org" role="button" className="outline">Request an Asset</a>
+        <div className="button-container" style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+          <a target="_blank" href="https://docs.bprotocol.org" role="button" >Read Docs</a>
+          <a target="_blank" href="https://twitter.com/bprotocoleth" role="button" className="outline">Request an Asset</a>
         </div>
       </div>
       <div style={styles.flexItem}>
         <div>
           <img alt="pythia-code-example" src={darkMode ? 'images/pythia-code-dark.png' : 'images/pythia-code.png'}/>
-          <div> 
-            <small>
-              Here’s an example of how to read the feed for 
-              ETH DEX liquidity of the last 30 days 
-            </small>
-          </div>
         </div>
       </div>
+      {loading ? 
+      <LinearProgress sx={{position:"absolute", marginLeft:"auto", minWidth:"100px", maxWidth:"100", marginRight:"auto", left:"0", right:"0", bottom:"0", zIndex:"10"}}></LinearProgress>
+      : 
+      <Fab size='medium' sx={{position:"absolute", marginLeft:"auto", minWidth:"200px", maxWidth:"250px", marginRight:"auto", left:"0", right:"0", bottom:"10px", zIndex:"10", color:"secondary.main"}} variant="extended" onClick={(e)=>{goTo(e,'mainSection')}}>
+        <NavigationIcon sx={{ mr: 1, transform:"rotate(180deg)", color:"secondary.main" }} />
+        Try it!
+      </Fab>
+      }
     </section>
   </div>
-}
+})
 
 export default First

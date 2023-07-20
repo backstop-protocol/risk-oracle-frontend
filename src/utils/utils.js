@@ -25,6 +25,44 @@ export function largeNumberFormatter(number) {
     return `${(Number(number).toFixed(2))}`
 }
 
+
+export function encodeVolatilityKey(collateralAsset, debtAsset, mode, period) {
+    return ethers.keccak256(ethers.AbiCoder.defaultAbiCoder().encode(['string', 'address', 'uint8', 'uint256'], ['volatility', debtAsset, mode, period]))
+}
+
+export function encodeLiquidityKey(collateralAsset, debtAsset, source, slippage, period) {
+    return ethers.keccak256(ethers.AbiCoder.defaultAbiCoder().encode(['string', 'address', 'uint8', 'uint256', 'uint256'], ['liquidity', debtAsset, source, slippage, period]))
+}
+
+export function findCLFFromParameters(ltv, liquidationBonus, liquidity, borrowCap, volatility) {
+    ltv = Number(ltv) / 100;
+    // console.log(`findCLFFromParameters: liquidity: ${liquidity}, borrow cap ${borrowCap}, volatility: ${volatility}, liquidiation bonus ${liquidationBonus}, ltv: ${ltv}`)
+    const sqrtResult = Math.sqrt(liquidity/borrowCap);
+    const sqrtBySigma = sqrtResult / volatility;
+    const ltvPlusBeta = Number(ltv) + Number(liquidationBonus);
+    const lnLtvPlusBeta = Math.log(ltvPlusBeta);
+    const c = -1 * lnLtvPlusBeta * sqrtBySigma;
+    return c;
+}
+
+export function findLTVFromParameters(liquidity, borrowCap, volatility, liquidationBonus, CLF) {
+    // console.log(`findLTVFromParameters: liquidity: ${liquidity}, borrow cap ${borrowCap}, volatility: ${volatility}, liquidiation bonus ${liquidationBonus}, CLF: ${CLF}`)
+    const sqrRoot = Math.sqrt(liquidity / borrowCap);
+    const sigmaOverSqrRoot = volatility / sqrRoot;
+    const clfMinusSigmaOverSqrRoot = (-1 * CLF) * sigmaOverSqrRoot;
+    const exponential = Math.exp(clfMinusSigmaOverSqrRoot);
+    let ltv = exponential - liquidationBonus;
+
+    if(ltv < 0) {
+        ltv = 0;
+    }
+    if(ltv > 1) {
+        ltv = 1;
+    }
+
+    return roundTo(ltv * 100, 1);
+}
+
 /**
  * Normalize a integer value to a number
  * @param {string | BigNumber} amount 
@@ -53,9 +91,17 @@ export const coingeckoMap = {
     usdc: 'usd-coin',
     susd: 'nusd',
     wbtc: 'wrapped-bitcoin',
-    weth: 'weth'
+    uni: 'uniswap',
+    dai: 'dai',
+    eth: 'ethereum',
+    weth: 'weth',
+    usdt: 'tether'
 }
+
+
 export function isDexAvailableForBase(dexName, selectedBaseName) {
-    const availableBases = mainStore.graphData[dexName]['1'].map(_ => _.base);
-    return availableBases.includes(selectedBaseName);
+    if(mainStore.graphData[dexName]){
+    const availableBases = mainStore.graphData[dexName]['7'].map(_ => _.base);
+    return availableBases.includes(selectedBaseName);}
+    else{return false}
 }

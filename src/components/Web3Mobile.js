@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Divider, Typography } from "@mui/material";
 
 import ContractAddress from "./ContractAddress";
 import InfoLine from "./InfoLine";
@@ -7,20 +7,30 @@ import { largeNumberFormatter, roundTo } from "../utils/utils";
 import mainStore from "../stores/main.store";
 import { observer } from "mobx-react";
 import { pythiaAddress } from "../config";
+import { ExpandMore } from "@mui/icons-material";
 
-const Web3Data = observer(props => {
+const Web3Mobile = observer(props => {
     const web3Data = mainStore.web3Data;
     const span = mainStore.selectedSpan;
     const selectedBase = mainStore.selectedAsset.name;
     
     const price = mainStore.coingeckoPriceInfos[selectedBase].price;
     return (
-        <Paper sx={{width:"95%",margin:"0 1vw 0 1vw", display:"flex", flex:"0 2 auto", justifyContent:"space-between", alignItems:"start", padding:"1vh 1vw 1vh 1vw"}}>
-            <Box >
+        <Box sx={{width:"95%"}}>
+            <Accordion>  
+                <AccordionSummary
+                expandIcon={<ExpandMore />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                sx={{width:"100%", height:"5vh"}}>
+                    <Typography variant="body2">{selectedBase} Information</Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{display:"flex", flexDirection:"column", alignItems:"left", justifyContent:"start"}}>
                 <InfoLine />
+                <Divider sx={{margin:"5px 0px 5px 0px"}} />
                 <ContractAddress address={pythiaAddress} />
-            </Box>
-            {web3Data && web3Data[selectedBase] ? <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100%', alignItems: "end", alignContent: 'end', flexWrap: 'wrap' }}>
+                <Divider sx={{margin:"5px 0px 5px 0px"}} />
+                {web3Data && web3Data[selectedBase] ? <Box>
                 <Box sx={{ minHeight: '50%' }}>
                     <Typography>
                     Avg 30 days uniV3 liquidity vs USDC
@@ -40,13 +50,17 @@ const Web3Data = observer(props => {
                         
                 </Box>
             </Box>: <Box></Box>}
+                <Divider sx={{margin:"5px 0px 5px 0px"}} />
             {web3Data && web3Data[selectedBase] ? 
-                <div>
+                <Box>
                     <LastUpdate date={mainStore.lastUpdate[span]} />
-                </div>: <Box></Box>}
-        </Paper>
+                </Box>: <Box></Box>}
+                </AccordionDetails>
+            </Accordion>
+            </Box>
+            
 
     )
 })
 
-export default Web3Data
+export default Web3Mobile

@@ -43,7 +43,8 @@ export const assets = {
     },
     USDC: {
         display: true,
-        decimals: 6
+        decimals: 6,
+        address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
     },
     USDT: {
         display: true,
@@ -53,7 +54,9 @@ export const assets = {
     },
     WBTC: {
         display: true,
-        decimals: 8
+        decimals: 8,
+        pythia: true,
+        address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
     },
 }
 
@@ -72,7 +75,6 @@ export const dexs = {
 }
 
 export const timeWindows = {
-    "24H": 1,
     "7D": 7,
     "30D": 30,
     "180D": 180,

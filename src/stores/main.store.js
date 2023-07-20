@@ -1,15 +1,22 @@
-import { coingeckoMap, isDexAvailableForBase, normalize } from "../utils/utils";
+import { coingeckoMap, encodeLiquidityKey, encodeVolatilityKey, normalize } from "../utils/utils";
 import { makeAutoObservable, runInAction } from "mobx";
-import { pythiaAddress, relayerAddress, rpcURL } from "../config";
+import symbols, { pythiaAddress, relayerAddress, rpcURL } from "../config";
 
 import PythiaABI from "../abi/pythia.abi.json";
 import { assets } from "./config.store";
 import axios from "axios";
 import { ethers } from "ethers";
-import symbols from "../config";
+import { isDexAvailableForBase } from "../utils/utils";
+import { updateCode } from "../components/LTVCodeGenerator";
 
 const defaultAsset = "ETH"
 const apiUrl = "https://api.dex-history.la-tribu.xyz/api";
+const urlParams = new URLSearchParams(window.location.search);
+let USE_PARKINSON = true; 
+if(urlParams.get('parkinson') && urlParams.get('parkinson') === 'false') {
+  USE_PARKINSON = false;
+}
+
 class MainStore {
   constructor() {
     this.assets = Object.entries(assets)
@@ -18,13 +25,14 @@ class MainStore {
         v.name = k
         return v
       })
+    this.useParkinsonVolatility = USE_PARKINSON;
     this.searchedAsset = null;
     this.selectedAsset = assets[defaultAsset]
     this.selectedBaseSymbol = symbols[defaultAsset];
     this.selectedDexes = [];
     this.selectedQuotes = [];
     this.selectedSlippage = 5;
-    this.selectedSpan = 1;
+    this.selectedSpan = 30;
     this.web3Data = null;
     this.searchFieldValue = ''
     this.allDexes = true;
@@ -32,15 +40,22 @@ class MainStore {
     this.graphData = null;
     this.loading = true;
     this.timestamps = {};
-    this.spans = [1, 7, 30, 180, 365];
+    this.spans = [7, 30, 180, 365];
     this.platforms = ['uniswapv2', 'curve', 'uniswapv3'];
     this.quotes = ['USDC', 'WBTC', 'WETH']
+    this.ltvQuotes = []
     this.graphData = {};
     this.averageData = {};
+    this.averageTableDisplayArray = [];
     this.lastUpdate = {};
+    this.switchLoaded = false;
     this.averages = {};
+    this.darkTheme = true;
     this.debtAssetPrices = {};
     this.loading = true;
+    this.defaultCode = updateCode();
+    this.coingeckoPriceInfos = {};
+    this.mobile = false;
     const urls = [];
     const averageUrls = [];
     for (let i = 0; i < this.platforms.length; i++) {
@@ -53,6 +68,21 @@ class MainStore {
         averageUrls.push(`${apiUrl}/getaveragedata?platform=${this.platforms[i]}&span=${this.spans[j]}`);
       }
     }
+    this.sendParallelRequests(averageUrls)
+      .then(data => {
+        for (let i = 0; i < data.length; i++) {
+          const url = new URL(data[i].request.responseURL);
+          const span = url.searchParams.get('span');
+          const platform = url.searchParams.get('platform');
+          if (!this.averageData[platform]) {
+            this.averageData[platform] = {}
+          };
+          this.averageData[platform][span] = data[i].data;
+        }
+      })
+      .catch(error => {
+        console.error('error', error);
+      });
     this.sendParallelRequests(urls)
       .then(data => {
         for (let i = 0; i < data.length; i++) {
@@ -68,28 +98,19 @@ class MainStore {
         }
         this.initialDexes();
         this.initialQuotes();
+        this.updateAverages();
+      }).then(() => {
+        this.getAllPrices().then(() => {
+          this.getWeb3Data().then(() => {
+            this.loading = false;
+          });
+        });
       })
       .catch(error => {
         console.error('error', error);
       });
-    this.sendParallelRequests(averageUrls)
-      .then(data => {
-        for (let i = 0; i < data.length; i++) {
-          const url = new URL(data[i].request.responseURL);
-          const span = url.searchParams.get('span');
-          const platform = url.searchParams.get('platform');
-          if (!this.averageData[platform]) {
-            this.averageData[platform] = {}
-          };
-          this.averageData[platform][span] = data[i].data;
-        }
-        this.loading = false;
-      })
-      .catch(error => {
-        console.error('error', error);
-      });
-    this.getWeb3Data();
-    makeAutoObservable(this);
+
+      makeAutoObservable(this);
   }
   async sendParallelRequests(urls) {
     const requests = urls.map(url => axios.get(url)); // Create an array of requests
@@ -102,24 +123,28 @@ class MainStore {
     const relayers = [];
     const assetsAddresses = [];
     const keys = [];
-    const key = ethers.keccak256(ethers.toUtf8Bytes(`avg 30 days uni v3 liquidity`));
+    const volatilityKeys = [];
     const symbols = [];
     const toReturn = {};
-
     for (const [tokenSymbol, value] of Object.entries(assets)) {
       if (value.pythia) {
         symbols.push(tokenSymbol);
         relayers.push(relayerAddress);
+        const key = encodeLiquidityKey(value.address, assets.USDC.address, 0, 5, 30);
+        const volatilityKey = encodeVolatilityKey(value.address, assets.USDC.address, 0, 30);
         keys.push(key);
+        volatilityKeys.push(volatilityKey);
         assetsAddresses.push(value.address)
       }
     }
-
     const results = await pythiaContract.multiGet(relayers, assetsAddresses, keys);
-
+    const volatilityResults = await pythiaContract.multiGet(relayers, assetsAddresses, volatilityKeys);
     for (let i = 0; i < symbols.length; i++) {
       const assetConf = assets[symbols[i]];
-      toReturn[symbols[i]] = normalize(results[i], BigInt(assetConf.decimals));
+      toReturn[symbols[i]] = {};
+      toReturn[symbols[i]]['value'] = normalize(results[i][0], BigInt(assetConf.decimals));
+      toReturn[symbols[i]]['volatilityValue'] = normalize(volatilityResults[i][0], 18n);
+      toReturn[symbols[i]]['lastUpdate'] = Number(results[i][1]);
     }
     this.web3Data = toReturn;
   }
@@ -148,20 +173,105 @@ class MainStore {
     }
   }
 
-  updateAverages = (averageArray) => {
-    for(let i = 0; i < averageArray.length; i++){
-      const tokenName = Object.keys(averageArray[i])[0];
-      this.averages[tokenName] = averageArray[i][tokenName];
-    }
-
+  switchLoadedTrue(){
+    this.switchLoaded = true;
   }
 
-  async updateDebtAssetPrices(asset){
-      const id = coingeckoMap[asset.toLowerCase()];
-      const url = `https://api.coingecko.com/api/v3/coins/${id}`
-      const data = await axios.get(url);
-      const price = (data.data['market_data']['current_price']['usd']).toFixed(2); 
-      this.debtAssetPrices[asset] = price;
+  updateAverages = () => {
+    const span = this.selectedSpan;
+    const slippage = this.selectedSlippage;
+    const dexes = this.selectedDexes;
+    const averageData = this.averageData;
+    const selectedBaseSymbol = symbols[this.selectedAsset.name];
+    const quotes = this.selectedQuotes;
+    const rowDataArray = [];
+    const sortedData = {};
+    const ratios = {};
+    for (const dex of dexes) {
+      ratios[dex] = {};
+      const dataForDexForSpanForBase = averageData[dex][span][selectedBaseSymbol];
+      for (const quote of quotes) {
+        ratios[dex][quote] = 0;
+        if (!sortedData[quote]) {
+          sortedData[quote] = {}
+        }
+        if (!sortedData[quote]['average']) {
+          sortedData[quote]['average'] = 0;
+        }
+        if (dataForDexForSpanForBase[quote]) {
+          sortedData[quote]['average'] += (dataForDexForSpanForBase[quote]['avgLiquidityAggreg'][slippage]);
+        }
+        if (!sortedData[quote]['parkinsonVolatility']) {
+          sortedData[quote]['parkinsonVolatility'] = 0
+        }
+        if (dataForDexForSpanForBase[quote]) {
+          sortedData[quote]['parkinsonVolatility'] += this.useParkinsonVolatility ?  dataForDexForSpanForBase[quote].parkinsonVolatility :  dataForDexForSpanForBase[quote].volatility;
+          ratios[dex][quote]++;
+        }
+      }
+    }
+    for (const quote of Object.keys(sortedData)) {
+      let quoteRatio = 0;
+      const ratioMap = Object.entries(ratios);
+      for (let i = 0; i < ratioMap.length; i++) {
+        if (ratioMap[i][1][quote] === 1) {
+          quoteRatio++
+        }
+      }
+      sortedData[quote].parkinsonVolatility = sortedData[quote].parkinsonVolatility / quoteRatio;
+    }
+    for (const [key, value] of Object.entries(sortedData)) {
+      const toPush = {}
+      toPush[key] = value;
+      rowDataArray.push(toPush);
+    }
+    rowDataArray.sort((a, b) => Object.entries(b)[0][1].average - Object.entries(a)[0][1].average);
+    this.averageTableDisplayArray = rowDataArray;
+
+    for (let i = 0; i < rowDataArray.length; i++) {
+      const tokenName = Object.keys(rowDataArray[i])[0];
+      this.averages[tokenName] = rowDataArray[i][tokenName];
+    }
+  }
+
+  async getAllPrices() {
+    const coingeckoIds = [];
+    for(const asset of Object.keys(assets)) {
+      coingeckoIds.push(coingeckoMap[asset.toLowerCase()]);
+    }
+
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coingeckoIds.join(',')}&vs_currencies=usd&precision=2&include_24hr_change=true`;
+    const data = await axios.get(url);
+    
+    for(const asset of Object.keys(assets)) {
+      const coingeckoId = coingeckoMap[asset.toLowerCase()];
+      const result = data.data[coingeckoId];
+      this.coingeckoPriceInfos[asset] = {
+        price: result.usd,
+        change: result.usd_24h_change.toFixed(2)
+      };
+      this.debtAssetPrices[asset] = result.usd;
+
+      if(asset === 'ETH') {
+        // also add for WETH
+        this.coingeckoPriceInfos['WETH'] = {
+          price: result.usd,
+          change: result.usd_24h_change.toFixed(2)
+        };
+        this.debtAssetPrices['WETH'] = result.usd;
+      }
+
+      if(asset === 'SUSD') {
+        // also add for WETH
+        this.coingeckoPriceInfos['sUSD'] = {
+          price: result.usd,
+          change: result.usd_24h_change.toFixed(2)
+        };
+        this.debtAssetPrices['sUSD'] = result.usd;
+      }
+    }
+
+    // console.log('this.coingeckoPriceInfos', this.coingeckoPriceInfos);
   }
 
   search = (assetName) => {
@@ -181,6 +291,8 @@ class MainStore {
     this.initialQuotes();
     this.allDexes = true;
     this.searchFieldValue = ""
+    this.defaultCode = updateCode(this.quotes[0], this.selectedAsset.name, 30, 7, 1e6, 5);
+    this.updateAverages();
     runInAction(() => {
       this.searchCounter++
     })
@@ -189,7 +301,7 @@ class MainStore {
     const available = [];
     for (const platform of this.platforms) {
       if (this.graphData[platform]) {
-        const availableBases = this.graphData[platform]['1'].map(_ => _.base);
+        const availableBases = this.graphData[platform]['7'].map(_ => _.base);
         if (availableBases.includes(this.selectedBaseSymbol)) {
           available.push(platform);
         };
@@ -215,7 +327,7 @@ class MainStore {
     const quotesHolder = [];
     const newQuotes = [];
     for (const dex of this.selectedDexes) {
-      const dataForDex = this.graphData[dex][1];
+      const dataForDex = this.graphData[dex][7];
       const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === this.selectedBaseSymbol.toLowerCase());
       for (const slippageData of dataForDexForBase) {
         if (!quotesHolder.includes(slippageData.quote)) {
@@ -229,6 +341,7 @@ class MainStore {
       }
     }
     this.selectedQuotes = newQuotes;
+    this.updateAverages();
   }
 
   toggleAllDexes = (selectedBaseSymbol) => {
@@ -248,11 +361,12 @@ class MainStore {
     }
   }
 
+
   initialQuotes = () => {
     this.selectedQuotes = [];
     const quotesHolder = [];
     for (const dex of this.selectedDexes) {
-      const dataForDex = this.graphData[dex][1];
+      const dataForDex = this.graphData[dex][7];
       const dataForDexForBase = dataForDex.filter(_ => _.base.toLowerCase() === this.selectedBaseSymbol.toLowerCase());
       for (const slippageData of dataForDexForBase) {
         if (!quotesHolder.includes(slippageData.quote)) {
@@ -260,7 +374,9 @@ class MainStore {
         }
       }
     }
+    quotesHolder.sort();
     this.selectedQuotes = [...this.selectedQuotes, ...quotesHolder];
+    this.ltvQuotes = quotesHolder;
   }
 
   handleQuotesChanges = (quote) => {
@@ -273,6 +389,7 @@ class MainStore {
     else {
       this.selectedQuotes = [...this.selectedQuotes, quote];
     }
+    this.updateAverages();
   }
 
   setSearchFieldValue = (value) => {
@@ -281,9 +398,11 @@ class MainStore {
 
   handleSlippageChange = (value) => {
     this.selectedSlippage = value;
+    this.updateAverages();
   }
   handleSpanChange = (value) => {
     this.selectedSpan = value;
+    this.updateAverages();
   }
 }
 
