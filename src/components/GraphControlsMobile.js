@@ -47,7 +47,7 @@ const GraphControlsMobile = observer(props => {
 
     return (
       <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center", width: "100%" }}>
-        <Accordion sx={{width:"95%"}}>
+        <Accordion sx={{width:"95%"}} defaultExpanded={true}>
           <AccordionSummary
             expandIcon={<ExpandMore />}
             aria-controls="panel1a-content"
