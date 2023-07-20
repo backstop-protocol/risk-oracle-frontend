@@ -10,8 +10,8 @@ function row(rowData) {
     values.push([key, value]);
   }
   return <tr key={symbol}>
-    <th><Typography variant="caption">{symbol}</Typography></th>
-    {values.map((_, index) => <td key={index}><Typography variant="caption">{ isNaN(_[1]) ? 'N/A' : `${((_[1] * 100).toFixed(2))}%`}</Typography></td>)}
+    <th><Typography variant={mainStore.mobile ? "caption" : "body2"}>{symbol}</Typography></th>
+    {values.map((_, index) => <td key={index}><Typography variant={mainStore.mobile ? "caption" : "body2"}>{ isNaN(_[1]) ? 'N/A' : `${((_[1] * 100).toFixed(2))}%`}</Typography></td>)}
   </tr>
 }
 const timeMap = {
@@ -74,8 +74,8 @@ const VolatilityTable = observer(props => {
       <table style={{marginBottom :0}}>
         <thead>
           <tr>
-            <th scope="col"><Typography variant="caption">Avg Volatility</Typography></th>
-            {spans.map((_, index) => <th key={index} scope="col"><Typography variant="caption">{timeMap[_]}</Typography></th>)}
+            <th scope="col"><Typography variant={mainStore.mobile ? "caption" : "body2"}>Avg Volatility</Typography></th>
+            {spans.map((_, index) => <th key={index} scope="col"><Typography variant={mainStore.mobile ? "caption" : "body2"}>{timeMap[_]}</Typography></th>)}
           </tr>
         </thead>
         <tbody>
