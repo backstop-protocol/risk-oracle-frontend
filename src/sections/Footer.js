@@ -16,10 +16,10 @@ const Footer = observer(props => {
       <Link href="https://app.bprotocol.org"><Typography>App</Typography></Link>
       </Stack> */}
     <Stack sx={{padding:"1vh 0 1vh 0"}} gap={4} direction="row">
-      <Link className="footer-social-link" href="https://github.com/backstop-protocol"><img alt="Github Logo" src={mainStore.darkTheme ? "images/social/github-mark-white.svg" : "images/social/github-mark.svg"} /></Link>
-      <Link className="footer-social-link" href="https://discord.com/invite/bJ4guuw"><img alt="Discord Logo" src={mainStore.darkTheme ? "images/social/discord-mark-white.svg" : "images/social/discord-mark-black.svg"} /></Link>
-      <Link className="footer-social-link" href="https://twitter.com/bprotocoleth"><img alt="Twitter Logo" src={mainStore.darkTheme ? "images/social/twitter-white.svg" : "images/social/twitter-black.svg"} /></Link>
-      <Link className="footer-social-link" href="https://medium.com/b-protocol"><img  alt="Medium Logo" src={mainStore.darkTheme ? "images/social/medium-white.png" : "images/social/medium-black.png"} /></Link>
+      <Link className="footer-social-link" target="_blank" href="https://github.com/backstop-protocol"><img alt="Github Logo" src={mainStore.darkTheme ? "images/social/github-mark-white.svg" : "images/social/github-mark.svg"} /></Link>
+      <Link className="footer-social-link" target="_blank" href="https://discord.com/invite/bJ4guuw"><img alt="Discord Logo" src={mainStore.darkTheme ? "images/social/discord-mark-white.svg" : "images/social/discord-mark-black.svg"} /></Link>
+      <Link className="footer-social-link" target="_blank" href="https://twitter.com/bprotocoleth"><img alt="Twitter Logo" src={mainStore.darkTheme ? "images/social/twitter-white.svg" : "images/social/twitter-black.svg"} /></Link>
+      <Link className="footer-social-link" target="_blank" href="https://medium.com/b-protocol"><img  alt="Medium Logo" src={mainStore.darkTheme ? "images/social/medium-white.png" : "images/social/medium-black.png"} /></Link>
       </Stack>
       {mainStore.mobile ? <Box sx={{height:"10vh"}}></Box> : ""}
   </Box>

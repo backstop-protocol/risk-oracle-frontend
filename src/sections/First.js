@@ -34,8 +34,8 @@ const First = observer(props => {
         The Risk Oracle provides on-chain risk parameter feeds that smart contracts can use to automate their economic risk management processes.
         </p>
         <div className="button-container" style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-          <a href="https://docs.bprotocol.org" role="button" >Read Docs</a>
-          <a href="https://twitter.com/bprotocoleth" role="button" className="outline">Request an Asset</a>
+          <a target="_blank" href="https://docs.bprotocol.org" role="button" >Read Docs</a>
+          <a target="_blank" href="https://twitter.com/bprotocoleth" role="button" className="outline">Request an Asset</a>
         </div>
       </div>
       <div style={styles.flexItem}>
