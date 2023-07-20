@@ -20,7 +20,7 @@ function row(rowData, selectedBaseSymbol) {
   return <tr key={symbol}>
     <td><Typography variant="body2">{symbol}</Typography></td>
     <td><Typography variant="body2">{largeNumberFormatter(data.average.toFixed(2))} {selectedBaseSymbol}</Typography>
-    <Typography variant="body2">${largeNumberFormatter(data.average*price)}</Typography></td>
+    <Typography variant="caption">${largeNumberFormatter(data.average*price)}</Typography></td>
   </tr>
 }
 
