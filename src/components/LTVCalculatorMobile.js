@@ -111,10 +111,10 @@ const LTVCalculatorMobile = observer(props => {
     function InputDialog(props) {
         const { type, title, onClose, selectedValue, open, explanation, module } = props;
         const [input, setInput] = useState(selectedValue)
-        const handleClose = (input = selectedValue) => {
-            onClose(input, type);
+        const handleClose = (value = input) => {
+            onClose(value, type);
         };
-        return <Dialog open={open} onClose={handleClose}>
+        return <Dialog open={open} onClose={()=>handleClose(selectedValue)}>
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
                 <DialogContentText>
