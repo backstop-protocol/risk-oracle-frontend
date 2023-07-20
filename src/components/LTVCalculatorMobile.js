@@ -158,6 +158,9 @@ const LTVCalculatorMobile = observer(props => {
         if (type === "borrowCap") {
             setBorrowCap(value);
         }
+        if (type === "liquidation") {
+            mainStore.handleSlippageChange(value);
+        }
         if (type === "CLF") {
             handleCLFandLTVChanges('clf', value)
         }
@@ -232,6 +235,10 @@ const LTVCalculatorMobile = observer(props => {
                     onClose={handleClose}
                     title={"Liquidation Bonus"}
                     explanation={"The bonus liquidators get as an incentive to liquidate a position."}
+                    module={
+                        <Stack>
+                        {slippageOptions.map((_) => <Button key={_} onClick={() => handleClose(_, "liquidation")}>{_}%</Button>)}
+                        </Stack>}
                 />
             </Grid>
             <Grid item sx={gridItemSx}>
