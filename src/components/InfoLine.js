@@ -60,10 +60,9 @@ const InfoLine = observer(props => {
       <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
         <Box>
         <div><b>{selectedBase.name}</b></div>
-        </Box>
-        <Box>
-          <div>Price: $<b>{price}</b></div>
-        </Box>
+        {mainStore.mobile ? <div>Price: $<b>{price}</b></div> : ""}
+        </Box>        
+        {mainStore.mobile ? "" : <Box><div>Price: $<b>{price}</b></div></Box>}
         <Box>
           <div>24H price change: <b>{dayChange > 0 ? `+${dayChange}` : dayChange}%</b></div>
         </Box>
