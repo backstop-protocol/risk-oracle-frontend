@@ -43,8 +43,14 @@ const LTVSection = observer(props => {
             setWhatAmIComputing("ltv");
         }
         if(type === "ltv"){
+            if(value > 100 - slippage){
+            setRecommendedLTV(100-slippage)
+            setWhatAmIComputing("clf");
+        }
+        else{
             setRecommendedLTV(value);
             setWhatAmIComputing("clf");
+        }
         }
 
     }
@@ -66,7 +72,7 @@ const LTVSection = observer(props => {
     
     useEffect(() => {
         const debtCeiling = new BigNumber(borrowCap / basePrice).times(new BigNumber(10).pow(assets[selectedBaseName].decimals));
-        console.log(debtCeiling.toFixed(0));
+        // console.log(debtCeiling.toFixed(0));
         const up = updateCode(selectedQuote, selectedBaseName, span, CLF, debtCeiling.toFixed(0), slippage);
         setUpdatedCode(up)
     }, [CLF, borrowCap, selectedBaseName, selectedQuote, slippage, span, basePrice])

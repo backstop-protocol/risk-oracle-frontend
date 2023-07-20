@@ -30,7 +30,7 @@ const First = observer(props => {
       <div style={styles.flexItem}>
         <div className='title'>Removing the Human Factor from DeFi Risk Management</div>
         <div className='subtitle'>Risk Oracle is an automated, decentralized, transparent, and self-executing DeFi risk engine.</div>
-        <p style={{textAlign:"center"}}>
+        <p style={mainStore.mobile ? {textAlign: "center"} : {textAlign:"left"}}>
         The Risk Oracle provides on-chain risk parameter feeds that smart contracts can use to automate their economic risk management processes.
         </p>
         <div className="button-container" style={{display:"flex", alignItems:"center", justifyContent:"center"}}>

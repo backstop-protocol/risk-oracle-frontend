@@ -100,6 +100,7 @@ const LTVCalculatorMobile = observer(props => {
     const selectedBase = mainStore.selectedBaseSymbol;
     const basePrice = mainStore.coingeckoPriceInfos[selectedBase].price;
     const [open, setOpen] = useState(false);
+    const max = 100 - slippage;
 
     const gridItemSx = {
         textAlign: "center"
@@ -134,7 +135,7 @@ const LTVCalculatorMobile = observer(props => {
                         :
                         type === "LTV" ?
                             <Box>
-                                <input className="ltv-select" type="number" max="100" min="0" value={input} onChange={(event) => { setInput(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} />
+                                <input className="ltv-select" type="number" max={max} min="0" value={input} onChange={(event) => { setInput(((event.target.value || '').match(/^[0-9]+(\.[0-9]{0,2})?/g) || [])[0] || '') }} />
                                 <Button onClick={() => handleClose(input)}>OK</Button>
                             </Box>
                             : ""}

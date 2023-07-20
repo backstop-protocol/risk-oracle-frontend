@@ -46,7 +46,7 @@ export function findCLFFromParameters(ltv, liquidationBonus, liquidity, borrowCa
 }
 
 export function findLTVFromParameters(liquidity, borrowCap, volatility, liquidationBonus, CLF) {
-    console.log(`findLTVFromParameters: liquidity: ${liquidity}, borrow cap ${borrowCap}, volatility: ${volatility}, liquidiation bonus ${liquidationBonus}, CLF: ${CLF}`)
+    // console.log(`findLTVFromParameters: liquidity: ${liquidity}, borrow cap ${borrowCap}, volatility: ${volatility}, liquidiation bonus ${liquidationBonus}, CLF: ${CLF}`)
     const sqrRoot = Math.sqrt(liquidity / borrowCap);
     const sigmaOverSqrRoot = volatility / sqrRoot;
     const clfMinusSigmaOverSqrRoot = (-1 * CLF) * sigmaOverSqrRoot;

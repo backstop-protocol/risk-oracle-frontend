@@ -99,6 +99,7 @@ const LTVCalculator = observer(props => {
     const slippageOptions = [1, 5, 10, 15, 20];
     const selectedBase = mainStore.selectedBaseSymbol;
     const basePrice = mainStore.coingeckoPriceInfos[selectedBase].price;
+    const max = 100 - slippage;
 
     return (
         <Paper className="ltv-container" sx={{width:"100%"}}>
@@ -161,7 +162,7 @@ const LTVCalculator = observer(props => {
                         <small>Recommended LTV (%)</small>
                     </div>
                     <div className="ltv-value-div">
-                    <input className="ltv-select" type="number" max="100" min="0" value={recommendedLTV} onChange={(event) => { handleCLFandLTVChanges('ltv', event.target.value)}} />
+                    <input className="ltv-select" max={max.toString()} min="0" value={recommendedLTV} onChange={(event) => { handleCLFandLTVChanges('ltv', event.target.value)}} />
                     </div>
                 </div>
             </div>

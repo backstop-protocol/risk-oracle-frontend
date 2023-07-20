@@ -271,7 +271,7 @@ class MainStore {
       }
     }
 
-    console.log('this.coingeckoPriceInfos', this.coingeckoPriceInfos);
+    // console.log('this.coingeckoPriceInfos', this.coingeckoPriceInfos);
   }
 
   search = (assetName) => {
