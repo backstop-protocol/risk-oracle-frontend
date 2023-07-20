@@ -73,7 +73,7 @@ const MainPanel = observer(props => {
     </div>)
   }
   return (
-      <Box sx={{flex:"0 2 auto", marginTop:"5%", width:"100%", height:"100%", display:'flex', flexDirection:"column", justifyContent:"space-evenly", alignItems:"center"}}>
+      <Box sx={{flex:"0 2 auto", marginTop:"5%", width:"100%", height:"100%", display:'flex', flexDirection:"column", justifyContent:"space-evenly", alignItems:"center", rowGap:"3%"}}>
   <Divider sx={{width:"100%", marginBottom:"5%"}} />
       <Box sx={{display:'flex', width:"100%", flexDirection:"row", justifyContent:"space-around", alignItems:"center", rowGap:"2%",flexWrap:"wrap"}}>
         {mobile ? 
