@@ -21,7 +21,7 @@ const styles = {
 
 const First = observer(props => {
   const loading = mainStore.loading;
-  const {darkMode} = window
+  const darkMode = mainStore.darkTheme
   function goTo(e, id){
     let element = document.getElementById(id);
     element.scrollIntoView({behavior:'smooth'});}
