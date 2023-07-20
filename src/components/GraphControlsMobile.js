@@ -83,8 +83,6 @@ const GraphControlsMobile = observer(props => {
               >
                 {availableQuotes.map(quote => <FormControlLabel className="dexControls" key={quote} control={<Checkbox color="secondary" checked={selectedQuotes.includes(quote)} disabled={!availableQuotesForBase.includes(quote)} onChange={() => handleQuotesChanges(quote)} />} label={nameMap[quote] || quote} />)}
               </FormGroup>
-            </Box>
-            <Box sx={{ insideDivStyle, flex: 1, flexGrow: 1 }}>
               <FormControl>
                 <InputLabel>Slippage</InputLabel>
                 <Select
