@@ -21,6 +21,7 @@ const Footer = observer(props => {
       <Link className="footer-social-link" href="https://twitter.com/bprotocoleth"><img alt="Twitter Logo" src={mainStore.darkTheme ? "images/social/twitter-white.svg" : "images/social/twitter-black.svg"} /></Link>
       <Link className="footer-social-link" href="https://medium.com/b-protocol"><img  alt="Medium Logo" src={mainStore.darkTheme ? "images/social/medium-white.png" : "images/social/medium-black.png"} /></Link>
       </Stack>
+      {mainStore.mobile ? <Box sx={{height:"10vh"}}></Box> : ""}
   </Box>
 })
 
