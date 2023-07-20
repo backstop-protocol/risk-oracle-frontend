@@ -73,8 +73,7 @@ const MainPanel = observer(props => {
     </div>)
   }
   return (
-      <Box sx={{flex:"0 2 auto", marginTop:"5%", width:"100%", height:"100%", display:'flex', flexDirection:"column", justifyContent:"space-evenly", alignItems:"center", rowGap:"3%"}}>
-  <Divider sx={{width:"100%", marginBottom:"5%"}} />
+      <Box sx={{flex:"0 2 auto", marginTop:"5%", width:"100%", height:"100%", display:'flex', flexDirection:"column", justifyContent:"space-evenly", alignItems:"center", rowGap:"7%"}}>
       <Box sx={{display:'flex', width:"100%", flexDirection:"row", justifyContent:"space-around", alignItems:"center", rowGap:"2%",flexWrap:"wrap"}}>
         {mobile ? 
         <LiquidityChartMobile availableQuotesForBase={availableQuotesForBase} selectedBaseSymbol={selectedBaseSymbol} quotes={quotes} loading={loading} displayData={displayData} dataStore={dataStore} />
