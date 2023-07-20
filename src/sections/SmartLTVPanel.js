@@ -64,7 +64,7 @@ const LTVSection = observer(props => {
         const borrowInKind = borrowCap * 1e6 / basePrice;
         const clf = findCLFFromParameters(50, slippage / 100, liquidity, borrowInKind, volatility);
         setCLF(clf.toFixed(2));
-    }, [selectedBaseName, basePrice, borrowCap, liquidity, slippage, volatility]);
+    }, []);
 
     useEffect(() => {
         setSelectedQuote(quotes[0]);
@@ -85,14 +85,16 @@ const LTVSection = observer(props => {
             const ltv = findLTVFromParameters(liquidity, borrowInKind, volatility, slippage / 100, CLF);
             setRecommendedLTV(ltv);
         }
+    }, [basePrice, liquidity, slippage, volatility, borrowCap, CLF, debtAssetPrices, selectedQuote])
 
+    useEffect(()=>{
         if(WhatAmIComputing === 'clf' && selectedQuote){
-                const borrowInKind = borrowCap * 1e6 / basePrice;
-                const clf = findCLFFromParameters(recommendedLTV, slippage / 100, liquidity, borrowInKind, volatility);
-                setCLF(clf.toFixed(2));
-                setWhatAmIComputing('ltv');
-        }
-    }, [basePrice, liquidity, slippage, volatility, borrowCap, CLF, debtAssetPrices, selectedQuote, WhatAmIComputing, recommendedLTV])
+            const borrowInKind = borrowCap * 1e6 / basePrice;
+            const clf = findCLFFromParameters(recommendedLTV, slippage / 100, liquidity, borrowInKind, volatility);
+            setCLF(clf.toFixed(2));
+            setWhatAmIComputing('ltv');
+    }
+    }, [recommendedLTV])
 
 
     return (
